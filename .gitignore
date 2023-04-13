@@ -1,6 +1,7 @@
 .twbvenv/
 .vscode/
 .env
+bin/
 .pytest_cache/
 __pycache__/
 
