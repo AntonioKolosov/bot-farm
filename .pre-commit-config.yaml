@@ -1,3 +1,4 @@
+default_stages: [commit]
 repos:
     - repo: https://github.com/PyCQA/flake8
       rev: 4.0.1
@@ -7,5 +8,14 @@ repos:
             - --max-line-length=79
             - --max-doc-length=72
             - --ignore=E203,W503
-
+    - repo: local
+      hooks:
+      -   id: pytest-check
+          stages: [push]
+          types: [python]
+          name: pytest-check
+          entry: pytest tests/test_app.py
+          language: system
+          pass_filenames: false
+          always_run: true
 
