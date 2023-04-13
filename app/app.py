@@ -6,6 +6,7 @@ from typing import Dict
 from fastapi import FastAPI
 
 from .description import description, title, version, license, contact
+from .routers import hook
 
 
 app = FastAPI(
@@ -15,6 +16,8 @@ app = FastAPI(
     contact=contact,
     license=license
 )
+
+app.include_router(hook.router)
 
 
 @app.get("/", tags=["ROOT"])
