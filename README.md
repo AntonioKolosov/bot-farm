@@ -50,11 +50,12 @@ Interactive Documentation
 
 ### Linting
 ```bash
+flake8 -v app/
 ```
 
 ### Unit testing
 ```bash
-
+pytest tests/test_app.py
 ```
 
 ### Git hooks
