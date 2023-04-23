@@ -23,14 +23,14 @@ class TBotAPI:
         self.__bot_url = bot_url if bot_url else ""
         self.__api_url = f'{api_url}/hook' if api_url else ""
 
-    async def set_webhook(self) -> None:
+    async def set_webhook(self) -> bool:
         """"""
         params = {"url": self.__api_url}
         url = self.__make_url("setWebhook", params)
         resp = await self.__request_get(url)
         return resp.status_code == 200
 
-    async def unset_webhook(self) -> None:
+    async def unset_webhook(self) -> bool:
         """"""
         url = self.__make_url("deleteWebhook")
         resp = await self.__request_get(url)
