@@ -1,10 +1,8 @@
-.twbvenv/
+.*venv/
 .vscode/
 .env
 bin/
 .pytest_cache/
-__pycache__/
+**__pycache__/
 
 data/
-app/__pycache__/
-tests/__pycache__/
