@@ -7,7 +7,7 @@ from fastapi import FastAPI
 
 from .description import description, title, version, license, contact
 from .routers import hook
-from .internals.registerwebhook import RegisterWebhook
+from .internals.tbotapi import TBotAPI
 
 
 app = FastAPI(
@@ -22,7 +22,7 @@ app = FastAPI(
 app.include_router(hook.router)
 
 
-webhook = RegisterWebhook()
+tb_api = TBotAPI()
 
 
 @app.get("/", tags=["ROOT"])
@@ -33,12 +33,12 @@ def read_root() -> Dict:
 @app.on_event("startup")
 async def set_webhook():
     """Register web hook on TG"""
-    webhook.set_webhook()
+    await tb_api.set_webhook()
     print("Startup")
 
 
 @app.on_event("shutdown")
-def unset_webhook():
+async def unset_webhook():
     """Unregister web hook"""
-    webhook.unset_webhook()
+    await tb_api.unset_webhook()
     print("Shutdown")
