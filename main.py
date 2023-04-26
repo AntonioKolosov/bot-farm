@@ -3,6 +3,7 @@ For development purpose only
 """
 
 import os
+import sys
 
 import uvicorn
 from pyngrok import ngrok
@@ -10,6 +11,8 @@ from pyngrok import ngrok
 
 if __name__ == "__main__":
     PORT = 8005
+    if len(sys.argv) > 1:
+        PORT = int(sys.argv[1])
     # Open a HTTP tunnel on the default port 80
     # <NgrokTunnel: "http://<public_sub>.ngrok.io" ->
     # "http://localhost:PORT">
