@@ -2,6 +2,7 @@
 """
 
 from typing import Dict
+import logging
 
 from fastapi import FastAPI
 
@@ -9,6 +10,14 @@ from .description import description, title, version, license, contact
 from .routers import hook
 from .tbotapi.tbotapiwebhook import TbotAPIWebhook
 from .tbotapi.tbotapisetup import TBotAPISetup
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    filename="twbot.log"
+)
 
 
 app = FastAPI(
@@ -66,11 +75,11 @@ async def delete_commands():
 async def set_webhook():
     """Register web hook on TG"""
     await tb_wh.set_webhook()
-    print("Startup")
+    logging.info("Startup")
 
 
 @app.on_event("shutdown")
 async def unset_webhook():
     """Unregister web hook"""
     await tb_wh.unset_webhook()
-    print("Shutdown")
+    logging.info("Shutdown")

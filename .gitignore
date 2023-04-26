@@ -4,5 +4,5 @@
 bin/
 .pytest_cache/
 **__pycache__/
-
+**.log
 data/
