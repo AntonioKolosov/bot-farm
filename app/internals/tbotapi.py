@@ -5,7 +5,6 @@
 import os
 from typing import Dict, Union
 
-from dotenv import load_dotenv
 import urllib.parse as parse
 from httpx import AsyncClient, Response
 
@@ -15,7 +14,6 @@ class TBotAPI:
 
     def __init__(self):
         """"""
-        load_dotenv()
         token = os.environ.get("BOT_TOKEN")
         bot_url = os.environ.get("BOT_URL")
         api_url = os.environ.get("API_URL")
