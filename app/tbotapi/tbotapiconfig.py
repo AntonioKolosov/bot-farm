@@ -9,7 +9,7 @@ import urllib.parse as parse
 from httpx import AsyncClient, Response
 
 
-class TBotAPI:
+class TbotAPIConfig:
     """"""
 
     def __init__(self):

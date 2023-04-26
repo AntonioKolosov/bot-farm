@@ -7,7 +7,7 @@ from fastapi import FastAPI
 
 from .description import description, title, version, license, contact
 from .routers import hook
-from .internals.tbotapi import TBotAPI
+from .tbotapi.tbotapiconfig import TbotAPIConfig
 
 
 app = FastAPI(
@@ -22,7 +22,7 @@ app = FastAPI(
 app.include_router(hook.router)
 
 
-tb_api = TBotAPI()
+tb_api = TbotAPIConfig()
 
 
 @app.get("/", tags=["ROOT"])

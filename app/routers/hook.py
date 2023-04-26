@@ -2,12 +2,12 @@ from typing import Dict
 from fastapi import APIRouter
 
 # from ..schemas.tbdata import TBData
-from ..internals.tbotapi import TBotAPI
+from ..tbotapi.tbotapiconfig import TbotAPIConfig
 
 
 router = APIRouter()
 
-tb_api = TBotAPI()
+tb_api = TbotAPIConfig()
 
 
 @router.post("/hook", tags=["HOOK"])
