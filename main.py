@@ -5,11 +5,13 @@ For development purpose only
 import os
 import sys
 
+from dotenv import load_dotenv
 import uvicorn
 from pyngrok import ngrok
 
 
 if __name__ == "__main__":
+    load_dotenv()
     PORT = 8005
     if len(sys.argv) > 1:
         PORT = int(sys.argv[1])

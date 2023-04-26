@@ -2,19 +2,20 @@ from typing import Dict
 from fastapi import APIRouter
 
 # from ..schemas.tbdata import TBData
-from ..internals.tbotapi import TBotAPI
+from ..tbotapi.tbotapimessage import TbotAPIMessage
 
 
 router = APIRouter()
 
-tb_api = TBotAPI()
+
+tb_mess = TbotAPIMessage()
 
 
 @router.post("/hook", tags=["HOOK"])
 async def message(data: Dict):
     ''''''
 
-    #  Temporary - immediately send echo message
+    # Temporary - immediately send echo message
     chat_id = data['message']['chat']['id']
     text = data["message"]['text']
     message = {
@@ -22,7 +23,7 @@ async def message(data: Dict):
         "chat_id": chat_id,
     }
 
-    res = await tb_api.send_a_message(message)
+    res = await tb_mess.send_a_message(message)
 
     return {"result": res}
 
