@@ -7,9 +7,8 @@ import logging
 from fastapi import FastAPI
 
 from .description import description, title, version, license, contact
-from .routers import hook
+from .routers import hookrouter, testrouter
 from .tbotapi.tbotapiwebhook import TbotAPIWebhook
-from .tbotapi.tbotapisetup import TBotAPISetup
 
 
 logging.basicConfig(
@@ -29,46 +28,16 @@ app = FastAPI(
 )
 
 
-app.include_router(hook.router)
+app.include_router(hookrouter.router)
+app.include_router(testrouter.router)
 
 
 tb_wh = TbotAPIWebhook()
 
 
-tb_st = TBotAPISetup()
-
-
 @app.get("/", tags=["ROOT"])
 def read_root() -> Dict:
     return {"Hello": "I am your Bot"}
-
-
-@app.get("/descr", tags=["ROOT"])
-async def set_description():
-    """"""
-    description = "Hello, I'm new Bot"
-    res = await tb_st.set_description(description)
-    return {"Descr": f"Set {res}"}
-
-
-@app.get("/cmd", tags=["ROOT"])
-async def set_commands():
-    """"""
-    cmd_list = [
-        {
-            "command": "help",
-            "description": "How to use this bot"
-        }
-    ]
-    res = await tb_st.set_commands(cmd_list)
-    return {"Commands": f"Set {res}"}
-
-
-@app.get("/del", tags=["ROOT"])
-async def delete_commands():
-    """"""
-    res = await tb_st.delete_commands()
-    return {"Commands": f"Deleted {res}"}
 
 
 @app.on_event("startup")
