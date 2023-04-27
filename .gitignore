@@ -2,6 +2,7 @@
 .vscode/
 .env
 bin/
+logs/
 .pytest_cache/
 **__pycache__/
 **.log
