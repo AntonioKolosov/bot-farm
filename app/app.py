@@ -2,21 +2,13 @@
 """
 
 from typing import Dict
-import logging
 
 from fastapi import FastAPI
 
 from .description import description, title, version, license, contact
 from .routers import hookrouter, testrouter
 from .tbotapi.tbotapiwebhook import TbotAPIWebhook
-
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-    filename="twbot.log"
-)
+from .internals.tbotlogger import tb_log
 
 
 app = FastAPI(
@@ -44,11 +36,11 @@ def read_root() -> Dict:
 async def set_webhook():
     """Register web hook on TG"""
     await tb_wh.set_webhook()
-    logging.info("Startup")
+    tb_log.log_info("Startup")
 
 
 @app.on_event("shutdown")
 async def unset_webhook():
     """Unregister web hook"""
     await tb_wh.unset_webhook()
-    logging.info("Shutdown")
+    tb_log.log_info("Shutdown")
