@@ -3,8 +3,8 @@
 
 from typing import Dict
 
-from .tbotapiutils import make_url, request_post
-from .tbotapiconfig import cfg
+from .tapiclientutils import make_url, request_post
+from .tapiclientconfig import cfg
 
 
 class TbotAPIMessage:

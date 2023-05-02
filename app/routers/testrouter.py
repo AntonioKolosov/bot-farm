@@ -4,7 +4,7 @@
 from fastapi import APIRouter
 
 # from ..schemas.tbdata import TBData
-from ..tbotapi.tbotapisetup import TBotAPISetup
+from ..tapiclient.tapiclientsetup import TBotAPISetup
 
 
 router = APIRouter()
@@ -12,7 +12,7 @@ router = APIRouter()
 tb_st = TBotAPISetup()
 
 
-@router.post("/descr", tags=["ROOT"])
+@router.post("/descr", tags=["TEST"])
 async def set_description():
     """"""
     description = "Hello, I'm new Bot"
@@ -20,7 +20,7 @@ async def set_description():
     return {"Descr": f"Set {res}"}
 
 
-@router.post("/cmd", tags=["ROOT"])
+@router.post("/cmd", tags=["TEST"])
 async def set_commands():
     """"""
     cmd_list = [
