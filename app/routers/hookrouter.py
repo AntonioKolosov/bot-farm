@@ -2,7 +2,7 @@ from typing import Dict
 from fastapi import APIRouter
 
 # from ..schemas.tbdata import TBData
-from ..tbotapi.tbotapimessage import TbotAPIMessage
+from ..tapiclient.tapiclientmessage import TbotAPIMessage
 from ..internals.tbotlogger import tb_log
 
 

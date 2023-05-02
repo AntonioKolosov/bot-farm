@@ -2,8 +2,8 @@
 """
 
 import json
-from .tbotapiutils import make_url, request_get
-from .tbotapiconfig import cfg
+from .tapiclientutils import make_url, request_get
+from .tapiclientconfig import cfg
 
 
 class TBotAPISetup:

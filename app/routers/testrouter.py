@@ -4,7 +4,7 @@
 from fastapi import APIRouter
 
 # from ..schemas.tbdata import TBData
-from ..tbotapi.tbotapisetup import TBotAPISetup
+from ..tapiclient.tapiclientsetup import TBotAPISetup
 
 
 router = APIRouter()

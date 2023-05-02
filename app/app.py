@@ -7,7 +7,7 @@ from fastapi import FastAPI
 
 from .description import description, title, version, license, contact
 from .routers import hookrouter, testrouter
-from .tbotapi.tbotapiwebhook import TbotAPIWebhook
+from .tapiclient.tapiclientwebhook import TbotAPIWebhook
 from .internals.tbotlogger import tb_log
 
 
