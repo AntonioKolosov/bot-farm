@@ -33,5 +33,5 @@ log_levels = {
 
 log_level = os.environ.get("LOG_LEVEL", "WARNING")
 log_level = log_levels.get(log_level, logging.WARNING)
-log_path = os.environ.get("LOG_PATH", "logs/twbot.log")
+log_path = os.environ.get("LOG_PATH", "twbot.log")
 tb_log = TBotLogger(log_level, log_path=log_path)
