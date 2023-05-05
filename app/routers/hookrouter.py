@@ -2,7 +2,7 @@ from typing import Dict
 from fastapi import APIRouter
 
 # from ..schemas.tbdata import TBData
-from ..tapiclient.tapiclientmessage import send_a_message
+from ..tapiclient.tapiclientmessage import send_message
 from ..internals.tbotlogger import tb_log
 
 
@@ -21,7 +21,7 @@ async def message(data: Dict):
         "chat_id": chat_id,
     }
 
-    res = await send_a_message(message)
+    res = await send_message(message)
 
     return {"result": res}
 
