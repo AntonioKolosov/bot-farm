@@ -2,10 +2,8 @@
 """
 
 
-import json
 import pytest
-
-from app.tapiclient import tapiclientmessage as tp_m
+from app.routers import hookrouter
 
 
 test_message_from_tg = {
@@ -32,7 +30,7 @@ test_message_from_tg = {
 }
 
 
-test_response_message = {"result": True}
+test_response_message = {"result": "Message sent to dispatcher"}
 
 
 @pytest.mark.hook
@@ -40,10 +38,10 @@ test_response_message = {"result": True}
                          [(test_message_from_tg, test_response_message)])
 def test_message(test_app, monkeypatch, data, expected_value):
     """Test without real call post message"""
-    async def mock_send_message(payload):
+    async def mock_dispatch_message(message):
         return True
 
-    monkeypatch.setattr(tp_m, "send_message", mock_send_message)
-    response = test_app.post("/hook", json=json.dumps(data))
+    monkeypatch.setattr(hookrouter, "dispatch_message", mock_dispatch_message)
+    response = test_app.post("/hook", json=data)
     assert response.status_code == 200
     assert response.json() == expected_value
