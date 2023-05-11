@@ -6,9 +6,9 @@ from typing import Dict
 from fastapi import FastAPI
 
 from .description import description, title, version, license, contact
-from .routers import hookrouter, testrouter
-from app.tapiclient import tapiclientwebhook as t_wh
-from .internals.tbotlogger import tb_log
+from src.gtw.routers import inc_data_router, testrouter
+from src.clients.tgclient import tgclientwebhook as t_wh
+from src.gtw.internals.tbotlogger import tb_log
 
 
 app = FastAPI(
@@ -20,7 +20,7 @@ app = FastAPI(
 )
 
 
-app.include_router(hookrouter.router)
+app.include_router(inc_data_router.router)
 app.include_router(testrouter.router)
 
 

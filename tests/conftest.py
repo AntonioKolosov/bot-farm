@@ -6,7 +6,7 @@ from typing import Generator
 from fastapi.testclient import TestClient
 import pytest
 
-from app.app import app
+from src.gtw.app import app
 
 
 @pytest.fixture(scope="module")

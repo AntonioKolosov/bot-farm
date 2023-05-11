@@ -2,8 +2,8 @@
 """
 
 
-from .tapiclientutils import make_url, request_get
-from .tapiclientconfig import cfg
+from .tgclientutils import make_url, request_get
+from .tgclientconfig import cfg
 
 
 async def set_webhook() -> bool:

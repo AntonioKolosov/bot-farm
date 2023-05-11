@@ -6,26 +6,68 @@
 ├── .github
 │   └── workflows
 │       └── build.yaml
-├── app
-│   ├── __init__.py
-│   ├── app.py
-│   ├── description.py
-│   ├── routers
-│   │   ├── __init__.py
-│   │   └── hook.py
-│   └── schemas
-│       ├── __init__.py
-│       └── tbdata.py
-├── tests
-│   ├── __init__.py
-│   └── test_app.py
 ├── .gitignore
 ├── .pre-commit-config.yaml
-├── main.py
 ├── Dockerfile
 ├── README.md
+├── main.py
+├── pytest.ini
 ├── requirements.txt
-└── requirements_dev.txt
+├── requirements_dev.txt
+├── src
+│   ├── __init__.py
+│   ├── clients
+│   │   └── tgclient
+│   │       ├── __init__.py
+│   │       ├── tgclientconfig.py
+│   │       ├── tgclientmessage.py
+│   │       ├── tgclientsetup.py
+│   │       ├── tgclientutils.py
+│   │       └── tgclientwebhook.py
+│   ├── gtw
+│   │   ├── __init__.py
+│   │   ├── app.py
+│   │   ├── description.py
+│   │   ├── internals
+│   │   │   ├── __init__.py
+│   │   │   └── tbotlogger.py
+│   │   ├── routers
+│   │   │   ├── __init__.py
+│   │   │   ├── inc_data_router.py
+│   │   │   └── testrouter.py
+│   │   └── schemas
+│   │       ├── __init__.py
+│   │       └── tgindata.py
+│   ├── handlers
+│   │   ├── __init__.py
+│   │   ├── handler.py
+│   │   └── internal_handler.py
+│   └── messanger
+│       ├── __init__.py
+│       ├── active_chats
+│       │   ├── __init__.py
+│       │   └── active_chats.py
+│       ├── active_handlers
+│       │   └── __init__.py
+│       ├── internal_handler
+│       │   └── __init__.py
+│       ├── mess_dispatcher
+│       │   ├── __init__.py
+│       │   └── mess_dispatcher.py
+│       └── schemas
+│           ├── __ini__.py
+│           └── processingdata.py
+└── tests
+    ├── __init__.py
+    ├── conftest.py
+    ├── clients
+    ├── gtw
+    │   ├── test_app.py
+    │   └── test_routers
+    │       ├── __init__.py
+    │       └── test_inc_data_router.py
+    ├── handlers
+    └── messanger
 ```
 
 ### Setup the project for the development
@@ -35,27 +77,27 @@ pip install -r requirements-dev.txt
 
 ### Run
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8000
+uvicorn main:app --host 0.0.0.0 --port 8005
 ```
 
 ### Check from browser
-1. http://127.0.0.1:8000/
+1. http://127.0.0.1:8005/
 ```
 Hello I am your Bot
 ```
 
-2. http://127.0.0.1:8000/docs
+2. http://127.0.0.1:8005/docs
 
 Interactive Documentation
 
 ### Linting
 ```bash
-flake8 -v app/
+flake8 -v src/
 ```
 
 ### Unit testing
 ```bash
-pytest tests/test_app.py
+pytest
 ```
 
 ### Git hooks

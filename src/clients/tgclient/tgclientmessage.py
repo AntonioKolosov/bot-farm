@@ -3,8 +3,8 @@
 
 from typing import Dict
 
-from .tapiclientutils import make_url, request_post
-from .tapiclientconfig import cfg
+from .tgclientutils import make_url, request_post
+from .tgclientconfig import cfg
 
 
 async def send_message(message: Dict) -> bool:
