@@ -30,7 +30,7 @@ test_message_from_tg = {
 }
 
 
-test_response_message = {"result": "Message sent to dispatcher"}
+test_response_message = {"result": "Message sent to the dispatcher"}
 
 
 @pytest.mark.hook
@@ -42,6 +42,6 @@ def test_message(test_app, monkeypatch, data, expected_value):
         return True
 
     monkeypatch.setattr(dsp, "dispatch_message", mock_dispatch_message)
-    response = test_app.post("/tgdata", json=data)
+    response = test_app.post("/tgincdata", json=data)
     assert response.status_code == 200
     assert response.json() == expected_value

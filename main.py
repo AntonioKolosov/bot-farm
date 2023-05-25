@@ -20,7 +20,7 @@ if __name__ == "__main__":
     # "http://localhost:PORT">
     http_tunnel = ngrok.connect(PORT, bind_tls=True)
     public_url = http_tunnel.public_url
-    os.environ['API_URL'] = public_url
+    os.environ['GTW_URL'] = public_url
     print("public URL", public_url)
 
     # Run the server
