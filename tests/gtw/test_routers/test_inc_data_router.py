@@ -30,7 +30,7 @@ test_message_from_tg = {
 }
 
 
-test_response_message = {"result": "Message sent to dispatcher"}
+test_response_message = {"result": "Message sent to the dispatcher"}
 
 
 @pytest.mark.hook
