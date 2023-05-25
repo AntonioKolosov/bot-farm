@@ -3,7 +3,7 @@
 
 
 import pytest
-from app.routers import hookrouter
+from src.messanger.mess_dispatcher.mess_dispatcher import MessDispatcher as dsp
 
 
 test_message_from_tg = {
@@ -38,10 +38,10 @@ test_response_message = {"result": "Message sent to dispatcher"}
                          [(test_message_from_tg, test_response_message)])
 def test_message(test_app, monkeypatch, data, expected_value):
     """Test without real call post message"""
-    async def mock_dispatch_message(message):
+    async def mock_dispatch_message(self_ref, proc_data):
         return True
 
-    monkeypatch.setattr(hookrouter, "dispatch_message", mock_dispatch_message)
-    response = test_app.post("/hook", json=data)
+    monkeypatch.setattr(dsp, "dispatch_message", mock_dispatch_message)
+    response = test_app.post("/tgdata", json=data)
     assert response.status_code == 200
     assert response.json() == expected_value

@@ -14,7 +14,7 @@ repos:
           stages: [pre-push]
           types: [python]
           name: pytest-check
-          entry: pytest tests/test_app.py
+          entry: pytest
           language: system
           pass_filenames: false
           always_run: true
