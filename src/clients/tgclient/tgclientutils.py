@@ -5,7 +5,7 @@ from typing import Union, Dict
 
 import urllib.parse as parse
 from httpx import AsyncClient, Response
-from ..internals.tbotlogger import tb_log
+from src.gtw.internals.tbotlogger import tb_log
 
 
 def make_url(bot_url: str, method: str,

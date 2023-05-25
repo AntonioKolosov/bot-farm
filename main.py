@@ -24,7 +24,7 @@ if __name__ == "__main__":
     print("public URL", public_url)
 
     # Run the server
-    uvicorn.run("app.app:app", port=PORT, host="127.0.0.1",
+    uvicorn.run("src.gtw.app:app", port=PORT, host="127.0.0.1",
                 log_level="info", reload=True)
 
     # Close the HTTP tunnel

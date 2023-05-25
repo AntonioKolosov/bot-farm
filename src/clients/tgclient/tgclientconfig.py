@@ -16,7 +16,7 @@ class TbotAPIConfig:
         token = token if token else ""
         self.__bot_url = bot_url if bot_url else ""
         self.__bot_url = self.__bot_url.format(key=token, method="{method}")
-        self.__api_url = f'{api_url}/hook' if api_url else ""
+        self.__api_url = f'{api_url}/tgdata' if api_url else ""
 
     @property
     def bot_url(self):

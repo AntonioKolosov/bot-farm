@@ -4,7 +4,7 @@
 from fastapi import APIRouter
 
 # from ..schemas.tbdata import TBData
-from app.tapiclient import tapiclientsetup as t_sp
+from src.clients.tgclient import tgclientsetup as t_sp
 
 router = APIRouter()
 
