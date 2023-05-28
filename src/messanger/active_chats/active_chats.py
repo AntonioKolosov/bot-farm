@@ -1,42 +1,33 @@
 """
-
 """
 
 
-from typing import Tuple
+from src.messanger.schemas.processingdata import ProcessingData
 
 
 class ActiveChats:
     def __init__(self) -> None:
-        self.__active_chats = []
+        self.__active_chats: dict[str, ProcessingData] = dict()
 
-    @property
-    def active_chats(self):
-        """Collection of active chats"""
-        return self.__active_chats
+    def is_new(self, hash_code: str) -> bool:
+        '''True if it is the first message from the chat'''
+        return hash_code not in self.__active_chats
 
-    def add_chat(self, global_id: Tuple[int, str]):
-        """Analize Global ID and Active Chats"""
-        chat_id, text = global_id
-        if self.__iscommand(text):
-            if chat_id in self.__active_chats:
-                # Replace an item with this chat_id(replace)
-                self.__active_chats = list(map
-                                           (lambda x: x.replace(x.text, text),
-                                            self.__active_chats))
-            else:
-                self.__active_chats.append(chat_id)
-        elif chat_id not in self.__active_chats:
-            # Unknown conversation
-            return False
-        else:
-            pass
-        return True
+    def set(self, hash_code: str, item: ProcessingData):
+        """ Active Chats"""
+        self.__active_chats[hash_code] = item
 
-    def remove_chat(self, global_id):
+    def remove(self, hash_code):
         """Remove item"""
+        self.__active_chats.pop(hash_code)
 
-    @staticmethod
-    def __iscommand(text: str):
-        """"""
-        return text.startswith("/")
+    def get_command(self, hash_code):
+        """Get item text (command)"""
+        empty_data = ProcessingData(
+            client=0,
+            sender_id=0,
+            hash_code="",
+            is_command=True,
+            date=0,
+            text="Chat Not Found")
+        return self.__active_chats.get(hash_code, empty_data).text
