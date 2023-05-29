@@ -3,40 +3,48 @@ Base class for message handlers
 '''
 
 
+import json
+
+from src.clients.tgclient.tgclientmessage import send_message
+from src.handlers.schemas.topic import Topic
 from src.messanger.schemas.processingdata import ProcessingData
 
 
 class Handler:
-    def __init__(self, id: str, commands: list[str]) -> None:
+    def __init__(self, id: str = "default", type: str = "default") -> None:
         self.__id: str = id
-        self.__commands: list[str] = commands
-        self.__content: dict[str, str] = {}
-
-    def handle(self, command: str, data: ProcessingData) -> dict:
-        ''''''
-        content = data.text
-        if command == data.text:
-            answer = f'command {command} - not supported by the handler'
-            content = self.content.get(command, answer)
-        return {
-            "chat_id": data.sender_id,
-            "text": content
-        }
+        self.__type: str = type
+        self.__topics: list[Topic] = []
+        self.__load_topics()
 
     @property
     def id(self) -> str:
         return self.__id
 
     @property
-    def commands(self) -> list[str]:
-        return self.__commands
+    def topics(self) -> list[Topic]:
+        return self.__topics
 
-    @property
-    def content(self) -> dict[str, str]:
+    async def handle(self, data: ProcessingData) -> None:
         ''''''
-        return self.__content
+        for topic in self.__topics:
+            if data.text == topic.name:
+                answer = {
+                    "chat_id": data.sender_id,
+                    "text": topic.content
+                }
+                await self.__send_answer(answer)
 
-    @content.setter
-    def content(self, content: dict[str, str]) -> None:
-        ''''''
-        self.__content = content
+    def __load_topics(self) -> None:
+        """"""
+        with open(file="datatopics/topicfake.json", mode="r") as f:
+            # topic_raw = json.load(f)
+            topic_obj = json.load(f)
+            # topic_obj = json.loads(topic_raw)
+            topic = Topic(**topic_obj)
+        self.__topics.append(topic)
+
+    # TODO: Temporary, will be via clients pool
+    async def __send_answer(self, data: dict):
+        """Messanger exit point"""
+        await send_message(data)

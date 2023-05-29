@@ -3,14 +3,15 @@
 
 
 from src.handlers.handler import Handler
-from src.handlers.internal_handler import InternalHandler
+from src.handlers.default_handler import DefaultHandler
+from src.messanger.schemas.processingdata import ProcessingData
 
 
 class ActiveHandlers:
     def __init__(self) -> None:
         self.__active_handlers: dict[str, Handler] = dict()
         # Always register the internal handler
-        handler = InternalHandler()
+        handler = DefaultHandler()
         self.register(handler)
 
     def register(self, handler: Handler) -> None:
@@ -21,12 +22,12 @@ class ActiveHandlers:
         ''''''
         self.__active_handlers.pop(id)
 
-    def get_handler_by_id(self, id: str) -> Handler:
+    def get_handler_by_topic(self, data: ProcessingData) -> Handler:
         ''''''
-        return self.__active_handlers.get(id, InternalHandler())
-
-    def get_handler_by_command(self, command: str) -> Handler | None:
-        ''''''
-        for id, handler in self.__active_handlers.items():
-            if command in handler.commands:
-                return self.__active_handlers.get(id)
+        handler = Handler()
+        for k, v in self.__active_handlers.items():
+            for t in v.topics:
+                if data.text == t.name:
+                    handler = v
+            # TODO: send help data
+        return handler
