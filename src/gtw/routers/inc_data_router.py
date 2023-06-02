@@ -1,20 +1,18 @@
 from fastapi import APIRouter, BackgroundTasks, Request
 
 from src.gtw.internals.utilites import tg_data_converter
-
-from src.messanger.mess_dispatcher.mess_dispatcher import MessDispatcher
+from src.messanger.mess_dispatcher import dsp
+from src.gtw.internals.tbotlogger import tb_log
 
 
 router = APIRouter()
-
-
-dsp = MessDispatcher()
 
 
 @router.post("/tgincdata", tags=["TGINDATA"])
 async def tg_inc_data(request: Request, background_tasks: BackgroundTasks):
     """Recieve message from TG"""
     data = await request.json()
+    tb_log.log_info(data)
 
     # Convert to the unified format of the messanger
     processing_data = tg_data_converter(data)
