@@ -1,0 +1,8 @@
+{
+    "id": 100000,
+    "name": "/fake",
+    "type": "simple",
+    "chats_ids": [],
+    "buttons": [],
+    "content": "Fake data"
+}
