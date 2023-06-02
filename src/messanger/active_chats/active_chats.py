@@ -10,7 +10,7 @@ class ActiveChats:
         self.__active_chats: dict[str, ProcessingData] = dict()
 
     def is_new(self, hash_code: str) -> bool:
-        '''True if it is the first message from the chat'''
+        """True if it is the first message from the chat"""
         return hash_code not in self.__active_chats
 
     def set(self, hash_code: str, item: ProcessingData):
