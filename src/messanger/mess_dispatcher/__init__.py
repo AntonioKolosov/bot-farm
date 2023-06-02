@@ -1,10 +1,10 @@
-"""
+# """
 
-"""
+# """
 
-__all__ = ['dispatch']
+# __all__ = ['dispatch']
 
 from .mess_dispatcher import MessDispatcher
 
 dsp = MessDispatcher()
-dispatch = dsp.dispatch_message
+# dispatch = dsp.dispatch_message
