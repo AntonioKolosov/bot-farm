@@ -11,7 +11,7 @@ class TgClientConfig:
     def __init__(self):
         """"""
         token = os.environ.get("BOT_TOKEN")
-        bot_url = os.environ.get("BOT_URL")
+        bot_url = os.environ.get("TG_BOTS_URL")
         gtw_url = os.environ.get("GTW_URL")
         token = token if token else ""
         self.__bot_url = bot_url if bot_url else ""
