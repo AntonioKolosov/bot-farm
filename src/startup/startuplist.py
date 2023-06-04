@@ -17,11 +17,10 @@ class StartupList:
         self.__bot_list = []
         # Read BOT_LIST from env
         self.__bot_types_list = json.loads(
-            os.environ.get("BOT_TYPES_LIST", '["TG"]')
+            os.environ.get("BOT_TYPES_LIST", "[\"TG\"]")
         )
         # Iteration throught BOT_LIST
         for bt in self.__bot_types_list:
-            print(bt)
             # Create Startup objects for each bot types
             startup = self.__startup_factory(bt)
             # Store it into list
@@ -33,7 +32,14 @@ class StartupList:
             return TgStartup()
         return Startup(type="")
 
-    def startup(self) -> None:
+    async def startup(self) -> None:
         """"""
+        # Clean up Bot UI
         for b in self.__bot_list:
-            print("STARTUP", b.type)
+            await b.startup()
+
+    async def shutdown(self) -> None:
+        """"""
+        # Clean up Bot UI
+        for b in self.__bot_list:
+            await b.shutdown()

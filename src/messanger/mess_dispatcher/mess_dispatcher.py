@@ -3,7 +3,7 @@
 """
 
 
-from src.handlers import topic_handler
+from src.handlers import topic_handler, topics_names
 from src.messanger.schemas.processingdata import ProcessingData
 from src.messanger.active_chats.active_chats import ActiveChats
 
@@ -19,3 +19,7 @@ class MessDispatcher:
         # Handle the data
         handler = topic_handler(data.text)
         await handler.handle(data)
+
+    def topics_names(self) -> list[dict[str, str]]:
+        """Return topics names"""
+        return topics_names()

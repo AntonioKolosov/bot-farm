@@ -1,6 +1,7 @@
 {
     "id": 1,
     "name": "/test",
+    "description": "testdata",
     "type": "simple",
     "chats_ids": [],
     "buttons": [],
