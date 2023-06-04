@@ -29,10 +29,10 @@ class ActiveHandlers:
                     return handler
         return self.__default_handler
 
-    def get_topics_names(self) -> list[str]:
+    def get_topics_names(self) -> list[dict[str, str]]:
         """"""
         names = list()
         for id, handler in self.__active_handlers.items():
             for topic in handler.topics:
-                names.append(topic.name)
+                names.append({"name": topic.name, "descr": topic.description})
         return names

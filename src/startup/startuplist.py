@@ -21,7 +21,6 @@ class StartupList:
         )
         # Iteration throught BOT_LIST
         for bt in self.__bot_types_list:
-            print(bt)
             # Create Startup objects for each bot types
             startup = self.__startup_factory(bt)
             # Store it into list
@@ -33,7 +32,14 @@ class StartupList:
             return TgStartup()
         return Startup(type="")
 
-    def startup(self) -> None:
+    async def startup(self) -> None:
         """"""
+        # Clean up Bot UI
         for b in self.__bot_list:
-            print("STARTUP", b.type)
+            await b.startup()
+
+    async def shutdown(self) -> None:
+        """"""
+        # Clean up Bot UI
+        for b in self.__bot_list:
+            await b.shutdown()

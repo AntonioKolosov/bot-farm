@@ -7,7 +7,6 @@ from fastapi import FastAPI
 
 from .description import description, title, version, license, contact
 from src.gtw.routers import inc_data_router, testrouter
-from src.clients.tgclient import tgclientwebhook as t_wh
 from src.gtw.internals.tbotlogger import tb_log
 from src.startup import startup
 
@@ -32,13 +31,12 @@ def read_root() -> Dict:
 @app.on_event("startup")
 async def set_webhook():
     """Register web hook on TG"""
-    startup.startup()
-    await t_wh.set_webhook()
+    await startup.startup()
     tb_log.log_info("Startup")
 
 
 @app.on_event("shutdown")
 async def unset_webhook():
     """Unregister web hook"""
-    await t_wh.unset_webhook()
+    await startup.shutdown()
     tb_log.log_info("Shutdown")
