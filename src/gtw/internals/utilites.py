@@ -9,12 +9,13 @@ from src.gtw.schemas.tgindata import TgInData
 from src.messanger.schemas.processingdata import ProcessingData
 
 
-def tg_data_converter(data: dict) -> ProcessingData:
+def tg_data_converter(bot_id: int, data: dict) -> ProcessingData:
     '''Convert TG data to the unified format
     of messanger processing data'''
     tgindata: TgInData = TgInData(**data)
     message = tgindata.tg_message()
-    return ProcessingData(client=ClientCode.TG,
+    return ProcessingData(client_type=ClientCode.TG,
+                          endpoint_id=bot_id,
                           sender_id=message.chat.id,
                           hash_code=tg_hash_md5(tgindata.get_const_data()),
                           is_command=message.text.startswith('/'),
