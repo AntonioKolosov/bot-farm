@@ -23,12 +23,14 @@ class TgStartup(Startup):
 
     async def startup(self):
         """"""
-        # Clean UI
-        await self.__clean()
-        # Set commands menu
-        await self.__set_menu_commands()
-        # Set webhook
-        await self.__set_webhook()
+        for t in self.__tokens:
+            # Clean UI
+            await self.__clean()
+            # Set commands menu
+            await self.__set_menu_commands()
+            # Set webhook
+            bot_id, _ = t.split(":")
+            await self.__set_webhook(bot_id)
 
     async def shutdown(self):
         """"""
@@ -51,6 +53,6 @@ class TgStartup(Startup):
             cmd_list.append(cmd)
         await t_sp.set_commands(cmd_list)
 
-    async def __set_webhook(self):
+    async def __set_webhook(self, bot_id: int):
         """"""
-        await t_wh.set_webhook()
+        await t_wh.set_webhook(bot_id)
