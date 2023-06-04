@@ -17,7 +17,7 @@ class TgStartup(Startup):
         """"""
         super().__init__(type="TG")
         self.__tokens = json.loads(
-            os.environ.get("TG_BOTS_TOKENS", "")
+            os.environ.get("TG_BOTS_TOKENS", "[\"\"]")
         )
         self.__url = os.environ.get("TG_BOTS_URL", "")
 
