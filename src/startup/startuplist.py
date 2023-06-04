@@ -17,7 +17,7 @@ class StartupList:
         self.__bot_list = []
         # Read BOT_LIST from env
         self.__bot_types_list = json.loads(
-            os.environ.get("BOT_TYPES_LIST", '["TG"]')
+            os.environ.get("BOT_TYPES_LIST", "[\"TG\"]")
         )
         # Iteration throught BOT_LIST
         for bt in self.__bot_types_list:
