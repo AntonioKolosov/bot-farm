@@ -3,7 +3,7 @@
 
 
 import pytest
-from src.messanger.mess_dispatcher.mess_dispatcher import MessDispatcher as dsp
+from src.mess_broker import dsp
 
 
 test_message_from_tg = {
@@ -38,7 +38,7 @@ test_response_message = {"result": "Message sent to the dispatcher"}
                          [(test_message_from_tg, test_response_message)])
 def test_message(test_app, monkeypatch, data, expected_value):
     """Test without real call post message"""
-    async def mock_dispatch_message(self_ref, proc_data):
+    async def mock_dispatch_message(self_ref):
         return True
 
     monkeypatch.setattr(dsp, "dispatch_message", mock_dispatch_message)

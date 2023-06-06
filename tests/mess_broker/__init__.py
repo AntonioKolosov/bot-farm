@@ -1,0 +1,3 @@
+"""
+Tests message broker package
+"""

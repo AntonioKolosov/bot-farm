@@ -4,18 +4,19 @@ The gtw utilites
 
 
 import hashlib
-from src.clients.clientpool import ClientCode
 from src.gtw.schemas.tgindata import TgInData
-from src.messanger.schemas.processingdata import ProcessingData
+from src.mess_broker import ProcessingData
 
 
-def tg_data_converter(bot_id: int, data: dict) -> ProcessingData:
+def tg_data_converter(bot_id: str, data) -> ProcessingData | None:
     '''Convert TG data to the unified format
-    of messanger processing data'''
+    of message broker processing data'''
     tgindata: TgInData = TgInData(**data)
     message = tgindata.tg_message()
-    return ProcessingData(client_type=ClientCode.TG,
-                          endpoint_id=bot_id,
+    if message is None:
+        return None
+    return ProcessingData(service_type="TG",
+                          service_id=bot_id,
                           sender_id=message.chat.id,
                           hash_code=tg_hash_md5(tgindata.get_const_data()),
                           is_command=message.text.startswith('/'),
@@ -23,7 +24,7 @@ def tg_data_converter(bot_id: int, data: dict) -> ProcessingData:
                           text=message.text)
 
 
-def tg_hash_md5(data: dict) -> str:
+def tg_hash_md5(data) -> str:
     '''Hashes a not nested dict'''
     dhash = hashlib.md5()
     encoded = data.encode()
