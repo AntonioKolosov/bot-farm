@@ -1,3 +1,0 @@
-"""
-TG startup/shutdown subpackage
-"""

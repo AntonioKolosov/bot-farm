@@ -3,12 +3,10 @@ Base class for message handlers
 '''
 
 
-# from src.clients.tgclientmessage import send_message
-# from src.clients import clpool
-from src.clients.tgclient.tgclientmessage import send_message
+from src.services import services
 from src.handlers.schemas.topic import Topic
 from src.handlers.topics_loader import load_topics_by_type
-from src.messanger.schemas.processingdata import ProcessingData
+from src.mess_broker.schemas.processingdata import ProcessingData
 
 
 class Handler:
@@ -33,19 +31,17 @@ class Handler:
         for topic in self.__topics:
             if topic.name == data.text:
                 break
-        answer = {
-            "chat_id": data.sender_id,
-            "text": topic.content
-        }
-        await self.__send_answer(answer)
+        await self.__send_answer(data, topic)
 
     def __load_topics(self) -> None:
         """"""
         if self.__type != "default":
             self.__topics = load_topics_by_type(self.__type)
 
-    # TODO: Temporary, will be via clients pool
-    async def __send_answer(self, answer: dict):
+    async def __send_answer(self, data: ProcessingData, topic: Topic):
         """Messanger exit point"""
-        await send_message(answer)
-        # await clpool.send_message(data.client, data.sender_id, answer)
+        answer = {
+            "chat_id": data.sender_id,
+            "text": topic.content
+        }
+        await services.send_message(data.service_type, data.service_id, answer)

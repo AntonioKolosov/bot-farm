@@ -2,7 +2,7 @@
 """
 
 
-from src.messanger.schemas.processingdata import ProcessingData
+from src.mess_broker.schemas.processingdata import ProcessingData
 
 
 class ActiveChats:

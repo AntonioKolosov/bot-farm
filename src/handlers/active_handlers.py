@@ -2,6 +2,7 @@
 '''
 
 
+from src.services import services
 from src.handlers.handler import Handler
 from src.handlers.simple_handler import SimpleHandler
 
@@ -12,6 +13,8 @@ class ActiveHandlers:
         self.__default_handler = Handler()
         # Always register the internal simple handler
         self.register(SimpleHandler())
+        topics_mames = self.get_topics_names()
+        services.set_topics_names(topics_mames)
 
     def register(self, handler: Handler) -> None:
         ''''''

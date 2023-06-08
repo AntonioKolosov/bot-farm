@@ -45,7 +45,7 @@ class TgInData(BaseModel):
 
     def get_const_data(self) -> str:
         '''Get not mutable data from incoming data'''
-        message: TgMessage = self.tg_message()
+        message: TgMessage | None = self.tg_message()
         if message is not None:
             from_ = str(json.dumps(message.from_.dict(), sort_keys=True))
             chat = str(json.dumps(message.chat.dict(), sort_keys=True))
