@@ -2,13 +2,13 @@
 """
 
 
-import json
 import os
-from urllib import parse
 
 from ..service import Service
-from ..requests import request_get, request_post
-from src.gtw.internals.tbotlogger import tb_log
+from .tgapi import send_message
+from .tgapi import set_webhook, delete_webhook
+from .tgapi import delete_commands, set_command, get_commands
+from .tgapi import get_chat_menu_button, set_chat_menu_button
 
 
 class TgService(Service):
@@ -18,9 +18,14 @@ class TgService(Service):
         self.__endpoint_template = os.environ.get("TG_BOTS_URL", "error")
         tokens = os.environ.get("TG_BOTS_TOKENS", "[\"error:error\"]")
         self.__tokens = list(map(str, tokens[1:-1].split(",")))
-        self.__gtw_url = os.environ.get("GTW_URL")
+        self.__gtw_url = os.environ.get("GTW_URL", "")
         self.__endpoints: dict[str, str] = {}
         self.__make_endpoints()
+
+    async def send_message(self, bot_id: str, answer: dict) -> bool:
+        """Wrapper for API"""
+        endpoint = self.__endpoints.get(bot_id, "")
+        return await send_message(endpoint, answer)
 
     async def startup(self, topics_names: list[dict[str, str]]) -> None:
         """"""
@@ -34,92 +39,84 @@ class TgService(Service):
         for b_id, ep in self.__endpoints.items():
             await self.__close(b_id)
 
-    async def send_message(self, service_id: str, answer: dict) -> bool:
-        """"""
-        endpoint = self.__endpoint_for_request(service_id, "sendMessage")
-        resp = await request_post(endpoint, answer)
-        return resp.status_code == 200
-
     async def __initialize(self,
                            bot_id: str,
                            topics_names: list[dict[str, str]]) -> None:
         """"""
         print(f"Initialize the {bot_id} endpoint")
-        await self.__clean(bot_id)
+        await self.__delete_menu_commands(bot_id)
         await self.__set_menu_commands(bot_id, topics_names)
+        await self.__set_menu_button(bot_id, True)
         await self.__set_webhook(bot_id)
+        # for test
+        await self.__get_menu_button(bot_id)
+        await self.__get_menu_commands(bot_id)
 
     async def __close(self, bot_id: str) -> None:
         """"""
         print(f"CLose the {bot_id} endpoint")
         await self.__delete_webhook(bot_id)
-        await self.__clean(bot_id)
+        await self.__delete_menu_commands(bot_id)
+        await self.__set_menu_button(bot_id)
+        # for test
+        await self.__get_menu_button(bot_id)
+        await self.__get_menu_commands(bot_id)
 
-    async def __clean(self, bot_id) -> bool:
-        """Delete menu commands"""
-        endpoint = self.__endpoint_for_request(bot_id, "deleteMyCommands")
-        resp = await request_get(endpoint)
-        tb_log.log_info(f"{resp.content}")
-        return resp.status_code == 200
+    async def __set_webhook(self, bot_id: str) -> bool:
+        """Wrapper for API"""
+        endpoint = self.__endpoints.get(bot_id, "")
+        gtw_url = f"{self.__gtw_url}/tgincdata/{bot_id}"
+        return await set_webhook(endpoint, gtw_url)
+
+    async def __delete_webhook(self, bot_id: str) -> bool:
+        """Wrapper for API"""
+        endpoint = self.__endpoints.get(bot_id, "")
+        return await delete_webhook(endpoint)
+
+    async def __delete_menu_commands(self, bot_id) -> bool:
+        """Wrapper for API"""
+        endpoint = self.__endpoints.get(bot_id, "")
+        return await delete_commands(endpoint)
+
+    async def __get_menu_commands(self, bot_id) -> bool:
+        """Wrapper for API"""
+        endpoint = self.__endpoints.get(bot_id, "")
+        return await get_commands(endpoint)
 
     async def __set_menu_commands(self,
                                   bot_id: str,
-                                  topics_names: list[dict[str, str]]) -> None:
-        """"""
-        commands = topics_names
-        cmd_list = list()
-        for c in commands:
+                                  topics_names: list[dict[str, str]]) -> bool:
+        """Wrapper for API"""
+        endpoint = self.__endpoints.get(bot_id, "")
+        commands = list()
+        for tn in topics_names:
             cmd = {
-                "command": c.get("name"),
-                "description": c.get("descr")
+                "command": tn.get("name", ""),
+                "description": tn.get("descr", "")
             }
-            cmd_list.append(cmd)
-        await self.__set_commands(bot_id, cmd_list)
+            commands.append(cmd)
+        return await set_command(endpoint, commands)
 
-    async def __set_commands(self,
-                             bot_id: str,
-                             commands: list[dict[str, str]]) -> bool:
-        """"""
-        params = {"commands": json.dumps(commands)}
-        endpoint = self.__endpoint_for_request(bot_id, "setMyCommands", params)
-        resp = await request_get(endpoint)
-        return resp.status_code == 200
+    async def __set_menu_button(self, bot_id: str, cmd: bool = False) -> bool:
+        """Wrapper for API"""
+        button = {"type": "default"}
+        if cmd:
+            button = {"type": "commands"}
+        endpoint = self.__endpoints.get(bot_id, "")
+        return await set_chat_menu_button(endpoint, button)
 
-    async def __set_webhook(self, bot_id: str) -> bool:
-        """"""
-        gtw_url = f"{self.__gtw_url}/tgincdata/{bot_id}"
-        params = {"url": gtw_url}
-        endpoint = self.__endpoint_for_request(bot_id, "setWebhook", params)
-        resp = await request_get(endpoint)
-        tb_log.log_info(f"{resp.content}")
-        return resp.status_code == 200
-
-    async def __delete_webhook(self, bot_id: str) -> bool:
-        """"""
-        endpoint = self.__endpoint_for_request(bot_id, "deleteWebhook")
-        resp = await request_get(endpoint)
-        tb_log.log_info(f"{resp.content}")
-        return resp.status_code == 200
-
-    def __endpoint_for_request(self,
-                               bot_id: str,
-                               method: str,
-                               params: dict | None = None) -> str:
-        """Make endpoint url for connection with a bot"""
-        endpoint = self.__endpoints.get(bot_id, "{method}")
-        endpoint = endpoint.format(method=method)
-        if params:
-            endpoint = f'{endpoint}?{parse.urlencode(params)}'
-        tb_log.log_info(f"{endpoint}")
-        return endpoint
+    async def __get_menu_button(self, bot_id: str) -> bool:
+        """Wrapper for API"""
+        endpoint = self.__endpoints.get(bot_id, "")
+        return await get_chat_menu_button(endpoint)
 
     def __make_endpoints(self) -> None:
         """Instantiate enpoints"""
         for t in self.__tokens:
             bot_id, _ = t.split(":")
-            endpoint = self.__get_endpoint(t)
+            endpoint = self.__set_token_to_endpoint(t)
             self.__endpoints[bot_id] = endpoint
 
-    def __get_endpoint(self, token: str) -> str:
-        """"""
+    def __set_token_to_endpoint(self, token: str) -> str:
+        """Set token for an endpoint"""
         return self.__endpoint_template.format(key=token, method="{method}")
