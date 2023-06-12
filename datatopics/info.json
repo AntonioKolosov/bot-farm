@@ -1,9 +1,9 @@
 {
     "id": 100000,
-    "name": "/fake",
+    "name": "/info",
     "description": "anydata",
     "type": "simple",
     "chats_ids": [],
     "buttons": [],
-    "content": "Fake data"
+    "content": "simple/info.txt"
 }

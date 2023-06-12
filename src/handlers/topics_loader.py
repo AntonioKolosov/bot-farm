@@ -19,7 +19,18 @@ def load_topics_by_type(type: str) -> list[Topic]:
     for file in path.iterdir():
         if file.suffix == '.json':
             ffn = f'{path_to_topics_root}/{file.name}'
-            top_obj = read(ffn)
+            with open(ffn, 'r') as json_file:
+                top_obj = json.load(json_file)
+                # top_obj = read(ffn)
+            # Read topic
+            content_f_path = top_obj.get("content")
+            if content_f_path:
+                content_f_path = f'{path_to_topics_root}/{content_f_path}'
+                with open(content_f_path, "r") as content_file:
+                    content = content_file.read()
+                top_obj["content"] = content
+            else:
+                top_obj["content"] = "NotFound"
             topic = Topic(**top_obj)
             if topic.type == type:
                 topics.append(topic)
