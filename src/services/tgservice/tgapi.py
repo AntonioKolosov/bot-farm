@@ -80,7 +80,6 @@ async def get_commands(endpoint: str) -> bool:
     endpoint4r = __endpoint_for_request(endpoint, "getMyCommands")
     resp = await request_get(endpoint4r)
     tb_log.log_info(f"{resp.content}")
-    print("mbutton", resp.content)
     return resp.status_code == 200
 
 
@@ -105,7 +104,6 @@ async def get_chat_menu_button(endpoint: str) -> bool:
     endpoint4r = __endpoint_for_request(endpoint, "getChatMenuButton")
     resp = await request_get(endpoint4r)
     tb_log.log_info(f"{resp.content}")
-    print("mbutton", resp.content)
     return resp.status_code == 200
 
 

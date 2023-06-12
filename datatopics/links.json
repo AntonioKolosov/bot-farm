@@ -1,0 +1,9 @@
+{
+    "id": 100000,
+    "name": "/links",
+    "description": "useful_links",
+    "type": "simple",
+    "chats_ids": [],
+    "buttons": [],
+    "content": "simple/links.txt"
+}
