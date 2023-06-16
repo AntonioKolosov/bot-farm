@@ -1,1 +1,8 @@
+For my college classmates:
+
+You may check Bot Service description in this PDF file. 
+If you are interested in service's architecture, welcome to read this file.
+
+If you need more information don't hesitate to contact me.
+
 https://raw.githubusercontent.com/AntonioKolosov/bot-farm/main/explanation.pdf
