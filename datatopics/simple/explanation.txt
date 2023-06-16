@@ -1,1 +1,1 @@
-https://github.com/AntonioKolosov/bot-farm#explanation.pdf
+https://raw.githubusercontent.com/AntonioKolosov/bot-farm/main/explanation.pdf
