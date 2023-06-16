@@ -1,0 +1,9 @@
+{
+    "id": 1,
+    "name": "/index",
+    "description": "index",
+    "type": "simple",
+    "chats_ids": [],
+    "buttons": [],
+    "content": "simple/explanation.txt"
+}
