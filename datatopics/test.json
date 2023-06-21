@@ -4,6 +4,8 @@
     "description": "testdata",
     "type": "simple",
     "chats_ids": [],
+    "service_type": "TG",
+    "service_id": "POSTMAN",
     "buttons": [],
     "content": "simple/test.txt"
 }

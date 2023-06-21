@@ -14,11 +14,31 @@ class TopicsList:
         loader_type = os.environ.get("TOPICS_LOADER_TYPE", "FS")
         self.__loader: Loader = self.__loaders_factory(loader_type)
         self.__topics_metadata: list[Topic] = self.__loader.metadata
-        print("Metadata", self.__topics_metadata)
 
     @property
     def topics_metadata(self) -> list[Topic]:
         return self.__topics_metadata
+
+    def topics_by_type(self, type: str) -> list[Topic]:
+        """"""
+        return [topic for topic in self.topics_metadata if topic.type == type]
+
+    def topics_by_service_id(self, service_id: str) -> list[Topic]:
+        """"""
+        return [topic for topic in self.topics_metadata
+                if topic.service_id == service_id]
+
+    def topics_name_by_service_id(self, service_id: str) -> list[str]:
+        """"""
+        return [topic.name for topic in self.topics_by_service_id(service_id)]
+
+    def breaf_topics(self) -> list[dict[str, str]]:
+        """"""
+        return [{"name": topic.name,
+                "descr": topic.description,
+                 "service_type": topic.service_type,
+                 "service_id": topic.service_id}
+                for topic in self.topics_metadata]
 
     def __loaders_factory(self, type: str) -> Loader:
         """"""

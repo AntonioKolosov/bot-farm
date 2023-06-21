@@ -16,15 +16,17 @@ class ServicesList:
         bot_types = os.environ.get("BOT_TYPES_LIST", "[\"error:error\"]")
         self.__bot_types_list = list(map(str, bot_types[1:-1].split(",")))
 
-        self.__topics_names: list[dict[str, str]] = list()
         self.__default_service = Service()
         self.__services: dict[str, Service] = {}
         for bt in self.__bot_types_list:
             self.__services[bt] = self.__service_factory(bt)
 
-    def set_topics_names(self, topics_names) -> None:
+    def set_breaf_topics(self, breaf_topics: list[dict[str, str]]) -> None:
         """"""
-        self.__topics_names = topics_names
+        for type, service in self.__services.items():
+            for topic in breaf_topics:
+                if type == topic.get("service_type"):
+                    service.add_breaf(topic)
 
     def __service_factory(self, type: str) -> Service:
         """Create Startup objects regarding bot type"""
@@ -39,7 +41,7 @@ class ServicesList:
     async def startup(self) -> None:
         """Start up all exists services"""
         for t, s in self.__services.items():
-            await s.startup(self.__topics_names)
+            await s.startup()
 
     async def shutdown(self) -> None:
         """Shutdown all exists services"""

@@ -12,7 +12,7 @@ from .loader import Loader
 class FsLoader(Loader):
     def __init__(self) -> None:
         super().__init__("FS")
-        self.__storage = os.environ.get("FS_TOPICS_SORAGE", "./datatopics")
+        self.__storage = os.environ.get("FS_TOPICS_STORAGE", "./datatopics")
         self.__load_metadata()
 
     def __load_metadata(self) -> None:
