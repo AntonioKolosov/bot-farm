@@ -4,9 +4,8 @@ Base class for message handlers
 
 
 from src.services import services
-from src.handlers.schemas.topic import Topic
-from src.handlers.topics_loader import load_topics_by_type
-from src.mess_broker.schemas.processingdata import ProcessingData
+from src.topics import tplst, Topic
+from src.proc_data.schemas.processingdata import ProcessingData
 
 
 class Handler:
@@ -36,7 +35,7 @@ class Handler:
     def __load_topics(self) -> None:
         """"""
         if self.__type != "default":
-            self.__topics = load_topics_by_type(self.__type)
+            self.__topics = tplst.topics_by_type(self.__type)
 
     async def __send_answer(self, data: ProcessingData, topic: Topic):
         """Messanger exit point"""

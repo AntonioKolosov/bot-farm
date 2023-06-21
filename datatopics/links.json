@@ -3,6 +3,8 @@
     "name": "/links",
     "description": "useful_links",
     "type": "simple",
+    "service_type": "TG",
+    "service_id": "IPSUM",
     "chats_ids": [],
     "buttons": [],
     "content": "simple/links.txt"

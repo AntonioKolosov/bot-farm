@@ -4,7 +4,7 @@ Load topics utilities
 
 import json
 from pathlib import Path
-from src.handlers.schemas.topic import Topic
+from src.topics.schemas.topic import Topic
 
 
 # TODO: get from config

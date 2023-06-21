@@ -19,6 +19,10 @@ class TgService(Service):
         tokens = os.environ.get("TG_BOTS_TOKENS", "[\"error:error\"]")
         self.__tokens = list(map(str, tokens[1:-1].split(",")))
         self.__gtw_url = os.environ.get("GTW_URL", "")
+        bots_id_2_names = os.environ.get("TG_BOTS_ID_2_NAMES",
+                                         "[\"error:error\"]")
+        self.__bots_id_2_names = list(map
+                                      (str, bots_id_2_names[1:-1].split(",")))
         self.__endpoints: dict[str, str] = {}
         self.__make_endpoints()
 
@@ -27,11 +31,11 @@ class TgService(Service):
         endpoint = self.__endpoints.get(bot_id, "")
         return await send_message(endpoint, answer)
 
-    async def startup(self, topics_names: list[dict[str, str]]) -> None:
+    async def startup(self) -> None:
         """"""
         print(f"Initialize all {self.__doc__} endpoints")
         for b_id, ep in self.__endpoints.items():
-            await self.__initialize(b_id, topics_names)
+            await self.__initialize(b_id)
 
     async def shutdown(self) -> None:
         """"""
@@ -39,18 +43,31 @@ class TgService(Service):
         for b_id, ep in self.__endpoints.items():
             await self.__close(b_id)
 
-    async def __initialize(self,
-                           bot_id: str,
-                           topics_names: list[dict[str, str]]) -> None:
+    async def __initialize(self, bot_id: str) -> None:
         """"""
+        # convert bot_id to bot_name
+        bot_name = self.__id_2_name(bot_id)
+        # get endpoints names from topics
+        endpoints_names = [{"name": topic.get("name", ""),
+                            "descr": topic.get("descr", "")}
+                           for topic in self._breaf_topics
+                           if topic.get("service_id") == bot_name]
         print(f"Initialize the {bot_id} endpoint")
         await self.__delete_menu_commands(bot_id)
-        await self.__set_menu_commands(bot_id, topics_names)
+        await self.__set_menu_commands(bot_id, endpoints_names)
         await self.__set_menu_button(bot_id, True)
         await self.__set_webhook(bot_id)
         # for test
         await self.__get_menu_button(bot_id)
         await self.__get_menu_commands(bot_id)
+
+    def __id_2_name(self, bot_id: str) -> str:
+        """"""
+        for id_2_name in self.__bots_id_2_names:
+            id, name = id_2_name.split(":")
+            if id == bot_id:
+                return name
+        return ""
 
     async def __close(self, bot_id: str) -> None:
         """"""

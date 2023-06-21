@@ -6,11 +6,16 @@ class Service:
     """Base servise"""
     def __init__(self, type: str = "") -> None:
         self._service_type = type
+        self._breaf_topics: list[dict[str, str]] = []
 
     def __make_endpoints(self) -> None:
         """Instantiate enpoints"""
 
-    async def startup(self, topics_names: list[dict[str, str]]) -> None:
+    def add_breaf(self, topic: dict[str, str]) -> None:
+        """"""
+        self._breaf_topics.append(topic)
+
+    async def startup(self) -> None:
         """"""
 
     async def shutdown(self) -> None:

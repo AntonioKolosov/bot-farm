@@ -3,8 +3,10 @@
 
 
 from src.services import services
+from src.proc_data.schemas.processingdata import ProcessingData
 from src.handlers.handler import Handler
 from src.handlers.simple_handler import SimpleHandler
+from src.topics import tplst
 
 
 class ActiveHandlers:
@@ -13,8 +15,8 @@ class ActiveHandlers:
         self.__default_handler = Handler()
         # Always register the internal simple handler
         self.register(SimpleHandler())
-        topics_mames = self.get_topics_names()
-        services.set_topics_names(topics_mames)
+        breaf_topics = self.__get_breaf_topics()
+        services.set_breaf_topics(breaf_topics)
 
     def register(self, handler: Handler) -> None:
         ''''''
@@ -24,18 +26,14 @@ class ActiveHandlers:
         ''''''
         self.__active_handlers.pop(id)
 
-    def get_handler_by_topic(self, topic_name: str) -> Handler:
+    def get_handler_for_data(self, data: ProcessingData) -> Handler:
         ''''''
         for id, handler in self.__active_handlers.items():
             for topic in handler.topics:
-                if topic_name == topic.name:
+                if data.text == topic.name:
                     return handler
         return self.__default_handler
 
-    def get_topics_names(self) -> list[dict[str, str]]:
+    def __get_breaf_topics(self) -> list[dict[str, str]]:
         """"""
-        names = list()
-        for id, handler in self.__active_handlers.items():
-            for topic in handler.topics:
-                names.append({"name": topic.name, "descr": topic.description})
-        return names
+        return tplst.breaf_topics()

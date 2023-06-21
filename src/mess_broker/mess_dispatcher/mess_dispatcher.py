@@ -4,7 +4,7 @@
 
 
 from src.handlers import hnd
-from src.mess_broker.schemas.processingdata import ProcessingData
+from src.proc_data.schemas.processingdata import ProcessingData
 from src.mess_broker.active_chats.active_chats import ActiveChats
 
 
@@ -19,5 +19,5 @@ class MessDispatcher:
         # Set a new command
         self.__active_chats.set(data.hash_code, data)
         # Handle the data
-        handler = hnd.get_handler_by_topic(data.text)
+        handler = hnd.get_handler_for_data(data)
         await handler.handle(data)
