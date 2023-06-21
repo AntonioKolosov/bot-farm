@@ -5,7 +5,7 @@ The gtw utilites
 
 import hashlib
 from src.gtw.schemas.tgindata import TgInData
-from src.mess_broker import ProcessingData
+from src.proc_data.schemas.processingdata import ProcessingData
 
 
 def tg_data_converter(bot_id: str, data) -> ProcessingData | None:

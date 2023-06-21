@@ -6,7 +6,7 @@ Base class for message handlers
 from src.services import services
 from src.handlers.schemas.topic import Topic
 from src.handlers.topics_loader import load_topics_by_type
-from src.mess_broker.schemas.processingdata import ProcessingData
+from src.proc_data.schemas.processingdata import ProcessingData
 
 
 class Handler:

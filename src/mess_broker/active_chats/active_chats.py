@@ -2,7 +2,7 @@
 """
 
 
-from src.mess_broker.schemas.processingdata import ProcessingData
+from src.proc_data.schemas.processingdata import ProcessingData
 
 
 class ActiveChats:
@@ -24,7 +24,8 @@ class ActiveChats:
     def get_command(self, hash_code):
         """Get item text (command)"""
         empty_data = ProcessingData(
-            client=0,
+            service_type="",
+            service_id="",
             sender_id=0,
             hash_code="",
             is_command=True,

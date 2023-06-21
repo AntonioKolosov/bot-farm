@@ -3,6 +3,7 @@
 
 
 from src.services import services
+from src.proc_data.schemas.processingdata import ProcessingData
 from src.handlers.handler import Handler
 from src.handlers.simple_handler import SimpleHandler
 
@@ -24,11 +25,11 @@ class ActiveHandlers:
         ''''''
         self.__active_handlers.pop(id)
 
-    def get_handler_by_topic(self, topic_name: str) -> Handler:
+    def get_handler_for_data(self, data: ProcessingData) -> Handler:
         ''''''
         for id, handler in self.__active_handlers.items():
             for topic in handler.topics:
-                if topic_name == topic.name:
+                if data.text == topic.name:
                     return handler
         return self.__default_handler
 
