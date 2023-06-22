@@ -11,7 +11,7 @@ class TopicsList:
     """"
     """
     def __init__(self) -> None:
-        loader_type = os.environ.get("TOPICS_LOADER_TYPE", "FS")
+        loader_type = os.environ.get("TOPICS_METADATA_LOADER_TYPE", "FS")
         self.__loader: Loader = self.__loaders_factory(loader_type)
         self.__topics_metadata: list[Topic] = self.__loader.metadata
 
