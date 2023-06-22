@@ -28,7 +28,7 @@ class Handler:
         ''''''
         topic = self.__default_topic
         for topic in self.__topics:
-            if topic.name == data.text:
+            if topic.name.startswith(data.text):
                 break
         await self.__send_answer(data, topic)
 
@@ -39,9 +39,6 @@ class Handler:
 
     async def __send_answer(self, data: ProcessingData, topic: Topic):
         """Messanger exit point"""
-        # Patch for /start command
-        if data.text == "/start":
-            topic.content = ""
         answer = {
             "chat_id": data.sender_id,
             "text": topic.content
