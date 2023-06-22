@@ -1,0 +1,11 @@
+{
+    "id": 100000,
+    "name": "/start",
+    "description": "Let's start!",
+    "type": "simple",
+    "service_type": "TG",
+    "service_id": "IPSUM",
+    "chats_ids": [],
+    "buttons": [],
+    "content": "simple/start_ipsum.txt"
+}
