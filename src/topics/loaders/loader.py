@@ -20,3 +20,7 @@ class Loader:
 
     def __load_metadata(self) -> None:
         """"""
+
+    def load_content(self, location: str) -> str:
+        """"""
+        return ""

@@ -40,6 +40,10 @@ class TopicsList:
                  "service_id": topic.service_id}
                 for topic in self.topics_metadata]
 
+    def get_content(self, topic: Topic) -> str:
+        """"""
+        return self.__loader.load_content(topic.content)
+
     def __loaders_factory(self, type: str) -> Loader:
         """"""
         if type == "FS":
