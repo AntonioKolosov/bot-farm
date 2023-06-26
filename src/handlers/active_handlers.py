@@ -29,9 +29,8 @@ class ActiveHandlers:
     def get_handler_for_data(self, data: ProcessingData) -> Handler:
         ''''''
         for id, handler in self.__active_handlers.items():
-            for topic in handler.topics:
-                if data.text == topic.name:
-                    return handler
+            if handler.fit(data):
+                return handler
         return self.__default_handler
 
     def __get_breaf_topics(self) -> list[dict[str, str]]:

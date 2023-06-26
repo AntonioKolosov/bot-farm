@@ -28,6 +28,10 @@ class ServicesList:
                 if type == topic.get("service_type"):
                     service.add_breaf(topic)
 
+    def get_alias(self, type, id) -> str:
+        service = self.__services.get(type, self.__default_service)
+        return service.get_alias(id)
+
     def __service_factory(self, type: str) -> Service:
         """Create Startup objects regarding bot type"""
         if type == "TG":

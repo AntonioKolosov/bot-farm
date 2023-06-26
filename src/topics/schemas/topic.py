@@ -11,5 +11,7 @@ class Topic(BaseModel):
     type: str = "default"
     service_type: str = ""
     service_id: str = ""
+    chats_ids: list = []
+    buttons: list = []
     content: str = ("Brief help topic: \n \
                     Use a command from the bot menu")
