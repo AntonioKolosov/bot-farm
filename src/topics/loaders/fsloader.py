@@ -27,3 +27,10 @@ class FsLoader(Loader):
                 # Read topic
                 topic = Topic(**top_obj)
                 super().metadata.append(topic)
+
+    def load_content(self, location: str) -> str:
+        """"""
+        ffn = f"{self.__storage}/{location}"
+        with open(ffn, 'r') as f:
+            top_content = f.read()
+        return top_content

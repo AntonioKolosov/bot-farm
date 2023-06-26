@@ -20,10 +20,6 @@ class Handler:
     def id(self) -> str:
         return self.__id
 
-    @property
-    def topics(self) -> list[Topic]:
-        return self.__topics
-
     def fit(self, data: ProcessingData) -> bool:
         '''Check that the handler may handle the data'''
         return self.__get_topic(data) != self.__default_topic
@@ -31,6 +27,7 @@ class Handler:
     async def handle(self, data: ProcessingData) -> None:
         ''''''
         topic = self.__get_topic(data)
+        topic.content = tplst.get_content(topic)
         await self.__send_answer(data, topic)
 
     def __get_topic(self, data: ProcessingData) -> Topic:
