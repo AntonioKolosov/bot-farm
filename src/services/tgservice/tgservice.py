@@ -21,8 +21,8 @@ class TgService(Service):
         self.__gtw_url = os.environ.get("GTW_URL", "")
         bots_id_2_names = os.environ.get("TG_BOTS_ID_2_NAMES",
                                          "[\"error:error\"]")
-        self.__bots_id_2_names = list(map
-                                      (str, bots_id_2_names[1:-1].split(",")))
+        self._bots_id_2_names = list(map(str,
+                                         bots_id_2_names[1:-1].split(",")))
         self.__endpoints: dict[str, str] = {}
         self.__make_endpoints()
 
@@ -46,7 +46,7 @@ class TgService(Service):
     async def __initialize(self, bot_id: str) -> None:
         """"""
         # convert bot_id to bot_name
-        bot_name = self.__id_2_name(bot_id)
+        bot_name = self.get_alias(bot_id)
         # get endpoints names from topics
         endpoints_names = [{"name": topic.get("name", ""),
                             "descr": topic.get("descr", "")}
@@ -60,14 +60,6 @@ class TgService(Service):
         # for test
         await self.__get_menu_button(bot_id)
         await self.__get_menu_commands(bot_id)
-
-    def __id_2_name(self, bot_id: str) -> str:
-        """"""
-        for id_2_name in self.__bots_id_2_names:
-            id, name = id_2_name.split(":")
-            if id == bot_id:
-                return name
-        return ""
 
     async def __close(self, bot_id: str) -> None:
         """"""

@@ -7,9 +7,18 @@ class Service:
     def __init__(self, type: str = "") -> None:
         self._service_type = type
         self._breaf_topics: list[dict[str, str]] = []
+        self._bots_id_2_names: list = []
 
     def __make_endpoints(self) -> None:
         """Instantiate enpoints"""
+
+    def get_alias(self, service_id: str) -> str:
+        """"""
+        for id_2_name in self._bots_id_2_names:
+            id, name = id_2_name.split(":")
+            if id == service_id:
+                return name
+        return "default"
 
     def add_breaf(self, topic: dict[str, str]) -> None:
         """"""

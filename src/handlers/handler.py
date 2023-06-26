@@ -24,13 +24,23 @@ class Handler:
     def topics(self) -> list[Topic]:
         return self.__topics
 
+    def fit(self, data: ProcessingData) -> bool:
+        '''Check that the handler may handle the data'''
+        return self.__get_topic(data) != self.__default_topic
+
     async def handle(self, data: ProcessingData) -> None:
         ''''''
-        topic = self.__default_topic
-        for topic in self.__topics:
-            if topic.name.startswith(data.text):
-                break
+        topic = self.__get_topic(data)
         await self.__send_answer(data, topic)
+
+    def __get_topic(self, data: ProcessingData) -> Topic:
+        ''''''
+        alias = services.get_alias(data.service_type, data.service_id)
+        for topic in self.__topics:
+            # Check more criterions
+            if topic.name == data.text and topic.service_id == alias:
+                return topic
+        return self.__default_topic
 
     def __load_topics(self) -> None:
         """"""
