@@ -1,0 +1,10 @@
+Wow! I am glad to see you decided to learn more about our Bot Service!
+
+We started doing this like a study project, but now we improve a functionality of our service and prepare new possibilities for our users.
+
+The next step to do this service open sourced and let another developers to improve it! 
+
+You may explore the GitHub page of our project:
+https://github.com/AntonioKolosov/bot-farm
+
+Do you want to be aware of all the news and updates? Join our Telegram channel: https://t.me/bot_farm_news
