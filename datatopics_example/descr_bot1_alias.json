@@ -1,11 +1,11 @@
 {
     "id": 100000,
-    "name": "/help",
-    "description": "Need a help?",
+    "name": "/description",
+    "description": "More information",
     "type": "simple",
     "service_type": "TG",
     "service_id": "HUB",
     "chats_ids": [],
     "buttons": [],
-    "content": "simple/help_bot1_alias.txt"
+    "content": "simple/description.txt"
 }
