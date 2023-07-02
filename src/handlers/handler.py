@@ -30,7 +30,7 @@ class Handler:
         content = topic.content
         if topic != self.__default_topic:
             content = tplst.get_content(topic)
-        await self.__send_answer(data, topic, content)
+        await self.__send_answer(data, content)
 
     def __get_topic(self, data: ProcessingData) -> Topic:
         ''''''
@@ -46,7 +46,9 @@ class Handler:
         if self.__type != "default":
             self.__topics = tplst.topics_by_type(self.__type)
 
-    async def __send_answer(self, data: ProcessingData, topic: Topic, content: str):
+    async def __send_answer(self,
+                            data: ProcessingData,
+                            content: str):
         """Messanger exit point"""
         answer = {
             "chat_id": data.sender_id,
