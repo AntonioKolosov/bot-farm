@@ -4,8 +4,8 @@
     "description": "Need a help?",
     "type": "simple",
     "service_type": "TG",
-    "service_id": "POSTMAN",
+    "service_id": "BOT1_ALIAS",
     "chats_ids": [],
     "buttons": [],
-    "content": "simple/help_postman.txt"
+    "content": "simple/help_bot1_alias.txt"
 }
