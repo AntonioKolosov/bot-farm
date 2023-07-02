@@ -27,7 +27,9 @@ class Handler:
     async def handle(self, data: ProcessingData) -> None:
         ''''''
         topic = self.__get_topic(data)
-        content = tplst.get_content(topic)
+        content = topic.content
+        if topic != self.__default_topic:
+            content = tplst.get_content(topic)
         await self.__send_answer(data, topic, content)
 
     def __get_topic(self, data: ProcessingData) -> Topic:
