@@ -4,8 +4,8 @@
     "description": "Let's start!",
     "type": "simple",
     "service_type": "TG",
-    "service_id": "FRIENDLY",
+    "service_id": "BOT1_ALIAS",
     "chats_ids": [],
     "buttons": [],
-    "content": "simple/start_friendly.txt"
+    "content": "simple/start_bot1_alias.txt"
 }
