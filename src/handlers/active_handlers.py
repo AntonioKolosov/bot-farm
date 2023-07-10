@@ -13,18 +13,19 @@ class ActiveHandlers:
     def __init__(self) -> None:
         self.__active_handlers: dict[str, Handler] = dict()
         self.__default_handler = Handler()
-        # Always register the internal simple handler
+        # Always register each existing handler
         self.register(SimpleHandler())
+        # self.register(YourHandler())
         breaf_topics = self.__get_breaf_topics()
         services.set_breaf_topics(breaf_topics)
 
     def register(self, handler: Handler) -> None:
         ''''''
-        self.__active_handlers[handler.id] = handler
+        self.__active_handlers[handler.type] = handler
 
-    def unregister(self, id: str) -> None:
+    def unregister(self, type: str) -> None:
         ''''''
-        self.__active_handlers.pop(id)
+        self.__active_handlers.pop(type)
 
     def get_handler_for_data(self, data: ProcessingData) -> Handler:
         ''''''

@@ -11,16 +11,15 @@ from src.proc_data.schemas.processingdata import ProcessingData
 
 
 class Handler:
-    def __init__(self, id: str = "default", type: str = "default") -> None:
-        self.__id: str = id
+    def __init__(self, type: str = "default") -> None:
         self.__type: str = type
         self.__topics: list[Topic] = list()
         self.__default_topic = Topic()
         self.__load_topics()
 
     @property
-    def id(self) -> str:
-        return self.__id
+    def type(self) -> str:
+        return self.__type
 
     def fit(self, data: ProcessingData) -> bool:
         '''Check that the handler may handle the data'''
