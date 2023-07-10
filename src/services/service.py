@@ -1,7 +1,7 @@
 """
 """
 
-
+from abc import abstractmethod
 from src.proc_data.schemas.answeringdata import AnsweringData
 
 
@@ -11,9 +11,6 @@ class Service:
         self._service_type = type
         self._breaf_topics: list[dict[str, str]] = []
         self._bots_id_2_names: list = []
-
-    def __make_endpoints(self) -> None:
-        """Instantiate enpoints"""
 
     def get_alias(self, service_id: str) -> str:
         """"""
@@ -27,18 +24,25 @@ class Service:
         """"""
         self._breaf_topics.append(topic)
 
+    @abstractmethod
     async def startup(self) -> None:
         """"""
 
+    @abstractmethod
     async def shutdown(self) -> None:
         """"""
 
+    @abstractmethod
     def __endpoint_for_request(self,
                                bot_id: str,
                                method: str,
                                params: dict | None = None) -> str:
-        return "base service endpoint"
+        """"""
 
+    @abstractmethod
     async def send_message(self, answer: AnsweringData) -> bool:
         """"""
-        return True
+
+    @abstractmethod
+    def __make_endpoints(self) -> None:
+        """Instantiate enpoints"""

@@ -30,5 +30,5 @@ class ActiveChats:
             hash_code="",
             is_command=True,
             date=0,
-            text="Chat Not Found")
-        return self.__active_chats.get(hash_code, empty_data).text
+            content="Chat Not Found")
+        return self.__active_chats.get(hash_code, empty_data).content
