@@ -4,6 +4,8 @@
 
 import os
 
+from src.internals import utilites
+from src.proc_data.schemas.answeringdata import AnsweringData
 from ..service import Service
 from .tgapi import send_message
 from .tgapi import set_webhook, delete_webhook
@@ -26,10 +28,11 @@ class TgService(Service):
         self.__endpoints: dict[str, str] = {}
         self.__make_endpoints()
 
-    async def send_message(self, bot_id: str, answer: dict) -> bool:
+    async def send_message(self, answer: AnsweringData) -> bool:
         """Wrapper for API"""
-        endpoint = self.__endpoints.get(bot_id, "")
-        return await send_message(endpoint, answer)
+        endpoint = self.__endpoints.get(answer.service_id, "")
+        tg_answer = utilites.tg_answer_converter(answer)
+        return await send_message(endpoint, tg_answer)
 
     async def startup(self) -> None:
         """"""

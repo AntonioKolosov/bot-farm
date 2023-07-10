@@ -4,6 +4,8 @@
 
 
 import os
+
+from src.proc_data.schemas.answeringdata import AnsweringData
 from .service import Service
 from .tgservice.tgservice import TgService
 
@@ -52,10 +54,7 @@ class ServicesList:
         for t, s in self.__services.items():
             await s.shutdown()
 
-    async def send_message(self,
-                           service_type: str,
-                           service_id: str,
-                           answer: dict):
+    async def send_message(self, answer: AnsweringData):
         """Send message to the corresponding service"""
-        service = self.__get_service_by_type(service_type)
-        await service.send_message(service_id, answer)
+        service = self.__get_service_by_type(answer.service_type)
+        await service.send_message(answer)

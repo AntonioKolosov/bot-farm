@@ -7,7 +7,7 @@ import json
 from urllib import parse
 
 from ..requests import request_get, request_post
-from src.gtw.internals.tbotlogger import tb_log
+from src.internals.tbotlogger import tb_log
 
 
 async def set_my_name(endpoint: str, name: str) -> bool:

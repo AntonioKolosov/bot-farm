@@ -6,6 +6,7 @@ The gtw utilites
 import hashlib
 from src.gtw.schemas.tgindata import TgInData
 from src.proc_data.schemas.processingdata import ProcessingData
+from src.proc_data.schemas.answeringdata import AnsweringData
 
 
 def tg_data_converter(bot_id: str, data) -> ProcessingData | None:
@@ -21,7 +22,7 @@ def tg_data_converter(bot_id: str, data) -> ProcessingData | None:
                           hash_code=tg_hash_md5(tgindata.get_const_data()),
                           is_command=message.text.startswith('/'),
                           date=message.date,
-                          text=message.text)
+                          content=message.text)
 
 
 def tg_hash_md5(data) -> str:
@@ -31,3 +32,13 @@ def tg_hash_md5(data) -> str:
     dhash.update(encoded)
     hash = dhash.hexdigest()
     return hash
+
+
+def tg_answer_converter(answer: AnsweringData) -> dict:
+    """"""
+    tg_answer = {
+        "bot_id": answer.service_id,
+        "chat_id": answer.sender_id,
+        "text": answer.content,
+    }
+    return tg_answer

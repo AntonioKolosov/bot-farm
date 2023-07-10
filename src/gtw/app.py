@@ -7,7 +7,7 @@ from fastapi import FastAPI
 
 from .description import description, title, version, license, contact
 from src.gtw.routers import inc_data_router
-from src.gtw.internals.tbotlogger import tb_log
+from src.internals.tbotlogger import tb_log
 from src.services import services
 
 app = FastAPI(
