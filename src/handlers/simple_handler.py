@@ -12,13 +12,6 @@ class SimpleHandler(Handler):
     def __init__(self) -> None:
         super().__init__(type="simple")
 
-    async def _send_answer(self,
-                           data: ProcessingData,
-                           content):
-        """Messanger exit point"""
-        # answer = self._create_answer(data, content)
-        # await services.send_message(answer)
-
     def _create_answer(self,
                        data: ProcessingData,
                        content: str) -> AnsweringData:
