@@ -2,7 +2,9 @@
 Base class for message handlers
 '''
 
+from abc import abstractmethod
 
+from src.proc_data.schemas.answeringdata import AnsweringData
 from src.services import services
 from src.topics import tplst, Topic
 from src.proc_data.schemas.processingdata import ProcessingData
@@ -30,7 +32,7 @@ class Handler:
         content = topic.content
         if topic != self.__default_topic:
             content = tplst.get_content(topic)
-        await self._send_answer(data, content)
+        await self.__send_answer(data, content)
 
     def __get_topic(self, data: ProcessingData) -> Topic:
         ''''''
@@ -46,7 +48,13 @@ class Handler:
         if self.__type != "default":
             self.__topics = tplst.topics_by_type(self.__type)
 
-    async def _send_answer(self,
-                           data: ProcessingData,
-                           content: str):
+    async def __send_answer(self,
+                            data: ProcessingData,
+                            content):
         """Messanger exit point"""
+        answer = self._create_answer(data, content)
+        await services.send_message(answer)
+
+    @abstractmethod
+    def _create_answer(self, data: ProcessingData, content) -> AnsweringData:
+        """"""

@@ -5,7 +5,6 @@
 
 from src.proc_data.schemas.answeringdata import AnsweringData
 from src.proc_data.schemas.processingdata import ProcessingData
-from src.services import services
 from src.handlers.handler import Handler
 
 
@@ -15,11 +14,17 @@ class SimpleHandler(Handler):
 
     async def _send_answer(self,
                            data: ProcessingData,
-                           content: str):
+                           content):
         """Messanger exit point"""
-        answer = AnsweringData(
+        # answer = self._create_answer(data, content)
+        # await services.send_message(answer)
+
+    def _create_answer(self,
+                       data: ProcessingData,
+                       content: str) -> AnsweringData:
+        """Create answer from topic"""
+        return AnsweringData(
             service_type=data.service_type,
             service_id=data.service_id,
             sender_id=data.sender_id,
             content=content)
-        await services.send_message(answer)
