@@ -6,11 +6,8 @@
 from pydantic import BaseModel
 
 
-class ProcessingData(BaseModel):
+class AnsweringData(BaseModel):
     service_type: str
     service_id: str
     sender_id: int
-    hash_code: str
-    is_command: bool
-    date: int
     content: str

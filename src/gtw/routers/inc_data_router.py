@@ -1,8 +1,8 @@
 from fastapi import APIRouter, BackgroundTasks, Request
 
-from src.gtw.internals.utilites import tg_data_converter
+from src.internals.utilites import tg_data_converter
 from src.mess_broker import dsp
-from src.gtw.internals.tbotlogger import tb_log
+from src.internals.tbotlogger import tb_log
 
 
 router = APIRouter()

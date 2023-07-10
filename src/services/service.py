@@ -2,6 +2,9 @@
 """
 
 
+from src.proc_data.schemas.answeringdata import AnsweringData
+
+
 class Service:
     """Base servise"""
     def __init__(self, type: str = "") -> None:
@@ -36,6 +39,6 @@ class Service:
                                params: dict | None = None) -> str:
         return "base service endpoint"
 
-    async def send_message(self, service_id: str, answer: dict) -> bool:
+    async def send_message(self, answer: AnsweringData) -> bool:
         """"""
         return True

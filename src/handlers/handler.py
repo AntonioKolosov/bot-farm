@@ -30,14 +30,14 @@ class Handler:
         content = topic.content
         if topic != self.__default_topic:
             content = tplst.get_content(topic)
-        await self.__send_answer(data, content)
+        await self._send_answer(data, content)
 
     def __get_topic(self, data: ProcessingData) -> Topic:
         ''''''
         alias = services.get_alias(data.service_type, data.service_id)
         for topic in self.__topics:
             # Check more criterions
-            if topic.name == data.text and topic.service_id == alias:
+            if topic.name == data.content and topic.service_id == alias:
                 return topic
         return self.__default_topic
 
@@ -46,12 +46,7 @@ class Handler:
         if self.__type != "default":
             self.__topics = tplst.topics_by_type(self.__type)
 
-    async def __send_answer(self,
-                            data: ProcessingData,
-                            content: str):
+    async def _send_answer(self,
+                           data: ProcessingData,
+                           content: str):
         """Messanger exit point"""
-        answer = {
-            "chat_id": data.sender_id,
-            "text": content
-        }
-        await services.send_message(data.service_type, data.service_id, answer)
