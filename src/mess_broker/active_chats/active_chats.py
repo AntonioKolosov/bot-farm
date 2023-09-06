@@ -25,7 +25,7 @@ class ActiveChats:
         """Get item text (command)"""
         empty_data = ProcessingData(
             service_type="",
-            service_id="",
+            service_alias="",
             sender_id=0,
             hash_code="",
             is_command=True,

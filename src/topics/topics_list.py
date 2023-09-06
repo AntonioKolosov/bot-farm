@@ -24,21 +24,21 @@ class TopicsList:
         """"""
         return [topic for topic in self.topics_metadata if topic.type == type]
 
-    def topics_by_service_id(self, service_id: str) -> list[Topic]:
+    def topics_by_service_alias(self, service_alias: str) -> list[Topic]:
         """"""
         return [topic for topic in self.topics_metadata
-                if topic.service_id == service_id]
+                if topic.service_alias == service_alias]
 
-    def topics_name_by_service_id(self, service_id: str) -> list[str]:
+    def topics_name_by_service_alias(self, service_alias: str) -> list[str]:
         """"""
-        return [topic.name for topic in self.topics_by_service_id(service_id)]
+        return [topic.name for topic in self.topics_by_service_alias(service_alias)]
 
     def breaf_topics(self) -> list[dict[str, str]]:
         """"""
         return [{"name": topic.name,
                 "descr": topic.description,
                  "service_type": topic.service_type,
-                 "service_id": topic.service_id}
+                 "service_alias": topic.service_alias}
                 for topic in self.topics_metadata]
 
     def get_content(self, topic: Topic) -> str:
