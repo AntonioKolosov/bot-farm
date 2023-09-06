@@ -8,6 +8,6 @@ from pydantic import BaseModel
 
 class AnsweringData(BaseModel):
     service_type: str
-    service_id: str
+    service_alias: str
     sender_id: int
     content: str

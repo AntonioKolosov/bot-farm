@@ -4,7 +4,7 @@
     "description": "Need a help?",
     "type": "simple",
     "service_type": "TG",
-    "service_id": "HUB",
+    "service_alias": "HUB",
     "chats_ids": [],
     "buttons": [],
     "content": "simple/help_bot1_alias.txt"

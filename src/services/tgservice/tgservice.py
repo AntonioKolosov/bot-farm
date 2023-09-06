@@ -17,7 +17,7 @@ class TgService(Service):
     """Telegram service"""
     def __init__(self) -> None:
         super().__init__("TG")
-        self.__endpoint_template = os.environ.get("TG_BOTS_URL", "error")
+        self.__endpoint_template = "https://api.telegram.org/bot{key}/{method}"
         tokens = os.environ.get("TG_BOTS_TOKENS", "[\"error:error\"]")
         self.__tokens = list(map(str, tokens[1:-1].split(",")))
         self.__gtw_url = os.environ.get("GTW_URL", "")
@@ -30,43 +30,43 @@ class TgService(Service):
 
     async def send_message(self, answer: AnsweringData) -> bool:
         """Wrapper for API"""
-        endpoint = self.__endpoints.get(answer.service_id, "")
-        tg_answer = utilites.tg_answer_converter(answer)
+        bot_id = self._get_id_by_alias(answer.service_alias)
+        endpoint = self.__endpoints.get(bot_id, "")
+        tg_answer = utilites.tg_answer_converter(bot_id, answer)
         return await send_message(endpoint, tg_answer)
 
     async def startup(self) -> None:
         """"""
-        print(f"Initialize all {self.__doc__} endpoints")
         for b_id, ep in self.__endpoints.items():
             await self.__initialize(b_id)
 
     async def shutdown(self) -> None:
         """"""
-        print(f"Shutdown {self.__doc__} and close all its endpoints")
         for b_id, ep in self.__endpoints.items():
             await self.__close(b_id)
 
     async def __initialize(self, bot_id: str) -> None:
         """"""
         # convert bot_id to bot_name
-        bot_name = self.get_alias(bot_id)
+        alias = self._get_alias_by_id(bot_id)
         # get endpoints names from topics
         endpoints_names = [{"name": topic.get("name", ""),
                             "descr": topic.get("descr", "")}
                            for topic in self._breaf_topics
-                           if topic.get("service_id") == bot_name]
-        print(f"Initialize the {bot_id} endpoint")
+                           if topic.get("service_alias") == alias]
+        print(f"Initialize the {alias} endpoint")
         await self.__delete_menu_commands(bot_id)
         await self.__set_menu_commands(bot_id, endpoints_names)
         await self.__set_menu_button(bot_id, True)
-        await self.__set_webhook(bot_id)
+        await self.__set_webhook(bot_id, alias)
         # for test
         await self.__get_menu_button(bot_id)
         await self.__get_menu_commands(bot_id)
 
     async def __close(self, bot_id: str) -> None:
         """"""
-        print(f"CLose the {bot_id} endpoint")
+        alias = self._get_alias_by_id(bot_id)
+        print(f"CLose the {alias} endpoint")
         await self.__delete_webhook(bot_id)
         await self.__delete_menu_commands(bot_id)
         await self.__set_menu_button(bot_id)
@@ -74,10 +74,10 @@ class TgService(Service):
         await self.__get_menu_button(bot_id)
         await self.__get_menu_commands(bot_id)
 
-    async def __set_webhook(self, bot_id: str) -> bool:
+    async def __set_webhook(self, bot_id: str, alias: str) -> bool:
         """Wrapper for API"""
         endpoint = self.__endpoints.get(bot_id, "")
-        gtw_url = f"{self.__gtw_url}/tgincdata/{bot_id}"
+        gtw_url = f"{self.__gtw_url}/tgincdata/{alias}"
         return await set_webhook(endpoint, gtw_url)
 
     async def __delete_webhook(self, bot_id: str) -> bool:
@@ -126,6 +126,7 @@ class TgService(Service):
         """Instantiate enpoints"""
         for t in self.__tokens:
             bot_id, _ = t.split(":")
+            
             endpoint = self.__set_token_to_endpoint(t)
             self.__endpoints[bot_id] = endpoint
 

@@ -4,7 +4,7 @@
     "description": "Let's start!",
     "type": "simple",
     "service_type": "TG",
-    "service_id": "HUB",
+    "service_alias": "HUB",
     "chats_ids": [],
     "buttons": [],
     "content": "simple/start_bot1_alias.txt"
