@@ -38,7 +38,7 @@ class Handler:
         alias = services.get_alias(data.service_type, data.service_alias)
         for topic in self.__topics:
             # Check more criterions
-            if topic.name == data.content and topic.service_id == alias:
+            if topic.name == data.content and topic.service_alias == alias:
                 return topic
         return self.__default_topic
 

@@ -12,11 +12,11 @@ class Service:
         self._breaf_topics: list[dict[str, str]] = []
         self._bots_id_2_names: list = []
 
-    def _get_alias_by_id(self, service_id: str) -> str:
+    def _get_alias_by_id(self, service_alias: str) -> str:
         """"""
         for id_2_name in self._bots_id_2_names:
             id, name = id_2_name.split(":")
-            if id == service_id:
+            if id == service_alias:
                 return name
         return "default"
 
