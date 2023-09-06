@@ -35,7 +35,7 @@ class Handler:
 
     def __get_topic(self, data: ProcessingData) -> Topic:
         ''''''
-        alias = services.get_alias(data.service_type, data.service_id)
+        alias = services.get_alias(data.service_type, data.service_alias)
         for topic in self.__topics:
             # Check more criterions
             if topic.name == data.content and topic.service_id == alias:
@@ -54,6 +54,12 @@ class Handler:
         answer = self._create_answer(data, content)
         await services.send_message(answer)
 
-    @abstractmethod
-    def _create_answer(self, data: ProcessingData, content) -> AnsweringData:
-        """"""
+    def _create_answer(self,
+                       data: ProcessingData,
+                       content: str) -> AnsweringData:
+        """Create answer from topic"""
+        return AnsweringData(
+            service_type=data.service_type,
+            service_alias=data.service_alias,
+            sender_id=data.sender_id,
+            content=content)
