@@ -2,7 +2,6 @@
 Base class for message handlers
 '''
 
-from abc import abstractmethod
 
 from src.proc_data.schemas.answeringdata import AnsweringData
 from src.services import services
@@ -35,10 +34,10 @@ class Handler:
 
     def __get_topic(self, data: ProcessingData) -> Topic:
         ''''''
-        alias = services.get_alias(data.service_type, data.service_alias)
         for topic in self.__topics:
             # Check more criterions
-            if topic.name == data.content and topic.service_alias == alias:
+            if (topic.name == data.command and
+                    topic.service_alias == data.service_alias):
                 return topic
         return self.__default_topic
 

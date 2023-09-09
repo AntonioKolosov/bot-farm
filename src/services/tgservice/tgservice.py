@@ -126,7 +126,7 @@ class TgService(Service):
         """Instantiate enpoints"""
         for t in self.__tokens:
             bot_id, _ = t.split(":")
-            
+
             endpoint = self.__set_token_to_endpoint(t)
             self.__endpoints[bot_id] = endpoint
 

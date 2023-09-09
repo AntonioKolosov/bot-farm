@@ -31,7 +31,9 @@ class TopicsList:
 
     def topics_name_by_service_alias(self, service_alias: str) -> list[str]:
         """"""
-        return [topic.name for topic in self.topics_by_service_alias(service_alias)]
+        return [
+            topic.name for topic in self.topics_by_service_alias(service_alias)
+            ]
 
     def breaf_topics(self) -> list[dict[str, str]]:
         """"""

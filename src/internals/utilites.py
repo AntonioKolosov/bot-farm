@@ -22,7 +22,7 @@ def tg_data_converter(alias: str, data) -> ProcessingData | None:
                           hash_code=tg_hash_md5(tgindata.get_const_data()),
                           is_command=message.text.startswith('/'),
                           date=message.date,
-                          content=message.text)
+                          command=message.text)
 
 
 def tg_hash_md5(data) -> str:

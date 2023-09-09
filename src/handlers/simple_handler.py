@@ -3,8 +3,6 @@
 '''
 
 
-from src.proc_data.schemas.answeringdata import AnsweringData
-from src.proc_data.schemas.processingdata import ProcessingData
 from src.handlers.handler import Handler
 
 

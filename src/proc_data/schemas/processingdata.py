@@ -13,4 +13,4 @@ class ProcessingData(BaseModel):
     hash_code: str
     is_command: bool
     date: int
-    content: str
+    command: str
