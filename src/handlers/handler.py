@@ -30,6 +30,9 @@ class Handler:
         content = topic.content
         if topic != self.__default_topic:
             content = tplst.get_content(topic)
+        r_id = topic.redirection_id
+        if r_id is not None and r_id != "":
+            data.sender_id = r_id
         await self.__send_answer(data, content)
 
     def __get_topic(self, data: ProcessingData) -> Topic:
