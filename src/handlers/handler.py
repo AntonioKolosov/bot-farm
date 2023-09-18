@@ -2,7 +2,6 @@
 Base class for message handlers
 '''
 
-from abc import abstractmethod
 
 from src.proc_data.schemas.answeringdata import AnsweringData
 from src.services import services
@@ -31,14 +30,17 @@ class Handler:
         content = topic.content
         if topic != self.__default_topic:
             content = tplst.get_content(topic)
+        r_id = topic.redirection_id
+        if r_id is not None and r_id != "":
+            data.sender_id = r_id
         await self.__send_answer(data, content)
 
     def __get_topic(self, data: ProcessingData) -> Topic:
         ''''''
-        alias = services.get_alias(data.service_type, data.service_alias)
         for topic in self.__topics:
             # Check more criterions
-            if topic.name == data.content and topic.service_alias == alias:
+            if (topic.name == data.command and
+                    topic.service_alias == data.service_alias):
                 return topic
         return self.__default_topic
 
