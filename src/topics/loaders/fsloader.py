@@ -28,9 +28,15 @@ class FsLoader(Loader):
                 topic = Topic(**top_obj)
                 super().metadata.append(topic)
 
-    def load_content(self, location: str) -> str:
+    def load_data_text(self, location: str) -> str:
         """"""
-        ffn = f"{self.__storage}/{location}"
+        ffn = f"{self.__storage}/{location}.txt"
         with open(ffn, 'r') as f:
             top_content = f.read()
         return top_content
+
+    def load_data_json(self, location) -> list[dict]:
+        ''''''
+        ffn = f"{self.__storage}/{location}.json"
+        with open(ffn, 'r') as json_file:
+            return json.load(json_file)

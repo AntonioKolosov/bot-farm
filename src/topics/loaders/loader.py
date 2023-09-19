@@ -21,6 +21,10 @@ class Loader:
     def __load_metadata(self) -> None:
         """"""
 
-    def load_content(self, location: str) -> str:
+    def load_data_text(self, location: str) -> str:
         """"""
         return ""
+
+    def load_data_json(self, location) -> list[dict]:
+        ''''''
+        return []

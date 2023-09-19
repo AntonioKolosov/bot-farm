@@ -43,9 +43,13 @@ class TopicsList:
                  "service_alias": topic.service_alias}
                 for topic in self.topics_metadata]
 
-    def get_content(self, topic: Topic) -> str:
+    def get_topic_data_text(self, location: str) -> str:
         """"""
-        return self.__loader.load_content(topic.content)
+        return self.__loader.load_data_text(location)
+
+    def get_topic_data_json(self, location: str) -> list[dict]:
+        """"""
+        return self.__loader.load_data_json(location)
 
     def __loaders_factory(self, type: str) -> Loader:
         """"""
