@@ -38,7 +38,7 @@ def tg_answer_converter(bot_id, answer: AnsweringData) -> dict:
     """"""
     tg_answer = {
         "bot_id": bot_id,
-        "chat_id": answer.sender_id,
+        "chat_id": answer.receiver_id,
         "text": answer.content,
     }
     return tg_answer

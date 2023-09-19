@@ -6,6 +6,7 @@ from src.services import services
 from src.proc_data.schemas.processingdata import ProcessingData
 from src.handlers.handler import Handler
 from src.handlers.simple_handler import SimpleHandler
+from src.handlers.subtitles_handler import SubtitlesHandler
 from src.topics import tplst
 
 
@@ -15,6 +16,7 @@ class ActiveHandlers:
         self.__default_handler = Handler()
         # Always register each existing handler
         self.register(SimpleHandler())
+        self.register(SubtitlesHandler())
         # self.register(YourHandler())
         breaf_topics = self.__get_breaf_topics()
         services.set_breaf_topics(breaf_topics)
