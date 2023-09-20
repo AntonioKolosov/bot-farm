@@ -3,10 +3,11 @@
 '''
 
 
-from src.handlers.handler import Handler
+from .handler import Handler
+from .constants import HANDLER_TYPE_SIMPLE
 
 
 class SimpleHandler(Handler):
     def __init__(self) -> None:
-        super().__init__(type="simple")
+        super().__init__(type=HANDLER_TYPE_SIMPLE)
         self._load_handler_topics()

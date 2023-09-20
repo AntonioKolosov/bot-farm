@@ -2,15 +2,14 @@
 
 '''
 
-from src.proc_data.schemas.answeringdata import AnsweringData
-from src.topics import tplst, Topic
-from src.proc_data.schemas.processingdata import ProcessingData
-from .handler import Handler, REF_PREFIX
+from src.topics import tplst
+from .handler import Handler
+from .constants import HANDLER_TYPE_SUBTITLES
 
 
 class SubtitlesHandler(Handler):
     def __init__(self) -> None:
-        super().__init__(type="subtitles")
+        super().__init__(type=HANDLER_TYPE_SUBTITLES)
         self._load_handler_topics()
 
     def _get_answer_content(self, type: str, ref: str) -> str:
