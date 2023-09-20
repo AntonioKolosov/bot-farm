@@ -11,6 +11,7 @@ from src.proc_data.schemas.processingdata import ProcessingData
 REF_PREFIX = "@ref---"
 TYPE_DEFAULT = "default"
 
+
 class Handler:
     def __init__(self, type: str = TYPE_DEFAULT) -> None:
         self.__type: str = type
@@ -59,10 +60,11 @@ class Handler:
         """Messanger exit point"""
         await services.send_message(answer)
 
-    def __create_answer(self,
-                       data: ProcessingData,
-                       receiver: int | str,
-                       topic: Topic) -> AnsweringData:
+    def __create_answer(
+            self,
+            data: ProcessingData,
+            receiver: int | str,
+            topic: Topic) -> AnsweringData:
         """Create answer from topic"""
         topic_data = topic.content
         if (topic != self._default_topic and

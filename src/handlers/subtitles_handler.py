@@ -2,10 +2,8 @@
 
 '''
 
-from src.proc_data.schemas.answeringdata import AnsweringData
-from src.topics import tplst, Topic
-from src.proc_data.schemas.processingdata import ProcessingData
-from .handler import Handler, REF_PREFIX
+from src.topics import tplst
+from .handler import Handler
 
 
 class SubtitlesHandler(Handler):

@@ -2,19 +2,15 @@
 Topics List
 """
 
-import os
 from .schemas.topic import Topic
-from .loaders.loader import Loader
-from .loaders.fsloader import FsLoader
+from .loaders import loader
 
 
 class TopicsList:
     """"
     """
     def __init__(self) -> None:
-        loader_type = os.environ.get("TOPICS_METADATA_LOADER_TYPE", "FS")
-        self.__loader: Loader = self.__loaders_factory(loader_type)
-        self.__topics_metadata: list[Topic] = self.__loader.metadata
+        self.__topics_metadata: list[Topic] = loader.metadata
 
     @property
     def topics_metadata(self) -> list[Topic]:
@@ -45,14 +41,8 @@ class TopicsList:
 
     def get_topic_data_text(self, location: str) -> str:
         """"""
-        return self.__loader.load_data_text(location)
+        return loader.load_data_text(location)
 
     def get_topic_data_json(self, location: str) -> list[dict]:
         """"""
-        return self.__loader.load_data_json(location)
-
-    def __loaders_factory(self, type: str) -> Loader:
-        """"""
-        if type == "FS":
-            return FsLoader()
-        return Loader("BASE")
+        return loader.load_data_json(location)
