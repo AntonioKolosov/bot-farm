@@ -7,13 +7,11 @@ from src.proc_data.schemas.answeringdata import AnsweringData
 from src.services import services
 from src.topics import tplst, Topic
 from src.proc_data.schemas.processingdata import ProcessingData
-
-REF_PREFIX = "@ref---"
-TYPE_DEFAULT = "default"
+from . constants import HANDLER_TYPE_DEFAULT, CONTENT_REF_PREFIX
 
 
 class Handler:
-    def __init__(self, type: str = TYPE_DEFAULT) -> None:
+    def __init__(self, type: str = HANDLER_TYPE_DEFAULT) -> None:
         self.__type: str = type
         self._topics: list[Topic] = list()
         self._default_topic = Topic()
@@ -53,7 +51,7 @@ class Handler:
 
     def _load_handler_topics(self) -> None:
         """"""
-        if self.__type != TYPE_DEFAULT:
+        if self.__type != HANDLER_TYPE_DEFAULT:
             self._topics = tplst.topics_by_type(self.__type)
 
     async def _send_answer(self, answer: AnsweringData,):
@@ -68,8 +66,8 @@ class Handler:
         """Create answer from topic"""
         topic_data = topic.content
         if (topic != self._default_topic and
-                topic.content.startswith(REF_PREFIX)):
-            ref = topic.content[len(REF_PREFIX):]
+                topic.content.startswith(CONTENT_REF_PREFIX)):
+            ref = topic.content[len(CONTENT_REF_PREFIX):]
             # topic's type specific
             topic_data = self._get_answer_content(topic.type, ref)
         return AnsweringData(

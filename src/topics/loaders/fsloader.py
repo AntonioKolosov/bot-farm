@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from ..schemas.topic import Topic
 from .loader import Loader
-from . import LOADER_FS
+from .constants import LOADER_FS
 
 
 class FsLoader(Loader):
