@@ -9,10 +9,10 @@ from src.topics import tplst, Topic
 from src.proc_data.schemas.processingdata import ProcessingData
 
 REF_PREFIX = "@ref---"
-
+TYPE_DEFAULT = "default"
 
 class Handler:
-    def __init__(self, type: str = "default") -> None:
+    def __init__(self, type: str = TYPE_DEFAULT) -> None:
         self.__type: str = type
         self._topics: list[Topic] = list()
         self._default_topic = Topic()
@@ -31,8 +31,7 @@ class Handler:
         topic = self.__get_topic(data)
         receivers = self.__receivers(data, topic)
         for receiver in receivers:
-            # topic's type specific
-            answer = self._create_answer(data, receiver, topic)
+            answer = self.__create_answer(data, receiver, topic)
             await self._send_answer(answer)
 
     def __receivers(self, data, topic) -> list[int | str]:
@@ -53,14 +52,14 @@ class Handler:
 
     def _load_handler_topics(self) -> None:
         """"""
-        if self.__type != "default":
+        if self.__type != TYPE_DEFAULT:
             self._topics = tplst.topics_by_type(self.__type)
 
     async def _send_answer(self, answer: AnsweringData,):
         """Messanger exit point"""
         await services.send_message(answer)
 
-    def _create_answer(self,
+    def __create_answer(self,
                        data: ProcessingData,
                        receiver: int | str,
                        topic: Topic) -> AnsweringData:
@@ -68,11 +67,16 @@ class Handler:
         topic_data = topic.content
         if (topic != self._default_topic and
                 topic.content.startswith(REF_PREFIX)):
-            topic.content = topic.content[len(REF_PREFIX):]
-            location = f"{topic.type}/{topic.content}"
-            topic_data = tplst.get_topic_data_text(location)
+            ref = topic.content[len(REF_PREFIX):]
+            # topic's type specific
+            topic_data = self._get_answer_content(topic.type, ref)
         return AnsweringData(
             service_type=data.service_type,
             service_alias=data.service_alias,
             receiver_id=receiver,
             content=topic_data)
+
+    def _get_answer_content(self, type: str, ref: str) -> str:
+        ''' topic's type specific '''
+        location = f"{type}/{ref}"
+        return tplst.get_topic_data_text(location)
