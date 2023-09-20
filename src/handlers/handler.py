@@ -8,6 +8,8 @@ from src.services import services
 from src.topics import tplst, Topic
 from src.proc_data.schemas.processingdata import ProcessingData
 
+REF_PREFIX = "@ref---"
+
 
 class Handler:
     def __init__(self, type: str = "default") -> None:
@@ -64,7 +66,9 @@ class Handler:
                        topic: Topic) -> AnsweringData:
         """Create answer from topic"""
         topic_data = topic.content
-        if topic != self._default_topic:
+        if (topic != self._default_topic and
+                topic.content.startswith(REF_PREFIX)):
+            topic.content = topic.content[len(REF_PREFIX):]
             location = f"{topic.type}/{topic.content}"
             topic_data = tplst.get_topic_data_text(location)
         return AnsweringData(
