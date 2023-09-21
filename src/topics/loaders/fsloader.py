@@ -1,31 +1,37 @@
 """
-FS loader
+FS loader - Loads a topic metadata and content from the file system
 """
 
 import os
 import json
 from pathlib import Path
-from ..schemas.topic import Topic
 from .loader import Loader
-from .constants import LOADER_FS
 
 
 class FsLoader(Loader):
-    def __init__(self) -> None:
-        super().__init__(LOADER_FS)
+    def __init__(self, type: str) -> None:
+        super().__init__(type)
         self.__storage = os.environ.get("FS_TOPICS_STORAGE",
                                         "./datatopics_example")
-        self.__load_metadata()
 
-    def __load_metadata(self) -> None:
+    def load_names(self) -> list[str]:
         """"""
         path = Path(self.__storage)
+        names = []
         for file in path.iterdir():
             if file.suffix == '.json':
-                top_obj = self.load_data_json(file.stem)
-                # Read topic
-                topic = Topic(**top_obj)
-                super().metadata.append(topic)
+                names.append(file.stem)
+        return names
+
+    def load_metadata(self, name) -> dict:
+        """"""
+        path = Path(self.__storage)
+        file_name = ''
+        for file in path.iterdir():
+            if file.stem == name and file.suffix == '.json':
+                file_name = file.stem
+                break
+        return self.load_data_json(file_name)
 
     def load_data_text(self, location: str) -> str:
         """"""

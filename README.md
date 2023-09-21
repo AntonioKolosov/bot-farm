@@ -113,7 +113,7 @@ Interactive Documentation and tests via OpenAPI
 
 ### Linting
 ```bash
-flake8 -v src/
+flake8 -v --max-line-length=79 --max-doc-length=72 --ignore=E203,W503 ./src
 ```
 
 ### Unit testing

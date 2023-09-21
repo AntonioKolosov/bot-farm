@@ -21,5 +21,5 @@ class LoaderFactory:
 
     def loader(self) -> Loader:
         if self.loader_type == LOADER_FS:
-            return FsLoader()
+            return FsLoader(LOADER_FS)
         return Loader(LOADER_BASE)
