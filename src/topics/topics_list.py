@@ -2,7 +2,7 @@
 Topics List
 """
 
-from .schemas.topic import Topic
+from . import Topic
 from .loaders import loader
 
 
@@ -10,34 +10,28 @@ class TopicsList:
     """"
     """
     def __init__(self) -> None:
-        self.__topics_metadata: list[Topic] = loader.metadata
+        self.__topics_list: list[Topic] = []
+        self.__init_topics_list()
 
     @property
-    def topics_metadata(self) -> list[Topic]:
-        return self.__topics_metadata
+    def topics_list(self) -> list[Topic]:
+        return self.__topics_list
 
-    def topics_by_type(self, type: str) -> list[Topic]:
-        """"""
-        return [topic for topic in self.topics_metadata if topic.type == type]
+    def __init_topics_list(self) -> None:
+        ''''''
+        names = loader.load_names()
+        for name in names:
+            topic = Topic(name)
+            self.__topics_list.append(topic)
 
-    def topics_by_service_alias(self, service_alias: str) -> list[Topic]:
-        """"""
-        return [topic for topic in self.topics_metadata
-                if topic.service_alias == service_alias]
-
-    def topics_name_by_service_alias(self, service_alias: str) -> list[str]:
-        """"""
-        return [
-            topic.name for topic in self.topics_by_service_alias(service_alias)
-            ]
-
-    def breaf_topics(self) -> list[dict[str, str]]:
-        """"""
-        return [{"name": topic.name,
-                "descr": topic.description,
-                 "service_type": topic.service_type,
-                 "service_alias": topic.service_alias}
-                for topic in self.topics_metadata]
+    def get_topic(self, name: str, type: str, alias: str) -> Topic:
+        ''''''
+        for topic in self.__topics_list:
+            if (topic.name == name
+                    and topic.metadata.service_type == type
+                    and topic.metadata.service_alias == alias):
+                return topic
+        return Topic()
 
     def get_topic_data_text(self, location: str) -> str:
         """"""
@@ -46,3 +40,11 @@ class TopicsList:
     def get_topic_data_json(self, location: str) -> list[dict]:
         """"""
         return loader.load_data_json(location)
+
+    def breaf_topics(self) -> list[dict[str, str]]:
+        """"""
+        return [{"name": topic.name,
+                "descr": topic.metadata.description,
+                 "service_type": topic.metadata.service_type,
+                 "service_alias": topic.metadata.service_alias}
+                for topic in self.topics_list]
