@@ -37,7 +37,7 @@ class TopicsList:
         """"""
         return loader.load_data_text(location)
 
-    def get_topic_data_json(self, location: str) -> list[dict]:
+    def get_topic_data_json(self, location: str) -> dict:
         """"""
         return loader.load_data_json(location)
 

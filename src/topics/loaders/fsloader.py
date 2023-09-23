@@ -36,12 +36,21 @@ class FsLoader(Loader):
     def load_data_text(self, location: str) -> str:
         """"""
         ffn = f"{self.__storage}/{location}.txt"
-        with open(ffn, 'r') as f:
-            top_content = f.read()
-        return top_content
+        try:
+            with open(ffn, 'r') as f:
+                top_content = f.read()
+            return top_content
+        except (FileNotFoundError):
+            return ''
 
-    def load_data_json(self, location) -> dict:
+    def load_data_json(self, location: str) -> dict:
         ''''''
         ffn = f"{self.__storage}/{location}.json"
         with open(ffn, 'r') as json_file:
             return json.load(json_file)
+
+    def save_data_text(self, location, state: str) -> None:
+        ''''''
+        ffn = f"{self.__storage}/{location}.txt"
+        with open(ffn, 'w') as f:
+            f.write(state)

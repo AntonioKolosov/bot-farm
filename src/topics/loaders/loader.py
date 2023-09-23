@@ -23,6 +23,9 @@ class Loader:
         """"""
         return ""
 
-    def load_data_json(self, location) -> list[dict]:
+    def load_data_json(self, location) -> dict:
         ''''''
-        return []
+        return {}
+
+    def save_data_text(self, location, state: str) -> None:
+        ''''''

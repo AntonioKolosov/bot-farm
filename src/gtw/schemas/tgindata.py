@@ -3,7 +3,6 @@ Hashing from: https://www.pythoncentral.io/hashing-strings-with-python/
 """
 
 
-import json
 from typing import Optional
 from pydantic import BaseModel, Field
 
@@ -47,8 +46,8 @@ class TgInData(BaseModel):
         '''Get not mutable data from incoming data'''
         message: TgMessage | None = self.tg_message()
         if message is not None:
-            from_ = str(json.dumps(message.from_.dict(), sort_keys=True))
-            chat = str(json.dumps(message.chat.dict(), sort_keys=True))
-            return f'{from_}-{chat}'
+            hash_from = f'{message.from_.id}-{message.from_.first_name}'
+            hash_chat = f'{message.chat.id}-{message.chat.first_name}'
+            return f'{hash_from}--{hash_chat}'
         else:
             return ""

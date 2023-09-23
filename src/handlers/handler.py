@@ -65,14 +65,14 @@ class Handler:
                 and topic.metadata.content.startswith(CONTENT_REF_PREFIX)):
             ref = topic.metadata.content[len(CONTENT_REF_PREFIX):]
             # topic's type specific
-            topic_data = self._get_answer_content(topic, ref)
+            topic_data = self._get_answer_content(topic, ref, data.hash_code)
         return AnsweringData(
             service_type=data.service_type,
             service_alias=data.service_alias,
             receiver_id=receiver,
             content=topic_data)
 
-    def _get_answer_content(self, topic: Topic, ref: str) -> str:
+    def _get_answer_content(self, topic: Topic, ref: str, hash: str) -> str:
         ''' topic's type specific '''
         location = f"{topic.metadata.type}/{ref}"
         return topic.get_topic_data_text(location)
