@@ -3,3 +3,4 @@ HANDLER_TYPE_SIMPLE = "simple"
 HANDLER_TYPE_SUBTITLES = "subtitles"
 
 CONTENT_REF_PREFIX = "@ref---"
+RESET_STATE_PREFIX = "@reset---"
