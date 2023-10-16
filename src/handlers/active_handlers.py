@@ -3,7 +3,6 @@
 
 
 from src.services import services
-from src.proc_data.schemas.processingdata import ProcessingData
 from src.handlers.handler import Handler
 from src.handlers.simple_handler import SimpleHandler
 from src.handlers.subtitles_handler import SubtitlesHandler
@@ -29,10 +28,10 @@ class ActiveHandlers:
         ''''''
         self.__active_handlers.pop(type)
 
-    def get_handler_for_data(self, data: ProcessingData) -> Handler:
+    def get_handler_by_type(self, type: str) -> Handler:
         ''''''
         for id, handler in self.__active_handlers.items():
-            if handler.fit(data):
+            if handler.type == type:
                 return handler
         return self.__default_handler
 
