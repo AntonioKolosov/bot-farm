@@ -18,14 +18,6 @@ class Handler:
     def type(self) -> str:
         return self.__type
 
-    def fit(self, data: ProcessingData) -> bool:
-        '''Check that the handler may handle the data'''
-        topic = self.__get_topic(data)
-        return (self.type == topic.metadata.type
-                and topic.name == data.command
-                and topic.metadata.service_type == data.service_type
-                and topic.metadata.service_alias == data.service_alias)
-
     async def handle(self, data: ProcessingData) -> None:
         ''''''
         topic = self.__get_topic(data)
