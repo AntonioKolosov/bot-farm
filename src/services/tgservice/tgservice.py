@@ -2,9 +2,8 @@
 """
 
 
-import os
-
-from src.internals import utilites
+from src.config import cfg
+from src.data_def import utilites
 from src.data_def.schemas.answeringdata import AnsweringData
 from ..service import Service
 from .tgapi import send_message
@@ -18,13 +17,9 @@ class TgService(Service):
     def __init__(self) -> None:
         super().__init__("TG")
         self.__endpoint_template = "https://api.telegram.org/bot{key}/{method}"
-        tokens = os.environ.get("TG_BOTS_TOKENS", "[\"error:error\"]")
-        self.__tokens = list(map(str, tokens[1:-1].split(",")))
-        self.__gtw_url = os.environ.get("GTW_URL", "")
-        bots_id_2_names = os.environ.get("TG_BOTS_ID_2_NAMES",
-                                         "[\"error:error\"]")
-        self._bots_id_2_names = list(map(str,
-                                         bots_id_2_names[1:-1].split(",")))
+        self.__tokens = cfg.tokens
+        self.__gtw_url = cfg.gtw_url
+        self._bots_id_2_names: list[str] = cfg.bots_id_2_names
         self.__endpoints: dict[str, str] = {}
         self.__make_endpoints()
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, BackgroundTasks, Request
 
-from src.internals.utilites import tg_data_converter
+from src.data_def.utilites import tg_data_converter
 from src.mess_broker import dsp
 from src.internals.tbotlogger import tb_log
 

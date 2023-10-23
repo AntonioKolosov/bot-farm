@@ -3,21 +3,17 @@
 """
 
 
-import os
-
 from src.data_def.schemas.answeringdata import AnsweringData
 from .service import Service
 from .tgservice.tgservice import TgService
+from ..config import cfg
 
 
 class ServicesList:
     """List of all exists services"""
     def __init__(self) -> None:
         """"""
-        # self.__bot_types_list = list()
-        bot_types = os.environ.get("BOT_TYPES_LIST", "[\"error:error\"]")
-        self.__bot_types_list = list(map(str, bot_types[1:-1].split(",")))
-
+        self.__bot_types_list = cfg.bot_types_list
         self.__default_service = Service()
         self.__services: dict[str, Service] = {}
         for bt in self.__bot_types_list:
