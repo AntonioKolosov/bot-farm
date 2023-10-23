@@ -1,0 +1,27 @@
+{
+    "id": 100000,
+    "service_type": "TG",
+    "service_alias": "TESTHTTP",
+    "buttons": [],
+    "chats_ids": [],
+    "commands": [
+		{
+			"name": "/start",
+			"type": "simple",			
+			"description": "Start to use the boot",
+			"content": "Welcome!"
+		},
+		{
+			"name": "/help",
+			"type": "simple",			
+			"description": "How to use the boot",
+			"content": "What the bot can to do"
+		},
+		{
+			"name": "/info",
+    			"type": "simple",			
+			"description": "Some test info from a file",
+			"content": "@ref---testhttp_info"
+		}
+	]
+}

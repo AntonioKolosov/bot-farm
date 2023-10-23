@@ -2,7 +2,9 @@
 """
 
 from abc import abstractmethod
-from src.proc_data.schemas.answeringdata import AnsweringData
+from src.data_def.schemas.answeringdata import AnsweringData
+from src.data_def.schemas.service_md import ServiceMetadata
+from src.loaders import loader
 
 
 class Service:
@@ -11,6 +13,8 @@ class Service:
         self._service_type = type
         self._breaf_topics: list[dict[str, str]] = []
         self._bots_id_2_names: list = []
+        self._service_metadata: dict[str, ServiceMetadata] = {}
+        self.__load_metadata()
 
     def _get_alias_by_id(self, service_alias: str) -> str:
         """"""
@@ -28,9 +32,15 @@ class Service:
                 return id
         return ""
 
-    def add_breaf(self, topic: dict[str, str]) -> None:
-        """"""
-        self._breaf_topics.append(topic)
+    def __load_metadata(self):
+        ''''''
+        names = loader.load_names()
+        for name in names:
+            metadata = loader.load_metadata(name)
+            srv_metadata = ServiceMetadata(**metadata)
+            if srv_metadata.service_type == self._service_type:
+                key = srv_metadata.service_alias
+                self._service_metadata[key] = srv_metadata
 
     @abstractmethod
     async def startup(self) -> None:

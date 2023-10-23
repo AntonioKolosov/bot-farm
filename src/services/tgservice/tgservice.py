@@ -5,7 +5,7 @@
 import os
 
 from src.internals import utilites
-from src.proc_data.schemas.answeringdata import AnsweringData
+from src.data_def.schemas.answeringdata import AnsweringData
 from ..service import Service
 from .tgapi import send_message
 from .tgapi import set_webhook, delete_webhook
@@ -49,14 +49,10 @@ class TgService(Service):
         """"""
         # convert bot_id to bot_name
         alias = self._get_alias_by_id(bot_id)
-        # get endpoints names from topics
-        endpoints_names = [{"name": topic.get("name", ""),
-                            "descr": topic.get("descr", "")}
-                           for topic in self._breaf_topics
-                           if topic.get("service_alias") == alias]
         print(f"Initialize the {alias} endpoint")
+
         await self.__delete_menu_commands(bot_id)
-        await self.__set_menu_commands(bot_id, endpoints_names)
+        await self.__set_menu_commands(bot_id)
         await self.__set_menu_button(bot_id, True)
         await self.__set_webhook(bot_id, alias)
         # for test
@@ -95,18 +91,20 @@ class TgService(Service):
         endpoint = self.__endpoints.get(bot_id, "")
         return await get_commands(endpoint)
 
-    async def __set_menu_commands(self,
-                                  bot_id: str,
-                                  topics_names: list[dict[str, str]]) -> bool:
+    async def __set_menu_commands(self, bot_id: str) -> bool:
         """Wrapper for API"""
-        endpoint = self.__endpoints.get(bot_id, "")
-        commands = list()
-        for tn in topics_names:
+        alias = self._get_alias_by_id(bot_id)
+        bot_metadata = self._service_metadata.get(alias, None)
+        if bot_metadata is None:
+            return False
+        commands = []
+        for command in bot_metadata.commands:
             cmd = {
-                "command": tn.get("name", ""),
-                "description": tn.get("descr", "")
+                "command": command.name,
+                "description": command.description
             }
             commands.append(cmd)
+        endpoint = self.__endpoints.get(bot_id, "")
         return await set_command(endpoint, commands)
 
     async def __set_menu_button(self, bot_id: str, cmd: bool = False) -> bool:

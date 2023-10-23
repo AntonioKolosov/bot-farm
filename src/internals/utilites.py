@@ -5,8 +5,8 @@ The gtw utilites
 
 import hashlib
 from src.gtw.schemas.tgindata import TgInData
-from src.proc_data.schemas.processingdata import ProcessingData
-from src.proc_data.schemas.answeringdata import AnsweringData
+from src.data_def.schemas.processingdata import ProcessingData
+from src.data_def.schemas.answeringdata import AnsweringData
 
 
 def tg_data_converter(alias: str, data) -> ProcessingData | None:
