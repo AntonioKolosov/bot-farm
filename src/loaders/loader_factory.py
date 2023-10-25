@@ -1,19 +1,20 @@
 '''
 '''
 
-import os
 
+from ..config import cfg
 from .loader import Loader
 from .fsloader import FsLoader
 
-from .constants import LOADER_BASE, LOADER_FS, TOPICS_LOADER_TYPE
+from .constants import LOADER_BASE, LOADER_FS
 
 
 class LoaderFactory:
     """"
     """
     def __init__(self) -> None:
-        self.__loader_type = os.environ.get(TOPICS_LOADER_TYPE, LOADER_BASE)
+        self.__loader_type = cfg.loader_type
+        print('LoaderFactory', self.__loader_type)
 
     @property
     def loader_type(self) -> str:

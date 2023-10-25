@@ -2,8 +2,10 @@
 FS loader - Loads a topic metadata and content from the file system
 """
 
-import os
+
 import json
+
+from ..config import cfg
 from pathlib import Path
 from .loader import Loader
 
@@ -11,8 +13,7 @@ from .loader import Loader
 class FsLoader(Loader):
     def __init__(self, type: str) -> None:
         super().__init__(type)
-        self.__storage = os.environ.get("FS_TOPICS_STORAGE",
-                                        "./datatopics_example")
+        self.__storage = cfg.storage
 
     def load_names(self) -> list[str]:
         """"""

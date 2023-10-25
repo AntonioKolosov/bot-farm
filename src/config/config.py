@@ -6,9 +6,11 @@ class Configuration:
     ''''''
     def __init__(self) -> None:
         load_dotenv()
+        # Logger
         self.log_level = os.environ.get("LOG_LEVEL", "WARNING")
         self.log_path = os.environ.get("LOG_PATH", "twbot.log")
 
+        # Services
         bot_types = os.environ.get("BOT_TYPES_LIST",
                                    "[\"error:error\"]")
         self.bot_types_list = list(map(str, bot_types[1:-1].split(",")))
@@ -21,3 +23,8 @@ class Configuration:
                                          "[\"error:error\"]")
         self.bots_id_2_names = list(map(str,
                                         bots_id_2_names[1:-1].split(",")))
+
+        # Loader
+        self.loader_type = os.environ.get("TOPICS_LOADER_TYPE", "BASE")
+        self.storage = os.environ.get("FS_TOPICS_STORAGE",
+                                      "./datatopics_example")
