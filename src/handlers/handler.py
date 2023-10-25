@@ -3,11 +3,12 @@ Base class for message handlers
 '''
 
 
-from ..proc_data.schemas.answeringdata import AnsweringData
-from ..proc_data.schemas.processingdata import ProcessingData
+from ..data_def.schemas.processingdata import ProcessingData
+from ..data_def.schemas.service_md import CommandMetadata
+from ..data_def.schemas.answeringdata import AnsweringData
+from ..loaders import loader
 from ..services import services
-from ..topics import tplst, Topic
-from . constants import HANDLER_TYPE_DEFAULT, CONTENT_REF_PREFIX
+from . constants import HANDLER_TYPE_DEFAULT, CONTENT_REF, RETURN_TO_SENDER
 
 
 class Handler:
@@ -18,29 +19,26 @@ class Handler:
     def type(self) -> str:
         return self.__type
 
-    async def handle(self, data: ProcessingData) -> None:
+    async def handle(self,
+                     proc_data: ProcessingData,
+                     cmd_data: CommandMetadata) -> None:
         ''''''
-        topic = self.__get_topic(data)
-        receivers = self.__receivers(data, topic)
+        receivers = self.__receivers(proc_data, cmd_data)
+        answer = self.__create_answer(proc_data, cmd_data)
         for receiver in receivers:
-            answer = self.__create_answer(data, receiver, topic)
-            await self._send_answer(answer)
+            if (receiver != RETURN_TO_SENDER):
+                answer.receiver_id = receiver
+            if (answer.content != ''):
+                await self._send_answer(answer)
 
     def __receivers(self,
                     data: ProcessingData,
-                    topic: Topic) -> list[int | str]:
+                    cmd_data: CommandMetadata) -> list[int | str]:
         ''' '''
-        if (topic.metadata.redirection_id is not None
-                and len(topic.metadata.redirection_id) != 0):
-            return topic.metadata.redirection_id
+        if (cmd_data.redirection_id is not None
+                and len(cmd_data.redirection_id) != 0):
+            return cmd_data.redirection_id
         return [data.sender_id]
-
-    def __get_topic(self, data: ProcessingData) -> Topic:
-        ''''''
-        topic = tplst.get_topic(data.command,
-                                data.service_type,
-                                data.service_alias)
-        return topic
 
     async def _send_answer(self, answer: AnsweringData,):
         """Messanger exit point"""
@@ -48,23 +46,22 @@ class Handler:
 
     def __create_answer(
             self,
-            data: ProcessingData,
-            receiver: int | str,
-            topic: Topic) -> AnsweringData:
-        """Create answer from topic"""
-        # topic's type specific
-        topic_data = self._get_answer_content(topic, data.hash_code)
+            proc_data: ProcessingData,
+            cmd_data: CommandMetadata) -> AnsweringData:
+        """Create answer for command"""
+        # command's type specific
+        topic_data = self._get_answer_content(cmd_data, proc_data.hash_code)
         return AnsweringData(
-            service_type=data.service_type,
-            service_alias=data.service_alias,
-            receiver_id=receiver,
+            service_type=proc_data.service_type,
+            service_alias=proc_data.service_alias,
+            receiver_id=proc_data.sender_id,
             content=topic_data)
 
-    def _get_answer_content(self, topic: Topic, hash: str) -> str:
+    def _get_answer_content(self, cmd_data: CommandMetadata, hash: str) -> str:
         ''' topic's type specific '''
-        topic_data = topic.metadata.content
-        if (topic_data.startswith(CONTENT_REF_PREFIX)):
-            ref = topic_data[len(CONTENT_REF_PREFIX):]
-            location = f"{topic.metadata.type}/{ref}"
-            topic_data = topic.get_topic_data_text(location)
-        return topic_data
+        content = cmd_data.content
+        if (cmd_data.content.startswith(CONTENT_REF)):
+            ref = cmd_data.content[len(CONTENT_REF):]
+            location = f"{cmd_data.type}/{ref}"
+            content = loader.load_data_text(location)
+        return content

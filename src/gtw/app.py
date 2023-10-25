@@ -4,6 +4,7 @@
 from typing import Dict
 
 from fastapi import FastAPI
+from dotenv import load_dotenv
 
 from .description import description, title, version, license, contact
 from src.gtw.routers import inc_data_router
@@ -18,6 +19,7 @@ app = FastAPI(
     license=license
 )
 
+load_dotenv()
 
 app.include_router(inc_data_router.router)
 # app.include_router(testrouter.router)

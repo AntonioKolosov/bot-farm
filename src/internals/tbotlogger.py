@@ -1,14 +1,27 @@
 """
 """
 
-import os
 import logging
 import sys
 
+from ..config import cfg
+
+log_levels = {
+    "DEBUG": logging.DEBUG,
+    "INFO": logging.INFO,
+    "WARNING": logging.WARNING,
+    "ERROR": logging.ERROR,
+    "CRITICAL": logging.CRITICAL,
+    "FATAL": logging.FATAL
+}
+
 
 class TBotLogger:
-    def __init__(self, log_level: int, log_path: str) -> None:
+    def __init__(self) -> None:
         """"""
+        log_level = cfg.log_level
+        log_path = cfg.log_path
+        log_level = log_levels.get(log_level, logging.WARNING)
         logging.basicConfig(level=log_level,
                             format="%(asctime)s %(levelname)s %(message)s",
                             datefmt="%Y-%m-%d %H:%M:%S",
@@ -21,17 +34,4 @@ class TBotLogger:
         logging.info(f"{file} {line} {func} {message}")
 
 
-log_levels = {
-    "DEBUG": logging.DEBUG,
-    "INFO": logging.INFO,
-    "WARNING": logging.WARNING,
-    "ERROR": logging.ERROR,
-    "CRITICAL": logging.CRITICAL,
-    "FATAL": logging.FATAL
-}
-
-
-log_level = os.environ.get("LOG_LEVEL", "WARNING")
-log_level = log_levels.get(log_level, logging.WARNING)
-log_path = os.environ.get("LOG_PATH", "twbot.log")
-tb_log = TBotLogger(log_level, log_path=log_path)
+tb_log = TBotLogger()

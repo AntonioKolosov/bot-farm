@@ -1,12 +1,13 @@
 '''
 
 '''
-
-from ..topics.topic import Topic
+from ..data_def.schemas.service_md import CommandMetadata
+from src.loaders import loader
 from .handler import Handler
 from .constants import (
-    CONTENT_REF_PREFIX,
-    RESET_STATE_PREFIX,
+    CONTENT_REF,
+    RESET_STATE,
+    RETURN_TO_SENDER,
     HANDLER_TYPE_SUBTITLES)
 
 
@@ -14,30 +15,32 @@ class SubtitlesHandler(Handler):
     def __init__(self) -> None:
         super().__init__(type=HANDLER_TYPE_SUBTITLES)
 
-    def _get_answer_content(self, topic: Topic, hash: str) -> str:
+    def _get_answer_content(self, cmd_data: CommandMetadata, hash: str) -> str:
         ''' topic's type specific '''
-        topic_data = topic.metadata.content
-        if (topic_data.startswith(RESET_STATE_PREFIX)):
-            ref = topic_data[len(RESET_STATE_PREFIX):]
-            location = f"{topic.metadata.type}/{ref}"
-            topic.set_topic_state(f"{location}_state_{hash}", '0')
-            return "Ready!"
+        content = ''
+        if (cmd_data.content.startswith(RESET_STATE)):
+            ref = cmd_data.content[len(RESET_STATE):]
+            if (RETURN_TO_SENDER in ref):
+                ref, content = ref.split(RETURN_TO_SENDER)
+            location = f"{cmd_data.type}/{ref}"
+            loader.save_data_text(f"{location}_state_{hash}", '0')
 
-        if (topic_data.startswith(CONTENT_REF_PREFIX)):
-            ref = topic_data[len(CONTENT_REF_PREFIX):]
-            location = f"{topic.metadata.type}/{ref}"
-            data = topic.get_topic_data_text(location)
+        if (cmd_data.content.startswith(CONTENT_REF)):
+            ref = cmd_data.content[len(CONTENT_REF):]
+            location = f"{cmd_data.type}/{ref}"
 
-            state = topic.get_topic_state(f"{location}_state_{hash}")
+            state = loader.load_data_text(f"{location}_state_{hash}")
             curr_index = int(state if state != '' else '0')
-            indexes = topic.get_topic_data_json(f"{location}_index")
-            index = indexes[curr_index]
-
+            indexes = loader.load_data_json(f"{location}_index")
+            index_descr = indexes[curr_index]
             if curr_index < len(indexes) - 1:
-                topic.set_topic_state(
+                loader.save_data_text(
                     f"{location}_state_{hash}",
                     str(curr_index + 1))
+
+            data = loader.load_data_text(location)
             data_list = data.split('\n')
-            chank = data_list[index.get('start', 0): index.get('end', 0)]
-            topic_data = '\n'.join(chank)
-        return topic_data
+            chank = data_list[index_descr.get('start', 0):
+                              index_descr.get('end', 0)]
+            content = '\n'.join(chank)
+        return content
