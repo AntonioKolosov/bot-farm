@@ -26,5 +26,11 @@ class Configuration:
 
         # Loader
         self.loader_type = os.environ.get("TOPICS_LOADER_TYPE", "BASE")
-        self.storage = os.environ.get("FS_TOPICS_STORAGE",
-                                      "./datatopics_example")
+        if self.loader_type == "FS":
+            self.storage = os.environ.get("FS_TOPICS_STORAGE",
+                                          "./datatopics_example")
+        elif self.loader_type == "MONGO":
+            self.storage = (os.environ.get("DB_MONGO_URI", "")
+                            + "-----"
+                            + os.environ.get("DB_MONGO_NAME", ""))
+            print("Config", self.storage)

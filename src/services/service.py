@@ -14,7 +14,8 @@ class Service:
         self._breaf_topics: list[dict[str, str]] = []
         self._bots_id_2_names: list = []
         self._service_metadata: dict[str, ServiceMetadata] = {}
-        self.__load_metadata()
+        if type != '':
+            self.__load_metadata()
 
     def _get_alias_by_id(self, service_alias: str) -> str:
         """"""

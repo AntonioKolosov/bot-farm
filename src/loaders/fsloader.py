@@ -32,10 +32,11 @@ class FsLoader(Loader):
             if file.stem == name and file.suffix == '.json':
                 file_name = file.stem
                 break
-        return self.load_data_json(file_name)
+        return self.__load_json(file_name)
 
-    def load_data_text(self, location: str) -> str:
+    def load_content(self, type: str, ref: str) -> str:
         """"""
+        location = f"{type}/{ref}"
         ffn = f"{self.__storage}/{location}.txt"
         try:
             with open(ffn, 'r') as f:
@@ -44,14 +45,31 @@ class FsLoader(Loader):
         except (FileNotFoundError):
             return ''
 
-    def load_data_json(self, location: str) -> dict:
+    def load_index(self, type: str, ref: str) -> dict:
+        ''''''
+        location = f"{type}/{ref}"
+        return self.__load_json(location)
+
+    def load_state(self, type: str, ref: str) -> str:
+        """"""
+        location = f"{type}/{ref}"
+        ffn = f"{self.__storage}/{location}.txt"
+        try:
+            with open(ffn, 'r') as f:
+                top_content = f.read()
+            return top_content
+        except (FileNotFoundError):
+            return ''
+
+    def save_state(self, type: str, ref: str, state: str) -> None:
+        ''''''
+        location = f"{type}/{ref}"
+        ffn = f"{self.__storage}/{location}.txt"
+        with open(ffn, 'w') as f:
+            f.write(state)
+
+    def __load_json(self, location: str) -> dict:
         ''''''
         ffn = f"{self.__storage}/{location}.json"
         with open(ffn, 'r') as json_file:
             return json.load(json_file)
-
-    def save_data_text(self, location, state: str) -> None:
-        ''''''
-        ffn = f"{self.__storage}/{location}.txt"
-        with open(ffn, 'w') as f:
-            f.write(state)

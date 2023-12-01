@@ -3,6 +3,9 @@ Base Topics loaders class
 """
 
 
+from abc import abstractmethod
+
+
 class Loader:
     def __init__(self, type: str) -> None:
         self.__type = type
@@ -11,21 +14,24 @@ class Loader:
     def type(self) -> str:
         return self.__type
 
+    @abstractmethod
     def load_names(self) -> list[str]:
         """"""
-        return list()
 
+    @abstractmethod
     def load_metadata(self, name: str) -> dict:
         """"""
-        return {}
 
-    def load_data_text(self, location: str) -> str:
+    @abstractmethod
+    def load_content(self, type: str, ref: str) -> str:
         """"""
-        return ""
 
-    def load_data_json(self, location) -> dict:
+    @abstractmethod
+    def load_index(self, type: str, ref: str) -> dict:
         ''''''
-        return {}
+    @abstractmethod
+    def load_state(self, type: str, ref: str) -> str:
+        """"""
 
-    def save_data_text(self, location, state: str) -> None:
+    def save_state(self, type: str, ref: str, state: str) -> None:
         ''''''
