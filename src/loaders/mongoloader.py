@@ -75,23 +75,29 @@ class MongoLoader(Loader):
         doc = list(cursor)
         return doc[0]  # type: ignore
 
-    def load_content(self, type: str, ref: str) -> str:
+    def load_content(self, type: str, ref: str) -> dict | str:
         """"""
         collection = self.__get_db_collection("Content")
         cursor: Cursor = collection.find({"name": ref})  # type: ignore
         content = ''
         for document in cursor:
-            nm = str(document["content"]).lower()
-            content += nm
+            content = document
         return content
-
-    def load_index(self, type: str, ref: str) -> dict:
-        """"""
-        return {}
 
     def load_state(self, type: str, ref: str) -> str:
         """"""
-        return ''
+        collection = self.__get_db_collection("States")
+        cursor: Cursor = collection.find({"state_id": ref})  # type: ignore
+        state = ''
+        for document in cursor:
+            state = str(document["state_value"]).lower()
+        return state
 
-    def save_state(self):
+    def save_state(self, type: str, ref: str, state: str):
         """"""
+        collection = self.__get_db_collection("States")
+        state_obj = {
+            "state_id": ref,
+            "state_value": state
+        }
+        collection.insert_one(state_obj)  # type: ignore

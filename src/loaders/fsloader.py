@@ -34,21 +34,13 @@ class FsLoader(Loader):
                 break
         return self.__load_json(file_name)
 
-    def load_content(self, type: str, ref: str) -> str:
+    def load_content(self, type: str, ref: str) -> dict | str:
         """"""
         location = f"{type}/{ref}"
-        ffn = f"{self.__storage}/{location}.txt"
-        try:
-            with open(ffn, 'r') as f:
-                top_content = f.read()
-            return top_content
-        except (FileNotFoundError):
-            return ''
-
-    def load_index(self, type: str, ref: str) -> dict:
-        ''''''
-        location = f"{type}/{ref}"
-        return self.__load_json(location)
+        ffn = f"{self.__storage}/{location}"
+        if type == 'subtitles':
+            return self.__load_json(ffn)
+        return self.__load_text(ffn)
 
     def load_state(self, type: str, ref: str) -> str:
         """"""
@@ -73,3 +65,9 @@ class FsLoader(Loader):
         ffn = f"{self.__storage}/{location}.json"
         with open(ffn, 'r') as json_file:
             return json.load(json_file)
+
+    def __load_text(self, location: str) -> str:
+        ''''''
+        ffn = f"{self.__storage}/{location}.txt"
+        with open(ffn, 'r') as text_file:
+            return text_file.read()
