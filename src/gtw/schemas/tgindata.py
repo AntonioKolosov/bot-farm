@@ -23,13 +23,18 @@ class TgFrom(BaseModel):
     is_premium: Optional[bool]
 
 
+class TgMessageAutoDelete(BaseModel):
+    message_auto_delete_time: Optional[int]
+
+
 class TgMessage(BaseModel):
     message_id: int
     from_: TgFrom = Field(alias='from')
     chat: TgChat
     date: int
     edit_date: Optional[int]
-    text: str
+    message_auto_delete_timer_changed: Optional[TgMessageAutoDelete]
+    text: Optional[str]
 
 
 class TgInData(BaseModel):

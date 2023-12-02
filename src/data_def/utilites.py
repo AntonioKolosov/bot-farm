@@ -16,6 +16,8 @@ def tg_data_converter(alias: str, data) -> ProcessingData | None:
     message = tgindata.tg_message()
     if message is None:
         return None
+    if message.text is None:
+        return None
     return ProcessingData(service_type="TG",
                           service_alias=alias,
                           sender_id=message.chat.id,
