@@ -23,12 +23,9 @@ class Loader:
         """"""
 
     @abstractmethod
-    def load_content(self, type: str, ref: str) -> str:
+    def load_content(self, type: str, ref: str) -> dict | str:
         """"""
 
-    @abstractmethod
-    def load_index(self, type: str, ref: str) -> dict:
-        ''''''
     @abstractmethod
     def load_state(self, type: str, ref: str) -> str:
         """"""

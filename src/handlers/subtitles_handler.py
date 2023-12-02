@@ -23,24 +23,23 @@ class SubtitlesHandler(Handler):
             if (RETURN_TO_SENDER in ref):
                 ref, content = ref.split(RETURN_TO_SENDER)
             loader.save_state(cmd_data.type, f"{ref}_state_{hash}", '0')
-
         if (cmd_data.content.startswith(CONTENT_REF)):
             ref = cmd_data.content[len(CONTENT_REF):]
             f"{cmd_data.type}/{ref}"
 
-            state = loader.load_state(cmd_data.type, f"{ref}_state_{hash}")
-            curr_index = int(state if state != '' else '0')
-            indexes = loader.load_index(cmd_data.type, f"{ref}_index")
-            index_descr = indexes[curr_index]
-            if curr_index < len(indexes) - 1:
-                loader.save_state(
-                    cmd_data.type,
-                    f"{ref}_state_{hash}",
-                    str(curr_index + 1))
+            state = int(loader.load_state(cmd_data.type,
+                                          f"{ref}_state_{hash}"))
+            content_dict = loader.load_content(cmd_data.type, ref)
+            if type(content_dict) == dict:
+                content_list = content_dict['content']
+                if state >= len(content_list):
+                    state -= 1
+                content = content_list[state]['chank']
 
-            data = loader.load_content(cmd_data.type, ref)
-            data_list = data.split('\n')
-            chank = data_list[index_descr.get('start', 0):
-                              index_descr.get('end', 0)]
-            content = '\n'.join(chank)
+            loader.save_state(
+                cmd_data.type,
+                f"{ref}_state_{hash}",
+                str(state + 1)
+            )
+
         return content
