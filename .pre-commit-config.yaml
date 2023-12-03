@@ -7,7 +7,7 @@ repos:
           args:
             - --max-line-length=79
             - --max-doc-length=72
-            - --ignore=E203,W503
+            - --ignore=E203,W503,F841
     - repo: local
       hooks:
       -   id: pytest-check
