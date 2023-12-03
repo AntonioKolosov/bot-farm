@@ -20,7 +20,7 @@ class TBotLogger:
     def __init__(self) -> None:
         """"""
         log_level = cfg.log_level
-        log_path = cfg.log_path  # ignoreqa F841
+        # log_path = cfg.log_path  # ignoreqa F841
         log_level = log_levels.get(log_level, logging.WARNING)
         logging.basicConfig(level=log_level,
                             format="%(asctime)s %(levelname)s %(message)s",
