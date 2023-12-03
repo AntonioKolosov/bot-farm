@@ -40,8 +40,7 @@ async def set_webhook(endpoint: str, gtw_url: str) -> bool:
     """Set webhook for an endpoint"""
     params = {"url": gtw_url}
     endpoint4r = __endpoint_for_request(endpoint, "setWebhook", params)
-    print("WEBHOOOOOOOK!!!!!!!!")
-    print(endpoint4r)
+    tb_log.log_info(endpoint4r)
     resp = await request_get(endpoint4r)
     tb_log.log_info(f"{resp.content}")
     return resp.status_code == 200
