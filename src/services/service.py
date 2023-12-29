@@ -65,3 +65,13 @@ class Service:
     @abstractmethod
     def __make_endpoints(self) -> None:
         """Instantiate enpoints"""
+
+    @abstractmethod
+    async def set_description(self, service_id: str, descr: str) -> bool:
+        """Set descr"""
+
+    @abstractmethod
+    async def set_keyboard_button(self,
+                                  service_id: str,
+                                  arr_arr_buttons) -> bool:
+        """Set descr"""
