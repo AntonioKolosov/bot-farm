@@ -22,7 +22,19 @@ async def set_my_name(endpoint: str, name: str) -> bool:
 async def set_description(endpoint: str, descr: str) -> bool:
     """Set a bot name"""
     params = {"description": descr}
-    endpoint4r = __endpoint_for_request(endpoint, "setMyDescription", params)
+    endpoint4r = __endpoint_for_request(endpoint, "", params)
+    resp = await request_get(endpoint4r)
+    tb_log.log_info(f"{resp.content}")
+    return resp.status_code == 200
+
+
+async def set_keyboard_button(endpoint: str, arr_arr_buttons) -> bool:
+    """Set a bot name"""
+    params = arr_arr_buttons
+    endpoint4r = __endpoint_for_request(endpoint,
+                                        "ReplyKeyboardMarkup",
+                                        params)
+    print(endpoint4r)
     resp = await request_get(endpoint4r)
     tb_log.log_info(f"{resp.content}")
     return resp.status_code == 200

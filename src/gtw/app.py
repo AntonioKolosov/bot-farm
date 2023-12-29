@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 
 from .description import description, title, version, license, contact
-from src.gtw.routers import inc_data_router
+from src.gtw.routers import inc_data_router, testrouter
 from src.internals.tbotlogger import tb_log
 from src.services import services
 
@@ -22,7 +22,7 @@ app = FastAPI(
 load_dotenv()
 
 app.include_router(inc_data_router.router)
-# app.include_router(testrouter.router)
+app.include_router(testrouter.router)
 
 
 @app.get("/", tags=["ROOT"])

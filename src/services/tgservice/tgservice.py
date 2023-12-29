@@ -7,9 +7,10 @@ from src.data_def import utilites
 from src.data_def.schemas.answeringdata import AnsweringData
 from ..service import Service
 from .tgapi import send_message
-from .tgapi import set_webhook, delete_webhook
+from .tgapi import set_webhook, delete_webhook, set_description
 from .tgapi import delete_commands, set_command, get_commands
 from .tgapi import get_chat_menu_button, set_chat_menu_button
+from .tgapi import set_keyboard_button
 
 
 class TgService(Service):
@@ -39,6 +40,12 @@ class TgService(Service):
         """"""
         for b_id, ep in self.__endpoints.items():
             await self.__close(b_id)
+
+    async def set_description(self, service_id: str, descr: str) -> bool:
+        return await self.__set_description(service_id, descr)
+
+    async def set_keyboard_button(self, service_id: str, button: str) -> bool:
+        return await self.__set_keyboard_button(service_id, button)
 
     async def __initialize(self, bot_id: str) -> None:
         """"""
@@ -85,6 +92,16 @@ class TgService(Service):
         """Wrapper for API"""
         endpoint = self.__endpoints.get(bot_id, "")
         return await get_commands(endpoint)
+
+    async def __set_description(self, service_id: str, descr: str) -> bool:
+        endpoint = self.__endpoints.get(service_id, "")
+        return await set_description(endpoint, descr)
+
+    async def __set_keyboard_button(self,
+                                    service_id: str,
+                                    arr_arr_buttons) -> bool:
+        endpoint = self.__endpoints.get(service_id, "")
+        return await set_keyboard_button(endpoint, arr_arr_buttons)
 
     async def __set_menu_commands(self, bot_id: str) -> bool:
         """Wrapper for API"""
