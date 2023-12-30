@@ -1,4 +1,5 @@
 """
+Send message to telegram chats, bots
 """
 
 
@@ -32,23 +33,25 @@ class TgService(Service):
         return await send_message(endpoint, tg_answer)
 
     async def startup(self) -> None:
-        """"""
+        """Set webhook"""
         for b_id, ep in self.__endpoints.items():
             await self.__initialize(b_id)
 
     async def shutdown(self) -> None:
-        """"""
+        """Unset webhook"""
         for b_id, ep in self.__endpoints.items():
             await self.__close(b_id)
 
     async def set_description(self, service_id: str, descr: str) -> bool:
+        """Set description"""
         return await self.__set_description(service_id, descr)
 
     async def set_keyboard_button(self, service_id: str, button: str) -> bool:
+        """Set keyboard button"""
         return await self.__set_keyboard_button(service_id, button)
 
     async def __initialize(self, bot_id: str) -> None:
-        """"""
+        """Initialize webhooks, buttons, menu, commands"""
         # convert bot_id to bot_name
         alias = self._get_alias_by_id(bot_id)
         print(f"Initialize the {alias} endpoint")
@@ -62,7 +65,7 @@ class TgService(Service):
         await self.__get_menu_commands(bot_id)
 
     async def __close(self, bot_id: str) -> None:
-        """"""
+        """Close webhooks, buttons, menu, commands"""
         alias = self._get_alias_by_id(bot_id)
         print(f"CLose the {alias} endpoint")
         await self.__delete_webhook(bot_id)
@@ -94,12 +97,14 @@ class TgService(Service):
         return await get_commands(endpoint)
 
     async def __set_description(self, service_id: str, descr: str) -> bool:
+        """Wrapper for API"""
         endpoint = self.__endpoints.get(service_id, "")
         return await set_description(endpoint, descr)
 
     async def __set_keyboard_button(self,
                                     service_id: str,
                                     arr_arr_buttons) -> bool:
+        """Wrapper for API"""
         endpoint = self.__endpoints.get(service_id, "")
         return await set_keyboard_button(endpoint, arr_arr_buttons)
 

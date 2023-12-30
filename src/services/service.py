@@ -1,4 +1,5 @@
 """
+Send messages to chats, bots
 """
 
 from abc import abstractmethod
@@ -18,7 +19,7 @@ class Service:
             self.__load_metadata()
 
     def _get_alias_by_id(self, service_alias: str) -> str:
-        """"""
+        """Get alias for choosing bot"""
         for id_2_name in self._bots_id_2_names:
             id, name = id_2_name.split(":")
             if id == service_alias:
@@ -26,7 +27,7 @@ class Service:
         return "default"
 
     def _get_id_by_alias(self, service_alias: str) -> str:
-        """"""
+        """Get id for choosing chat"""
         for id_2_name in self._bots_id_2_names:
             id, name = id_2_name.split(":")
             if name == service_alias:
@@ -34,7 +35,7 @@ class Service:
         return ""
 
     def __load_metadata(self):
-        ''''''
+        """Load metadata"""
         names = loader.load_names()
         for name in names:
             metadata = loader.load_metadata(name)
@@ -45,22 +46,22 @@ class Service:
 
     @abstractmethod
     async def startup(self) -> None:
-        """"""
+        """Startup service"""
 
     @abstractmethod
     async def shutdown(self) -> None:
-        """"""
+        """Shutdown service"""
 
     @abstractmethod
     def __endpoint_for_request(self,
                                bot_id: str,
                                method: str,
                                params: dict | None = None) -> str:
-        """"""
+        """Make right endpoint"""
 
     @abstractmethod
     async def send_message(self, answer: AnsweringData) -> bool:
-        """"""
+        """Send message to chats, bots"""
 
     @abstractmethod
     def __make_endpoints(self) -> None:
@@ -68,10 +69,10 @@ class Service:
 
     @abstractmethod
     async def set_description(self, service_id: str, descr: str) -> bool:
-        """Set descr"""
+        """Set description"""
 
     @abstractmethod
     async def set_keyboard_button(self,
                                   service_id: str,
                                   arr_arr_buttons) -> bool:
-        """Set descr"""
+        """Set keyboard button"""

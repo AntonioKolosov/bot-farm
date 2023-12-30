@@ -1,5 +1,5 @@
 """
-
+Descripe Telegram Api for https://api.telegram.org/bot{key}/{method}
 """
 
 
@@ -20,7 +20,7 @@ async def set_my_name(endpoint: str, name: str) -> bool:
 
 
 async def set_description(endpoint: str, descr: str) -> bool:
-    """Set a bot name"""
+    """Set a description"""
     params = {"description": descr}
     endpoint4r = __endpoint_for_request(endpoint, "", params)
     resp = await request_get(endpoint4r)
@@ -29,7 +29,7 @@ async def set_description(endpoint: str, descr: str) -> bool:
 
 
 async def set_keyboard_button(endpoint: str, arr_arr_buttons) -> bool:
-    """Set a bot name"""
+    """Set a keyboard button"""
     params = arr_arr_buttons
     endpoint4r = __endpoint_for_request(endpoint,
                                         "sendMessage",
@@ -68,7 +68,7 @@ async def delete_webhook(endpoint: str) -> bool:
 
 async def set_command(endpoint: str,
                       command: list[dict[str, str]]) -> bool:
-    """"""
+    """Set commands to bot"""
     # Lie menu
     params = {"commands": json.dumps(command)}
     endpoint4r = __endpoint_for_request(endpoint,

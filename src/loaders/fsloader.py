@@ -16,7 +16,7 @@ class FsLoader(Loader):
         self.__storage = cfg.storage
 
     def load_names(self) -> list[str]:
-        """"""
+        """Load all avaible files"""
         path = Path(self.__storage)
         names = []
         for file in path.iterdir():
@@ -25,7 +25,7 @@ class FsLoader(Loader):
         return names
 
     def load_metadata(self, name) -> dict:
-        """"""
+        """Load metadata from path and correct file"""
         path = Path(self.__storage)
         file_name = ''
         for file in path.iterdir():
@@ -35,7 +35,7 @@ class FsLoader(Loader):
         return self.__load_json(file_name)
 
     def load_content(self, type: str, ref: str) -> dict | str:
-        """"""
+        """Load content from path and correct file"""
         location = f"{type}/{ref}"
         ffn = f"{self.__storage}/{location}"
         if type == 'subtitles':
@@ -43,7 +43,7 @@ class FsLoader(Loader):
         return self.__load_text(ffn)
 
     def load_state(self, type: str, ref: str) -> str:
-        """"""
+        """Load state"""
         location = f"{type}/{ref}"
         ffn = f"{self.__storage}/{location}.txt"
         try:
@@ -54,20 +54,20 @@ class FsLoader(Loader):
             return ''
 
     def save_state(self, type: str, ref: str, state: str) -> None:
-        ''''''
+        """Save state"""
         location = f"{type}/{ref}"
         ffn = f"{self.__storage}/{location}.txt"
         with open(ffn, 'w') as f:
             f.write(state)
 
     def __load_json(self, location: str) -> dict:
-        ''''''
+        """Read json file with metadata"""
         ffn = f"{self.__storage}/{location}.json"
         with open(ffn, 'r') as json_file:
             return json.load(json_file)
 
     def __load_text(self, location: str) -> str:
-        ''''''
+        """Read content"""
         ffn = f"{self.__storage}/{location}.txt"
         with open(ffn, 'r') as text_file:
             return text_file.read()

@@ -1,5 +1,6 @@
 """
-
+Data format of answers.
+Creates in Handler -> __create_answer
 """
 
 

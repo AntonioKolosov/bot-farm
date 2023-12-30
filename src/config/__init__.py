@@ -1,6 +1,6 @@
-'''
+"""
 Configuration module
-'''
+"""
 
 from .config import Configuration
 

@@ -1,5 +1,6 @@
 """
-
+Data format for our service.
+Converted: IncomingData(Telegram format) -> ProcessingData(Our format)
 """
 
 

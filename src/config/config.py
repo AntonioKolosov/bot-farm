@@ -3,7 +3,12 @@ from dotenv import load_dotenv
 
 
 class Configuration:
-    ''''''
+    """
+    Includes configs for:
+        1. Logger
+        2. Services
+        3. Loader
+    """
     def __init__(self) -> None:
         load_dotenv()
         # Logger

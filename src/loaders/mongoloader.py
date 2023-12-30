@@ -11,7 +11,7 @@ from ..config import cfg
 
 
 class MongoLoader(Loader):
-    """"""
+    """Load metadata and content from MongoDB"""
     def __init__(self, type: str) -> None:
         super().__init__(type)
         self.__storage = cfg.storage
@@ -20,7 +20,7 @@ class MongoLoader(Loader):
         self.__connect()
 
     def __connect(self):
-        """"""
+        """Create connection with Mongo and Atlas"""
         client = self.__client()
         self.__database = self.__create_database(client)
 
@@ -55,7 +55,7 @@ class MongoLoader(Loader):
         return collection
 
     def load_names(self):
-        """"""
+        """Load all avaible files"""
         collection = self.__get_db_collection("MetaData")
         cursor = collection.find({})  # type: ignore
         names = []
@@ -67,7 +67,7 @@ class MongoLoader(Loader):
         return names
 
     def load_metadata(self, name: str) -> dict:
-        """"""
+        """Load metadata from right database"""
         st, sa = name.split('___')
         collection = self.__get_db_collection("MetaData")  # type: ignore
         cursor: Cursor = collection.find({"service_type": st.upper(),
@@ -76,7 +76,7 @@ class MongoLoader(Loader):
         return doc[0]  # type: ignore
 
     def load_content(self, type: str, ref: str) -> dict | str:
-        """"""
+        """Load content from right database"""
         collection = self.__get_db_collection("Content")
         cursor: Cursor = collection.find({"name": ref})  # type: ignore
         content = ''
@@ -85,7 +85,7 @@ class MongoLoader(Loader):
         return content
 
     def load_state(self, type: str, ref: str) -> str:
-        """"""
+        """Load state"""
         collection = self.__get_db_collection("States")
         cursor: Cursor = collection.find({"state_id": ref})  # type: ignore
         state = ''
@@ -94,7 +94,7 @@ class MongoLoader(Loader):
         return state
 
     def save_state(self, type: str, ref: str, state: str):
-        """"""
+        """Save state"""
         collection = self.__get_db_collection("States")
         state_obj = {
             "state_id": ref,

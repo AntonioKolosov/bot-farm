@@ -1,5 +1,7 @@
 """
-The gtw utilites
+The gtw utilites includes two converters:
+    1. from tg_incoming_data to proccesing_data
+    2. from answering_data to telegram_data
 """
 
 
@@ -10,8 +12,8 @@ from src.data_def.schemas.answeringdata import AnsweringData
 
 
 def tg_data_converter(alias: str, data) -> ProcessingData | None:
-    '''Convert TG data to the unified format
-    of message broker processing data'''
+    """Convert TG data to the unified format
+    of message broker processing data"""
     tgindata: TgInData = TgInData(**data)
     message = tgindata.tg_message()
     if message is None:
@@ -28,7 +30,7 @@ def tg_data_converter(alias: str, data) -> ProcessingData | None:
 
 
 def tg_hash_md5(data) -> str:
-    '''Hashes a not nested dict'''
+    """Hashes a not nested dict"""
     dhash = hashlib.md5()
     encoded = data.encode()
     dhash.update(encoded)
@@ -37,7 +39,7 @@ def tg_hash_md5(data) -> str:
 
 
 def tg_answer_converter(bot_id, answer: AnsweringData) -> dict:
-    """"""
+    """Convert Answering Data to Telegram format"""
     tg_answer = {
         "bot_id": bot_id,
         "chat_id": answer.receiver_id,

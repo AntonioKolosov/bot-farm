@@ -1,5 +1,7 @@
 """
-Service metadata
+Service metadata.
+Include: metadata for setup commands,
+and metadata for
 """
 
 

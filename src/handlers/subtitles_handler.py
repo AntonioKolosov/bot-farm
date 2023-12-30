@@ -1,6 +1,8 @@
-'''
+"""
+Special handler for Theatre Project.
+"""
 
-'''
+
 from ..data_def.schemas.service_md import CommandMetadata
 from src.loaders import loader
 from .handler import Handler
@@ -16,7 +18,7 @@ class SubtitlesHandler(Handler):
         super().__init__(type=HANDLER_TYPE_SUBTITLES)
 
     def _get_answer_content(self, cmd_data: CommandMetadata, hash: str) -> str:
-        ''' topic's type specific '''
+        """ Topic's type specific """
         content = ''
         if (cmd_data.content.startswith(RESET_STATE)):
             ref = cmd_data.content[len(RESET_STATE):]

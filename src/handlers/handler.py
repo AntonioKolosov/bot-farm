@@ -1,6 +1,6 @@
-'''
+"""
 Base class for message handlers
-'''
+"""
 
 
 from ..data_def.schemas.processingdata import ProcessingData
@@ -22,7 +22,11 @@ class Handler:
     async def handle(self,
                      proc_data: ProcessingData,
                      cmd_data: CommandMetadata) -> None:
-        ''''''
+        """
+        1. Get reciever (who will recieve the answer)
+        2. Create an answer
+        3. Send answer to Service
+        """
         receivers = self.__receivers(proc_data, cmd_data)
         answer = self.__create_answer(proc_data, cmd_data)
         for receiver in receivers:
@@ -58,7 +62,7 @@ class Handler:
             content=topic_data)
 
     def _get_answer_content(self, cmd_data: CommandMetadata, hash: str) -> str:
-        ''' topic's type specific '''
+        """Topic's type specific"""
         content = cmd_data.content
         if (cmd_data.content.startswith(CONTENT_REF)):
             ref = cmd_data.content[len(CONTENT_REF):]

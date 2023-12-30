@@ -1,4 +1,5 @@
 """
+Simple logger with pure Python
 """
 
 import logging
@@ -18,7 +19,7 @@ log_levels = {
 
 class TBotLogger:
     def __init__(self) -> None:
-        """"""
+        """Setup logger parametres"""
         log_level = cfg.log_level
         # log_path = cfg.log_path  # ignoreqa F841
         log_level = log_levels.get(log_level, logging.WARNING)

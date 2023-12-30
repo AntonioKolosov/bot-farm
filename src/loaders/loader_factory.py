@@ -1,5 +1,6 @@
-'''
-'''
+"""
+Loader Factory choose right loader
+"""
 
 
 from ..config import cfg
@@ -11,7 +12,8 @@ from .constants import LOADER_BASE, LOADER_FS, LOADER_MONGO
 
 
 class LoaderFactory:
-    """"
+    """
+    Choose right loader
     """
     def __init__(self) -> None:
         self.__loader_type = cfg.loader_type

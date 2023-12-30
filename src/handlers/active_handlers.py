@@ -1,5 +1,9 @@
-'''
-'''
+"""
+Handlers which connected with our service:
+    1.Simple Handler
+    2.Default Handler
+    3.Subtitles Handler
+"""
 
 
 from src.data_def.schemas.processingdata import ProcessingData
@@ -21,21 +25,22 @@ class ActiveHandlers:
         # self.register(YourHandler())
 
     def register(self, handler: Handler) -> None:
-        ''''''
+        """Registered Handlers -> mess_broker"""
         self.__active_handlers[handler.type] = handler
 
     def unregister(self, type: str) -> None:
-        ''''''
+        """Automatically remove unregistered handlers"""
         self.__active_handlers.pop(type)
 
     def get_command_handler(self, cmd_data: CommandMetadata) -> Handler:
-        ''''''
+        """Choose Handler with command_metadata"""
         for _, handler in self.__active_handlers.items():
             if handler.type == cmd_data.type:
                 return handler
         return self.__default_handler
 
     def get_command_metadata(self, data: ProcessingData):
+        """Recieve command metadata"""
         md_name = f'{data.service_type}___{data.service_alias}'.lower()
         metadata = loader.load_metadata(md_name)
         # Construct service_meta_data_object

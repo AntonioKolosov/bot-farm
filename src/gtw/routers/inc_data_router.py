@@ -1,3 +1,8 @@
+"""
+Telegram incoming data router
+"""
+
+
 from fastapi import APIRouter, BackgroundTasks, Request
 
 from src.data_def.utilites import tg_data_converter

@@ -1,5 +1,5 @@
 """
-
+'List' of avaible Services (TG, IG in future and so on)
 """
 
 
@@ -12,7 +12,6 @@ from ..config import cfg
 class ServicesList:
     """List of all exists services"""
     def __init__(self) -> None:
-        """"""
         self.__bot_types_list = cfg.bot_types_list
         self.__default_service = Service()
         self.__services: dict[str, Service] = {}
@@ -26,7 +25,7 @@ class ServicesList:
         return Service()
 
     def __get_service_by_type(self, type: str) -> Service:
-        """"""
+        """Choose right service by type"""
         return self.__services.get(type, self.__default_service)
 
     async def startup(self) -> None:
@@ -48,7 +47,7 @@ class ServicesList:
                               service_type: str,
                               service_id: str,
                               descr: str) -> bool:
-        """"""
+        """Set description"""
         service = self.__get_service_by_type(service_type)
         return await service.set_description(service_id, descr)
 
@@ -56,6 +55,6 @@ class ServicesList:
                                   service_type: str,
                                   service_id: str,
                                   arr_arr_buttons) -> bool:
-        """"""
+        """Set keyboard button"""
         service = self.__get_service_by_type(service_type)
         return await service.set_keyboard_button(service_id, arr_arr_buttons)

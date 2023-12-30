@@ -1,6 +1,6 @@
-'''
-
-'''
+"""
+Handler which can work with text data(str format)
+"""
 
 
 from .handler import Handler

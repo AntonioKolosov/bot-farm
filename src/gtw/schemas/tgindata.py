@@ -1,5 +1,6 @@
 """
 Hashing from: https://www.pythoncentral.io/hashing-strings-with-python/
+Telegram data format. This format we recieve from TG and should transfer
 """
 
 
@@ -43,12 +44,12 @@ class TgInData(BaseModel):
     edited_message: Optional[TgMessage]
 
     def tg_message(self) -> TgMessage | None:
-        '''Get message data'''
+        """Get message data"""
         return (self.message if self.message is not None
                 else self.edited_message)
 
     def get_const_data(self) -> str:
-        '''Get not mutable data from incoming data'''
+        """Get not mutable data from incoming data"""
         message: TgMessage | None = self.tg_message()
         if message is not None:
             hash_from = f'{message.from_.id}-{message.from_.first_name}'
