@@ -32,7 +32,7 @@ async def set_keyboard_button(endpoint: str, arr_arr_buttons) -> bool:
     """Set a bot name"""
     params = arr_arr_buttons
     endpoint4r = __endpoint_for_request(endpoint,
-                                        "ReplyKeyboardMarkup",
+                                        "sendMessage",
                                         params)
     print(endpoint4r)
     resp = await request_get(endpoint4r)

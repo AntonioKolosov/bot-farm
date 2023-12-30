@@ -1,3 +1,4 @@
+import json
 from fastapi import APIRouter
 
 # from ..schemas.tbdata import TBDat
@@ -20,11 +21,26 @@ async def set_description_req():
 @router.post("/button", tags=["TEST"])
 async def set_keyboard_button():
     """"""
-    # button = {"text": "Info"}
-    arr_arr_buttons = {"keyboard": [[{"text": "Info"}]]}
+#     keyboard = [
+#     [{"text": "Button 1", "callback_data": "1"}]
+# ]
+
+    keyboard = {
+        "keyboard": [[{"text": "/info"}]],
+        "resize_keyboard": True,
+        "one_time_keyboard": False
+    }
+    keyboard = json.dumps(keyboard)
+
+    arr_arr_buttons = {
+        "chat_id": 339914913,
+        "text": "Info1234",
+        "reply_markup": keyboard
+    }
     bot_id = "6049337649"
     res = await services.set_keyboard_button('TG', bot_id, arr_arr_buttons)
     return {"Button:" f"Set {res}"}
+
 
 # @router.post("/cmd", tags=["TEST"])
 # async def set_commands():
