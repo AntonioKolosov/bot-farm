@@ -3,6 +3,7 @@ Special handler for Theatre Project.
 """
 
 
+from ..data_def.schemas.processingdata import ProcessingData
 from ..data_def.schemas.service_md import CommandMetadata
 from src.loaders import loader
 from .handler import Handler
@@ -17,8 +18,11 @@ class SubtitlesHandler(Handler):
     def __init__(self) -> None:
         super().__init__(type=HANDLER_TYPE_SUBTITLES)
 
-    def _get_answer_content(self, cmd_data: CommandMetadata, hash: str) -> str:
+    def _get_answer_content(self,
+                            cmd_data: CommandMetadata,
+                            proc_data: ProcessingData) -> str:
         """ Topic's type specific """
+        hash = proc_data.hash_code
         content = ''
         if (cmd_data.content.startswith(RESET_STATE)):
             ref = cmd_data.content[len(RESET_STATE):]

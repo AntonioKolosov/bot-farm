@@ -3,6 +3,7 @@ Send message to telegram chats, bots
 """
 
 
+import json
 from src.config import cfg
 from src.data_def import utilites
 from src.data_def.schemas.answeringdata import AnsweringData
@@ -32,6 +33,44 @@ class TgService(Service):
         tg_answer = utilites.tg_answer_converter(bot_id, answer)
         return await send_message(endpoint, tg_answer)
 
+    async def set_buttons(self, answer: AnsweringData) -> bool:
+        """Wrapper for API"""
+
+        buttons = self.__create_buttons_data(answer)
+        bot_id = self._get_id_by_alias(answer.service_alias)
+        endpoint = self.__endpoints.get(bot_id, "")
+        return await set_keyboard_button(endpoint, buttons)
+
+    def __create_buttons_data(self, answer: AnsweringData):
+        """Create buttons data"""
+        service_metadata = self._service_metadata.get(answer.service_alias,
+                                                      None)
+        if service_metadata is None:
+            return
+
+        keyboard = []
+
+        for cmd in service_metadata.commands:
+            if cmd.button:
+                button = [{"text": cmd.name}]
+                keyboard.append(button)
+
+        keyboard_buttons = {
+            "keyboard": keyboard,
+            "resize_keyboard": True,
+            "one_time_keyboard": False
+        }
+
+        keyboard_buttons = json.dumps(keyboard_buttons)
+
+        buttons = {
+            "chat_id": int(answer.content),
+            "text": "Look at this beautiful button",
+            "reply_markup": keyboard_buttons
+        }
+
+        return buttons
+
     async def startup(self) -> None:
         """Set webhook"""
         for b_id, ep in self.__endpoints.items():
@@ -46,10 +85,6 @@ class TgService(Service):
         """Set description"""
         return await self.__set_description(service_id, descr)
 
-    async def set_keyboard_button(self, service_id: str, button: str) -> bool:
-        """Set keyboard button"""
-        return await self.__set_keyboard_button(service_id, button)
-
     async def __initialize(self, bot_id: str) -> None:
         """Initialize webhooks, buttons, menu, commands"""
         # convert bot_id to bot_name
@@ -60,9 +95,6 @@ class TgService(Service):
         await self.__set_menu_commands(bot_id)
         await self.__set_menu_button(bot_id, True)
         await self.__set_webhook(bot_id, alias)
-        # for test
-        await self.__get_menu_button(bot_id)
-        await self.__get_menu_commands(bot_id)
 
     async def __close(self, bot_id: str) -> None:
         """Close webhooks, buttons, menu, commands"""
@@ -71,9 +103,6 @@ class TgService(Service):
         await self.__delete_webhook(bot_id)
         await self.__delete_menu_commands(bot_id)
         await self.__set_menu_button(bot_id)
-        # for test
-        await self.__get_menu_button(bot_id)
-        await self.__get_menu_commands(bot_id)
 
     async def __set_webhook(self, bot_id: str, alias: str) -> bool:
         """Wrapper for API"""
@@ -101,13 +130,6 @@ class TgService(Service):
         endpoint = self.__endpoints.get(service_id, "")
         return await set_description(endpoint, descr)
 
-    async def __set_keyboard_button(self,
-                                    service_id: str,
-                                    arr_arr_buttons) -> bool:
-        """Wrapper for API"""
-        endpoint = self.__endpoints.get(service_id, "")
-        return await set_keyboard_button(endpoint, arr_arr_buttons)
-
     async def __set_menu_commands(self, bot_id: str) -> bool:
         """Wrapper for API"""
         alias = self._get_alias_by_id(bot_id)
@@ -116,11 +138,12 @@ class TgService(Service):
             return False
         commands = []
         for command in bot_metadata.commands:
-            cmd = {
-                "command": command.name,
-                "description": command.description
-            }
-            commands.append(cmd)
+            if command.menu:
+                cmd = {
+                    "command": command.name,
+                    "description": command.description
+                }
+                commands.append(cmd)
         endpoint = self.__endpoints.get(bot_id, "")
         return await set_command(endpoint, commands)
 
