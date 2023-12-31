@@ -6,6 +6,7 @@ Handlers which connected with our service:
 """
 
 
+from src.handlers.start_handler import StartHandler
 from src.data_def.schemas.processingdata import ProcessingData
 from src.data_def.schemas.service_md import ServiceMetadata, CommandMetadata
 from src.loaders import loader
@@ -21,8 +22,8 @@ class ActiveHandlers:
         # Always register each existing handler
         # self.__get_breaf_topics
         self.register(SimpleHandler())
+        self.register(StartHandler())
         self.register(SubtitlesHandler())
-        # self.register(YourHandler())
 
     def register(self, handler: Handler) -> None:
         """Registered Handlers -> mess_broker"""

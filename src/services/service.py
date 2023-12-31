@@ -68,11 +68,21 @@ class Service:
         """Instantiate enpoints"""
 
     @abstractmethod
-    async def set_description(self, service_id: str, descr: str) -> bool:
+    async def set_description(self,
+                              service_id: str,
+                              descr: str) -> bool:
         """Set description"""
 
+    # @abstractmethod
+    # async def set_menu(self,
+    #                    service_id: str) -> bool:
+    #     """Set menu button"""
+
+    # @abstractmethod
+    # async def set_keyboard_button(self,
+    #                               service_id: str) -> bool:
+    #     """Set keyboard button"""
+
     @abstractmethod
-    async def set_keyboard_button(self,
-                                  service_id: str,
-                                  arr_arr_buttons) -> bool:
-        """Set keyboard button"""
+    async def set_buttons(self, answer: AnsweringData) -> bool:
+        """Send message to chats, bots"""

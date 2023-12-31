@@ -11,6 +11,8 @@ from pydantic import BaseModel
 
 class CommandMetadata(BaseModel):
     name: str
+    menu: bool
+    button: bool
     type: str
     description: str
     content: str
@@ -21,6 +23,5 @@ class ServiceMetadata(BaseModel):
     id: int
     service_type: str
     service_alias: str
-    buttons: list
     chats_ids: list
     commands: list[CommandMetadata]

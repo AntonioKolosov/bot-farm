@@ -44,7 +44,7 @@ class Handler:
             return cmd_data.redirection_id
         return [data.sender_id]
 
-    async def _send_answer(self, answer: AnsweringData,):
+    async def _send_answer(self, answer: AnsweringData):
         """Messanger exit point"""
         await services.send_message(answer)
 
@@ -54,14 +54,16 @@ class Handler:
             cmd_data: CommandMetadata) -> AnsweringData:
         """Create answer for command"""
         # command's type specific
-        topic_data = self._get_answer_content(cmd_data, proc_data.hash_code)
+        content_data = self._get_answer_content(cmd_data, proc_data)
         return AnsweringData(
             service_type=proc_data.service_type,
             service_alias=proc_data.service_alias,
             receiver_id=proc_data.sender_id,
-            content=topic_data)
+            content=content_data)
 
-    def _get_answer_content(self, cmd_data: CommandMetadata, hash: str) -> str:
+    def _get_answer_content(self,
+                            cmd_data: CommandMetadata,
+                            proc_data: ProcessingData) -> str:
         """Topic's type specific"""
         content = cmd_data.content
         if (cmd_data.content.startswith(CONTENT_REF)):

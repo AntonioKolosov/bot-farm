@@ -51,10 +51,7 @@ class ServicesList:
         service = self.__get_service_by_type(service_type)
         return await service.set_description(service_id, descr)
 
-    async def set_keyboard_button(self,
-                                  service_type: str,
-                                  service_id: str,
-                                  arr_arr_buttons) -> bool:
-        """Set keyboard button"""
-        service = self.__get_service_by_type(service_type)
-        return await service.set_keyboard_button(service_id, arr_arr_buttons)
+    async def set_buttons(self, answer: AnsweringData):
+        """"""
+        service = self.__get_service_by_type(answer.service_type)
+        await service.set_buttons(answer)
