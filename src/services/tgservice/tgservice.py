@@ -48,13 +48,15 @@ class TgService(Service):
         if service_metadata is None:
             return
 
+        # Array of Arrays of KeyBoardButton
         keyboard = []
-
         for cmd in service_metadata.commands:
             if cmd.button:
+                # KeyboardButton
                 button = [{"text": cmd.name}]
                 keyboard.append(button)
 
+        # ReplayKeyboardMarkup
         keyboard_buttons = {
             "keyboard": keyboard,
             "resize_keyboard": True,
