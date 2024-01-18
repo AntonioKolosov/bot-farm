@@ -50,11 +50,18 @@ class TgService(Service):
 
         # Array of Arrays of KeyBoardButton
         keyboard = []
+
         for cmd in service_metadata.commands:
             if cmd.button:
                 # KeyboardButton
                 button = [{"text": cmd.name}]
                 keyboard.append(button)
+
+        # Test button for mini-app
+
+        button = [{"text": "Begin",
+                   "web_app": {"url": f'{cfg.gtw_url}/miniapp'}}]
+        keyboard.append(button)
 
         # ReplayKeyboardMarkup
         keyboard_buttons = {
