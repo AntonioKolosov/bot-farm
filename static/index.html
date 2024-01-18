@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="MobileOptimized" content="176"/>
+        <meta name="HandheldFriendly" content="True"/>
+        <meta name="robots" content="noindex,nofollow"/>
+        <title>Admin Panel</title>
+        <style>
+            .container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            .button {
+                padding: 15px 30px;
+                background-color: #86A7FC;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-size: 18px;
+                font-weight: bold;
+                text-transform: uppercase;
+                cursor: pointer;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s;
+            }
+
+            .button:hover {
+                background-color: #3468C0;
+            }
+
+            .button:active {
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                transform: translateY(2px);
+            }
+
+            .table-container {
+                margin: 20px auto;
+                width: 80%;
+        }
+
+            .table {
+                width: 60%;
+                margin: auto;
+                border-collapse: collapse;
+                font-family: Arial, sans-serif;
+                table-layout: fixed;
+            }
+
+            .table td {
+                border: 1px solid #ddd;
+                padding: 30px;
+                text-align: center;
+            }
+
+            .table th {
+                padding-top: 12px;
+                text-align: center;
+                padding-bottom: 12px;
+                background-color: #86A7FC;
+                color: white;
+            }
+
+            .table .narrow-column {
+                width: 5%;
+            }
+
+            .table .wide-column {
+                width: 80%;
+            }
+
+            .table .narrow-column {
+                width: 10%;
+                text-align: center;
+            }
+
+            .table td.narrow-column {
+                text-align: center;
+            }
+
+
+        </style>
+        <script src="https://telegram.org/js/telegram-web-app.js?1"></script>
+    </head>
+    <body>
+        <h3 id="play">Text</h3>
+        <div>
+            <table class="table-container, table">
+                <tr>
+                    <th class="narrow-column">Number</th>
+                    <th class="wide-column">Text</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div class="container">
+            <button class="button" id="nextButton">Next</button>
+        </div>
+
+        <script type="application/javascript">
+            // TG interaction
+            tg = Telegram.WebApp
+            tg.ready();
+            tg.expand();
+            tg.MainButton.hide();
+            tg.MainButton.setParams({
+                text: "END"
+            });
+            tg.MainButton.onClick( ()=> {
+                tg.sendData("/end")
+                // tg.showAlert('MainButton was clicked');
+            });
+
+            // The application domain code
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const button = document.getElementById('nextButton');
+                let subTitles = [];
+                let currentIndex = 0;
+                fetchData().then( data => {
+                    // The first line is the play Title
+                    const playTitle = data.content[0].chank
+                    document.getElementById("play").innerHTML = playTitle;
+                    // Remove the Title
+                    subTitles = data.content.slice(1);
+                    console.log(subTitles);
+                    // Show the first subset
+                    showSubtitles();
+                });
+
+                function showSubtitles() {
+                    let tableRows = '';
+                    for (const [i, item] of Object.entries(subTitles)) {
+                        if (i > 2) break;
+                        currentIndex += 1; 
+                        tableRows += `<tr><td class="narrow-column">${currentIndex}</td><td>${item.chank}</td></tr>`;
+                    };
+                    document.querySelector('.table').innerHTML = tableRows;
+                    // Next chank will start from the second line (Prev = Curr)
+                    subTitles = subTitles.slice(1);
+                    // Adjust the current index
+                    currentIndex -= 2; 
+                }
+
+                button.addEventListener('click', async function(event) {
+                    console.log("NEXT clicked")
+                    if (subTitles.length < 2) {
+                        button.style.display = "none";
+                        tg.MainButton.show();
+                    }
+                    // Read data from the subtitles and update table
+                    showSubtitles();    
+                })
+            });
+
+            // Functions
+            // Get data from backend
+            async function fetchData() {
+                const response = await fetch('https://5899-129-159-137-238.ngrok-free.app/testweb');
+                if (response.ok) {
+                    const result = await response.json();  
+                    // now do something with the result
+                    // console.log("RESULT", result);
+                    return result
+                } else {
+                    alert(response.status);
+                    return {}
+                }
+            }
+        </script>
+    <body>
+</html>

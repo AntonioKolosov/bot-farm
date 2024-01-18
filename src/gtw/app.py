@@ -6,6 +6,7 @@ from typing import Dict
 
 from fastapi import FastAPI
 from dotenv import load_dotenv
+from fastapi.staticfiles import StaticFiles
 
 from .description import description, title, version, license, contact
 from src.gtw.routers import inc_data_router, testrouter
@@ -24,6 +25,9 @@ load_dotenv()
 
 app.include_router(inc_data_router.router)
 app.include_router(testrouter.router)
+
+
+app.mount("/miniapp", StaticFiles(directory="static", html=True))
 
 
 @app.get("/", tags=["ROOT"])
