@@ -9,13 +9,13 @@
         <meta name="MobileOptimized" content="176"/>
         <meta name="HandheldFriendly" content="True"/>
         <meta name="robots" content="noindex,nofollow"/>
-        <title>Admin Panel</title>
+        <title>PROMPTER</title>
         <style>
             .container {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                height: 100vh;
+                height: 50vh;
             }
 
             .button {
@@ -57,7 +57,7 @@
             .table td {
                 border: 1px solid #ddd;
                 padding: 30px;
-                text-align: center;
+                text-align: left;
             }
 
             .table th {
@@ -78,35 +78,37 @@
 
             .table .narrow-column {
                 width: 10%;
-                text-align: center;
+                text-align: left;
             }
 
             .table td.narrow-column {
                 text-align: center;
             }
-
+            .play {
+                text-align: center;
+            }
 
         </style>
         <script src="https://telegram.org/js/telegram-web-app.js?1"></script>
     </head>
     <body>
-        <h3 id="play">Text</h3>
+        <h3 id="play" class="play">Text</h3>
         <div>
             <table class="table-container, table">
                 <tr>
-                    <th class="narrow-column">Number</th>
+                    <th class="narrow-column">Order</th>
                     <th class="wide-column">Text</th>
                 </tr>
                 <tr>
-                    <td>1</td>
+                    <td>prev</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>2</td>
+                    <td>curr</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>3</td>
+                    <td>next</td>
                     <td></td>
                 </tr>
             </table>
@@ -125,33 +127,44 @@
                 text: "END"
             });
             tg.MainButton.onClick( ()=> {
-                tg.sendData("/end")
-                // tg.showAlert('MainButton was clicked');
+                // The end title
+                sendCurrentIndex(-9999)
+                tg.sendData('/end')
             });
 
             // The application domain code
-
             document.addEventListener('DOMContentLoaded', () => {
                 const button = document.getElementById('nextButton');
                 let subTitles = [];
                 let currentIndex = 0;
                 fetchData().then( data => {
+                    const content = data.content;
                     // The first line is the play Title
                     const playTitle = data.content[0].chank
                     document.getElementById("play").innerHTML = playTitle;
-                    // Remove the Title
-                    subTitles = data.content.slice(1);
-                    console.log(subTitles);
+                    // Remove the Title and add two empty lines
+                    const emtyLines = [{'chank': ''}, {'chank': ''}];
+                    subTitles = [...emtyLines, ...content.slice(1)];
                     // Show the first subset
                     showSubtitles();
                 });
 
                 function showSubtitles() {
+                    // Show the current and remainded numbers of subtitles
+                    let curr = `${currentIndex}: ${subTitles.length}`;
+                    const order = ['prev', curr, 'next']
                     let tableRows = '';
+                    const offset = 0;
                     for (const [i, item] of Object.entries(subTitles)) {
                         if (i > 2) break;
                         currentIndex += 1; 
-                        tableRows += `<tr><td class="narrow-column">${currentIndex}</td><td>${item.chank}</td></tr>`;
+                        if (i == 1) {
+                            tableRows += `<tr><td style="font-weight:bold" class="narrow-column">${order[i]}</td>
+                                <td style="font-weight:bold">${item.chank}</td></tr>`;
+                        }
+                        else {
+                            tableRows += `<tr><td class="narrow-column">${order[i]}</td><td>${item.chank}</td></tr>`;
+                        }
                     };
                     document.querySelector('.table').innerHTML = tableRows;
                     // Next chank will start from the second line (Prev = Curr)
@@ -162,6 +175,10 @@
 
                 button.addEventListener('click', async function(event) {
                     console.log("NEXT clicked")
+                    sendCurrentIndex(currentIndex-1).then( data => {
+                        console.log("sent", currentIndex-1);
+                    })
+
                     if (subTitles.length < 2) {
                         button.style.display = "none";
                         tg.MainButton.show();
@@ -174,12 +191,24 @@
             // Functions
             // Get data from backend
             async function fetchData() {
-                const response = await fetch('https://5899-129-159-137-238.ngrok-free.app/testweb');
+                const response = await fetch('https://messintegrator.onrender.com/webdata');
                 if (response.ok) {
                     const result = await response.json();  
                     // now do something with the result
                     // console.log("RESULT", result);
                     return result
+                } else {
+                    alert(response.status);
+                    return {}
+                }
+            }
+
+            // Push data to backend
+            async function sendCurrentIndex(currentIndex) {
+                const response = await fetch('https://messintegrator.onrender.com/push/'+currentIndex);
+                if (response.ok) {
+                    console.log("SENT");
+                    return {}
                 } else {
                     alert(response.status);
                     return {}

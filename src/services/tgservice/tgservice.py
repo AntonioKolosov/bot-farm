@@ -54,14 +54,23 @@ class TgService(Service):
         for cmd in service_metadata.commands:
             if cmd.button:
                 # KeyboardButton
+                # if cmd.content.startswith('@webapp---'):
+                #     path = cmd.content[len('@webapp---'):]
+                #     button = [{"text": cmd.name,
+                #         "web_app": {"url": f'{cfg.gtw_url}/{path}'}}]
+                # else:
                 button = [{"text": cmd.name}]
                 keyboard.append(button)
 
-        # Test button for mini-app
-
-        button = [{"text": "Begin",
-                   "web_app": {"url": f'{cfg.gtw_url}/miniapp'}}]
-        keyboard.append(button)
+        # Temporary - will be in meta data. Test button for mini-app
+        if service_metadata.service_alias == "POSTMAN":
+            button = [{"text": "Begin",
+                       "web_app": {"url": f'{cfg.gtw_url}/prompter'}}]
+            keyboard.append(button)
+        if service_metadata.service_alias == "FRIENDLY":
+            button = [{"text": "Begin",
+                       "web_app": {"url": f'{cfg.gtw_url}/viewer'}}]
+            keyboard.append(button)
 
         # ReplayKeyboardMarkup
         keyboard_buttons = {

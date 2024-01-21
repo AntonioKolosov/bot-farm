@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="MobileOptimized" content="176"/>
+        <meta name="HandheldFriendly" content="True"/>
+        <meta name="robots" content="noindex,nofollow"/>
+        <title>VIEWER</title>
+        <style>
+            .play {
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <h3 id="play" class="play"></h3>
+        <!-- <div id='subtitle'></div> -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Choose a language
+
+                // Get data from the service
+                let subTitles = [];
+                let currentIndex = 0;
+                fetchData().then( data => {
+                    // The first line is the play Title
+                    const playTitle = data.content[0].chank
+                    document.getElementById("play").innerHTML = playTitle;
+                    // Remove the Title
+                    subTitles = data.content.slice(1);
+                    // console.log(subTitles);
+                });
+
+                // Create ws connection
+                const url = "wss://messintegrator.onrender.com/ws"
+                const ws = new WebSocket(url);
+                // Get data
+                ws.onmessage = function(event) {
+                    const subtitle = document.getElementById('play')
+                    const content = document.createTextNode(event.data)
+                    console.log(content.data)
+                    const index = Number(content.data);
+                    if  (index === -9999) {
+                        subtitle.textContent = 'THE END'
+                    }
+                    else
+                        subtitle.textContent = subTitles[index]['chank']
+                };
+            });
+
+           // Functions
+            // Get data from backend
+            async function fetchData() {
+                const response = await fetch('https://messintegrator.onrender.com/webdata');
+                if (response.ok) {
+                    const result = await response.json();  
+                    // now do something with the result
+                    // console.log("RESULT", result);
+                    return result
+                } else {
+                    alert(response.status);
+                    return {}
+                }
+            }
+        </script>
+    </body>
+</html>
