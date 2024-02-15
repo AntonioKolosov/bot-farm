@@ -3,24 +3,72 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport"
-            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+              content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         <meta name="format-detection" content="telephone=no"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="MobileOptimized" content="176"/>
         <meta name="HandheldFriendly" content="True"/>
         <meta name="robots" content="noindex,nofollow"/>
+        <link rel="stylesheet" href="viewer.css">
         <title>VIEWER</title>
-        <style>
-            .play {
-                text-align: left;
-            }
-        </style>
     </head>
     <body>
-        <h3 id="play" class="play"></h3>
-        <!-- <div id='subtitle'></div> -->
+        <div class="flex-container">
+            <div class="fixed-header">
+                <div class="header">
+                    <div class="buttons">
+                        <div class="radio-group">
+                            <label for="option1" class="radio-label" id="text-small">
+                                <input type="radio" name="option" value="1">
+                                A
+                            </label>
+                            <label for="option2" class="radio-label" id="text-medium">
+                                <input type="radio" name="option" value="2">
+                                A
+                            </label>
+                            <label for="option3" class="radio-label" id="text-large">
+                                <input type="radio" name="option" value="3">
+                                A
+                            </label>
+                        </div>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="option" value="1">
+                                HE
+                            </label>
+                            <label class="text-size">
+                                <input type="radio" name="option" value="2">
+                                EN
+                            </label>
+                            <label class="text-size">
+                                <input type="radio" name="option" value="3">
+                                RU
+                            </label>
+                        </div>
+                    </div>
+                    <div class="page-counter">
+                        <p id="counter">1/300</p>
+                    </div>
+                </div>
+                <div class="flex-items">
+                    <h3 id="play">Text</h3>
+                </div>
+            </div>
+            <div id="content-block" class="content-block"></div>
+        </div>
+
         <script>
             document.addEventListener('DOMContentLoaded', () => {
+                // Add divs
+                function addNewContent(subtitle) {
+                    const contentBlock = document.getElementById('content-block');
+                    const newContentDiv = document.createElement('div');
+                    newContentDiv.className = 'content';
+                    const paragraph = document.createElement('p');
+                    paragraph.textContent = subtitle;
+                    newContentDiv.appendChild(paragraph);
+                    contentBlock.appendChild(newContentDiv);
+                }
                 // Choose a language
 
                 // Get data from the service
@@ -36,26 +84,28 @@
                 });
 
                 // Create ws connection
-                const url = "wss://messintegrator.onrender.com/ws"
+                const url = "wss:95cf-129-159-137-238.ngrok-free.app/ws"
                 const ws = new WebSocket(url);
                 // Get data
                 ws.onmessage = function(event) {
-                    const subtitle = document.getElementById('play')
-                    const content = document.createTextNode(event.data)
-                    console.log(content.data)
-                    const index = Number(content.data);
+                    // const subtitle = document.getElementById('play')
+                    // const content = document.createTextNode(event.data)
+                    const index = Number(event.data);
+                    console.log(index)
+                    let subtitle = '';
                     if  (index === -9999) {
-                        subtitle.textContent = 'THE END'
+                        subtitle = 'THE END'
                     }
                     else
-                        subtitle.textContent = subTitles[index]['chank']
+                        subtitle = subTitles[index]['chank']
+                        addNewContent(subtitle);
                 };
             });
 
-           // Functions
+            // Functions
             // Get data from backend
             async function fetchData() {
-                const response = await fetch('https://messintegrator.onrender.com/webdata');
+                const response = await fetch('https://95cf-129-159-137-238.ngrok-free.app/webdata');
                 if (response.ok) {
                     const result = await response.json();  
                     // now do something with the result
