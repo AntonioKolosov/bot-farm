@@ -41,12 +41,9 @@
                     <h3 id="play">Text</h3>
                 </div>
             </div>
-            <br>
             <div id="content-block" class="content-block"></div>
         </div>
-        <div class="button-container">
-            <button id="nextButton" class="fixed-button">NEXT</button>
-        </div>
+        <button id="nextButton" class="fixed-button">NEXT</button>
         <script type="application/javascript">
             // TG interaction
             tg = Telegram.WebApp
@@ -65,6 +62,12 @@
             // The application domain code
             const BACKEND_URI = '95cb-129-159-137-238.ngrok-free.app';
             document.addEventListener('DOMContentLoaded', () => {
+
+                const clientWidth = document.documentElement.clientWidth;
+                console.log('clientWidth', clientWidth);
+                const clientHeight = document.documentElement.clientHeight;
+                console.log('clientHeight', clientHeight);
+                console.log('clientLines', clientHeight/16);
 
                 const button = document.getElementById('nextButton');
                 
