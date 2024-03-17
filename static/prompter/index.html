@@ -63,9 +63,11 @@
             });
 
             // The application domain code
+            const BACKEND_URI = '95cb-129-159-137-238.ngrok-free.app';
             document.addEventListener('DOMContentLoaded', () => {
-                const button = document.getElementById('nextButton');
 
+                const button = document.getElementById('nextButton');
+                
                 // Add event listeners for the radio buttons
                 const textSmall = document.getElementById('text-small')
                 textSmall.addEventListener( 'click', () => {
@@ -178,7 +180,7 @@
                 })
                 // Push data to backend
                 async function sendCurrentIndex() {
-                    const response = await fetch('https://0943-129-159-137-238.ngrok-free.app/push/'+currentIndex);
+                    const response = await fetch(`https://${BACKEND_URI}/push/`+currentIndex);
                     if (response.ok) {
                         currentIndex++
                         console.log('SENT', currentIndex);
@@ -193,7 +195,7 @@
             // Functions
             // Get data from backend
             async function fetchData() {
-                const response = await fetch('https://0943-129-159-137-238.ngrok-free.app/webdata');
+                const response = await fetch(`https://${BACKEND_URI}/webdata`);
                 if (response.ok) {
                     const result = await response.json();  
                     // now do something with the result

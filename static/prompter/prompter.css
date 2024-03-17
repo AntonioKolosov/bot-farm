@@ -1,6 +1,7 @@
 .html, body {
   overflow: hidden;
   min-height: 100vh;
+  background-color: rgb(49, 44, 44);
 }
 
 .flex-container {
@@ -16,7 +17,7 @@
   right: 0;
   overflow-y: auto;
   max-height: 100vh;
-  background-color: #535C91;
+  background-color: rgb(38, 39, 114);;
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
@@ -27,7 +28,7 @@
   justify-content: space-between;
   height: 50px;
   width: 100%;
-  color: #FDE767;
+  color: rgb(170, 166, 161);
 }
 
 .buttons {
@@ -76,11 +77,11 @@
   justify-content: center;
   height: 50px;
   text-align: center;
-  color: #FDE767;
+  color: rgb(170, 166, 161);
 }
 
 .content-block{
-  padding-top: 110px;
+  margin: 85px 10px 0px 10px;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -96,15 +97,19 @@
 }
 
 .content {
-    padding-left: 20px;
+    padding: 10px;
+    color: rgb(155, 126, 182);
+    background-color: #535C91;
   }
 
 .last-content-item {
   font-style: italic;
+  color:rgb(228, 223, 217);
+  background-color: rgb(38, 39, 114);
 }
 
 .button-container {
-  padding-top: 50px;    
+  padding-top: 10px;    
 
 }
 
