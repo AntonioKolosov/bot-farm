@@ -1,148 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport"
-            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-        <meta name="format-detection" content="telephone=no"/>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <meta name="MobileOptimized" content="176"/>
-        <meta name="HandheldFriendly" content="True"/>
-        <meta name="robots" content="noindex,nofollow"/>
-        <link rel="stylesheet" href="prompter.css">
-        <title>PROMPTER</title>
-        <script src="https://telegram.org/js/telegram-web-app.js?1"></script>
-    </head>
-    <body>
-        <div class="flex-container">
-            <div class="fixed-header">
-                <div class="header">
-                    <div class="buttons">
-                        <div class="radio-group">
-                            <label for="option1" class="radio-label" id="text-small">
-                                <input type="radio" name="option" value="1">
-                                A
-                            </label>
-                            <label for="option2" class="radio-label" id="text-medium">
-                                <input type="radio" name="option" value="2">
-                                A
-                            </label>
-                            <label for="option3" class="radio-label" id="text-large">
-                                <input type="radio" name="option" value="3">
-                                A
-                            </label>
-                        </div>
-                    </div>
-                    <div class="page-counter">
-                        <p id="counter">1/300</p>
-                    </div>
-                </div>
-                <div class="flex-items">
-                    <h3 id="play">Text</h3>
-                </div>
-            </div>
-            <div id="content-block" class="content-block"></div>
-            <div class="content-block">
-                <button id="nextButton" class="fixed-button">NEXT</button>
-            </div>
-        </div>
-        <script type="application/javascript">
-            // TG interaction
-            tg = Telegram.WebApp
-            tg.ready();
-            tg.expand();
-            tg.MainButton.hide();
-            tg.MainButton.setParams({
-                text: "END"
-            });
-            tg.MainButton.onClick( ()=> {
-                // The end title
-                sendCurrentIndex(-9999)
-                tg.sendData('/end')
-            });
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="MobileOptimized" content="176"/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="robots" content="noindex,nofollow"/>
+    <title>Prompter</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://telegram.org/js/telegram-web-app.js?1"></script>
+  </head>
 
-            // The application domain code
-            document.addEventListener('DOMContentLoaded', () => {
-                const button = document.getElementById('nextButton');
-                let subTitles = [];
-                let currentIndex = 0;
-                fetchData().then( data => {
-                    const content = data.content;
-                    // The first line is the play Title
-                    const playTitle = data.content[0].chank
-                    document.getElementById("play").innerHTML = playTitle;
-                    // Remove the Title and add two empty lines
-                    const emtyLines = [{'chank': ''}, {'chank': ''}];
-                    subTitles = [...emtyLines, ...content.slice(1)];
-                    // Show the first subset
-                    showSubtitles();
-                });
+  <body>
+    <div class="selectors-container">
+    <span class="font-size-selector">
+      <button class="button selector-button" id="small-font-size-selector">S</button>
+      <button class="button selector-button current-font-size" id="medium-font-size-selector">M</button>
+      <button class="button selector-button" id="large-font-size-selector">L</button>
+    </span>
+    <span class="role">PROMPTER</span>
+    <span class="language-selector">
+      <button class="button selector-button current-language" id="en-language-selector">En</button>
+      <button class="button selector-button" id="he-language-selector">He</button>
+      <button class="button selector-button" id="ru-language-selector">Ru</button>
+    </span>
+    </div>
 
-                function showSubtitles() {
-                    // Show the current and remainded numbers of subtitles
-                    let curr = `${currentIndex}: ${subTitles.length}`;
-                    const order = ['prev', curr, 'next']
-                    let tableRows = '';
-                    const offset = 0;
-                    for (const [i, item] of Object.entries(subTitles)) {
-                        if (i > 2) break;
-                        currentIndex += 1; 
-                        if (i == 1) {
-                            tableRows += `<tr><td style="font-weight:bold" class="narrow-column">${order[i]}</td>
-                                <td style="font-weight:bold">${item.chank}</td></tr>`;
-                        }
-                        else {
-                            tableRows += `<tr><td class="narrow-column">${order[i]}</td><td>${item.chank}</td></tr>`;
-                        }
-                    };
-                    document.querySelector('.table').innerHTML = tableRows;
-                    // Next chank will start from the second line (Prev = Curr)
-                    subTitles = subTitles.slice(1);
-                    // Adjust the current index
-                    currentIndex -= 2; 
-                }
+    <div class="chat-container">
+      <h2 class="chat-header"></h2>
 
-                button.addEventListener('click', async function(event) {
-                    console.log("NEXT clicked")
-                    sendCurrentIndex(currentIndex-1).then( data => {
-                        console.log("sent", currentIndex-1);
-                    })
+      <div class="chat-messages">
+      </div>
 
-                    if (subTitles.length < 2) {
-                        button.style.display = "none";
-                        tg.MainButton.show();
-                    }
-                    // Read data from the subtitles and update table
-                    showSubtitles();    
-                })
-            });
+      <div>
+        <button class="button next-button">NEXT</button>
+        <button class="button reset-chat-button">Reset</button>         
+      </div>
+    </div>
 
-            // Functions
-            // Get data from backend
-            async function fetchData() {
-                const response = await fetch('https://95cf-129-159-137-238.ngrok-free.app/webdata');
-                if (response.ok) {
-                    const result = await response.json();  
-                    // now do something with the result
-                    // console.log("RESULT", result);
-                    return result
-                } else {
-                    alert(response.status);
-                    return {}
-                }
-            }
-
-            // Push data to backend
-            async function sendCurrentIndex(currentIndex) {
-                const response = await fetch('https://95cf-129-159-137-238.ngrok-free.app/push/'+currentIndex);
-                if (response.ok) {
-                    console.log("SENT");
-                    return {}
-                } else {
-                    alert(response.status);
-                    return {}
-                }
-            }
-        </script>
-    <body>
+    <script src="selectors.js"></script>
+    <script src="web-utils.js"></script>
+    <script src="dom-utils.js"></script>
+    <script src="chat.js"></script>
+  </body>
 </html>
