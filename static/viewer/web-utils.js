@@ -1,6 +1,6 @@
 // @ts-nocheck
 // Be interactions
-const BE_LOCATOR = 'e1fb-129-159-137-238.ngrok-free.app';
+const BE_LOCATOR = 'messintegrator.onrender.com';
 
 const url = `wss:${BE_LOCATOR}/ws`
 const ws = new WebSocket(url);
