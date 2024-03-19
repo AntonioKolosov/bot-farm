@@ -1,215 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport"
-            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-        <meta name="format-detection" content="telephone=no"/>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <meta name="MobileOptimized" content="176"/>
-        <meta name="HandheldFriendly" content="True"/>
-        <meta name="robots" content="noindex,nofollow"/>
-        <link rel="stylesheet" href="prompter.css">
-        <title>PROMPTER</title>
-        <script src="https://telegram.org/js/telegram-web-app.js?1"></script>
-    </head>
-    <body id="body">
-        <div class="flex-container">
-            <div class="fixed-header">
-                <div class="header">
-                    <div class="buttons">
-                        <div class="radio-group" id="radio-group">
-                            <label for="option1" class="radio-label" id="text-small">
-                                <input type="radio" name="option" value="1">
-                                A
-                            </label>
-                            <label for="option2" class="radio-label" id="text-medium">
-                                <input type="radio" name="option" value="2" checked>
-                                A
-                            </label>
-                            <label for="option3" class="radio-label" id="text-large">
-                                <input type="radio" name="option" value="3">
-                                A
-                            </label>
-                        </div>
-                    </div>
-                    <div class="page-counter">
-                        <p id="counter"></p>
-                    </div>
-                </div>
-                <div class="flex-items">
-                    <h3 id="play">Text</h3>
-                </div>
-            </div>
-            <div id="content-block" class="content-block"></div>
-        </div>
-        <button id="nextButton" class="fixed-button">NEXT</button>
-        <script type="application/javascript">
-            // TG interaction
-            tg = Telegram.WebApp
-            tg.ready();
-            tg.expand();
-            tg.MainButton.hide();
-            tg.MainButton.setParams({
-                text: "END"
-            });
-            tg.MainButton.onClick( ()=> {
-                // The end title
-                sendCurrentIndex(-9999)
-                tg.sendData('/end')
-            });
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="MobileOptimized" content="176"/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="robots" content="noindex,nofollow"/>
+    <title>Prompter</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://telegram.org/js/telegram-web-app.js?1"></script>
+  </head>
 
-            // The application domain code
-            const BACKEND_URI = '95cb-129-159-137-238.ngrok-free.app';
-            document.addEventListener('DOMContentLoaded', () => {
+  <body>
+    <div class="selectors-container">
+    <span class="font-size-selector">
+      <button class="button selector-button" id="small-font-size-selector">S</button>
+      <button class="button selector-button current-font-size" id="medium-font-size-selector">M</button>
+      <button class="button selector-button" id="large-font-size-selector">L</button>
+    </span>
+    <span class="role">PROMPTER</span>
+    <span class="language-selector">
+      <button class="button selector-button current-language" id="en-language-selector">En</button>
+      <button class="button selector-button" id="he-language-selector">He</button>
+      <button class="button selector-button" id="ru-language-selector">Ru</button>
+    </span>
+    </div>
 
-                const clientWidth = document.documentElement.clientWidth;
-                console.log('clientWidth', clientWidth);
-                const clientHeight = document.documentElement.clientHeight;
-                console.log('clientHeight', clientHeight);
-                console.log('clientLines', clientHeight/16);
+    <div class="chat-container">
+      <h2 class="chat-header"></h2>
 
-                const button = document.getElementById('nextButton');
-                
-                // Add event listeners for the radio buttons
-                const textSmall = document.getElementById('text-small')
-                textSmall.addEventListener( 'click', () => {
-                    console.log('clicked small');
-                    defineContentFontSize(0.75)
-                });
+      <div class="chat-messages">
+      </div>
 
-                const textMedium = document.getElementById('text-medium')
-                textMedium.addEventListener( 'click', () => {
-                    console.log('clicked medium');
-                    defineContentFontSize(1)
-                });
+      <div>
+        <button class="button next-button">NEXT</button>
+        <button class="button reset-chat-button">Reset</button>         
+      </div>
+    </div>
 
-                const textLarge = document.getElementById('text-large')
-                textLarge.addEventListener( 'click', () => {
-                    console.log('clicked large');
-                    defineContentFontSize(1.5)
-                });
-
-                // Get data from the service
-                let subTitles = [];
-                let currentIndex = 0;
-                fetchData().then( data => {
-                    // The first line is the play Title
-                    const playTitle = data.content[0].chank
-                    document.getElementById("play").innerHTML = playTitle;
-                    // Remove the Title from the content
-                    subTitles = data.content.slice(1);
-                    // console.log(subTitles);
-                    counter();
-                });
-
-                function getFontSize(element){
-                    const body = document.getElementById(element);
-                    const fontSize = window.getComputedStyle(body,null).getPropertyValue("font-size");
-                    console.log(`DocFontSize = ${fontSize}`);
-                    return fontSize;
-                };
-
-                // radio buttons events handler
-                function defineContentFontSize(coeff) {
-                    const fontSize = getFontSize('body');
-                    const fontSizeValue = (fontSize.slice(0, fontSize.length -2));
-                    // set new regular font size for all content
-                    const newFontSizeValue = fontSizeValue * coeff;
-                    const contentBlock = document.getElementById('content-block');
-                    contentBlock.style.fontSize = newFontSizeValue + 'px';
-                    console.log('Regular font size', contentBlock.style.fontSize);
-
-                    const lastContentItem = contentBlock.querySelector('.last-content-item')
-                    if ( lastContentItem ) {
-                        lastContentItem.style.fontSize = (newFontSizeValue * 1.5) + 'px';   
-                        console.log('Last element font size', lastContentItem.style.fontSize)
-                    }
-                };
-
-                // Display Counter values
-                const counter = () => {
-                    document.getElementById('counter').innerText = currentIndex + '/' + subTitles.length;
-                };
-
-                // Add divs
-                function addNewContent(subtitle) {
-
-                    const fontSize = getFontSize('content-block');
-
-                    const contentBlock = document.getElementById('content-block');
-                    const lastContentItem = contentBlock.querySelector('.last-content-item');
-                    if (lastContentItem) {
-                        // restore the regular font size
-                        lastContentItem.style.fontSize = fontSize;
-
-                        lastContentItem.classList.remove('last-content-item');
-                    }
-
-                    const newContentDiv = document.createElement('div');
-                    newContentDiv.className = 'content';
-                    newContentDiv.classList.add('last-content-item');
-                    
-                    const paragraph = document.createElement('p');
-                    paragraph.textContent = subtitle;
-
-                    newContentDiv.appendChild(paragraph);
-                    contentBlock.appendChild(newContentDiv);
-
-                    // Set font size for last item
-                    newContentDiv.style.fontSize = (fontSize.slice(0, fontSize.length -2)*1.5) + 'px';
-
-                    contentBlock.scrollTop = contentBlock.scrollHeight;
-                }
-
-                button.addEventListener('click', async function(event) {
-                    console.log("NEXT clicked")
-                    
-                    if (currentIndex >= subTitles.length) return;
-
-                    sendCurrentIndex().then( data => {
-                        console.log("sent", currentIndex);
-                    })
-
-                    counter();
-
-                    if (subTitles.length < 2) {
-                        button.style.display = "none";
-                        tg.MainButton.show();
-                    }
-                    // Read data from the subtitles and update table
-                    subtitle = subTitles[currentIndex]['chank']
-                    addNewContent(subtitle);
-                })
-                // Push data to backend
-                async function sendCurrentIndex() {
-                    const response = await fetch(`https://${BACKEND_URI}/push/`+currentIndex);
-                    if (response.ok) {
-                        currentIndex++
-                        console.log('SENT', currentIndex);
-                        return {}
-                    } else {
-                        alert(response.status);
-                        return {}
-                    }
-                };
-            });
-
-            // Functions
-            // Get data from backend
-            async function fetchData() {
-                const response = await fetch(`https://${BACKEND_URI}/webdata`);
-                if (response.ok) {
-                    const result = await response.json();  
-                    // now do something with the result
-                    // console.log("RESULT", result);
-                    return result
-                } else {
-                    alert(response.status);
-                    return {}
-                }
-            }
-
-        </script>
-    <body>
+    <script src="selectors.js"></script>
+    <script src="web-utils.js"></script>
+    <script src="dom-utils.js"></script>
+    <script src="chat.js"></script>
+  </body>
 </html>
