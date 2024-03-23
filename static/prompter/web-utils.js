@@ -1,5 +1,6 @@
 // @ts-nocheck
 // Be interactions
+// const BE_LOCATOR = 'messintegrator.onrender.com';
 const BE_LOCATOR = 'messintegrator.onrender.com';
 
 // Get data from backend
@@ -23,7 +24,6 @@ async function sendMessageIndex(index) {
   const url = `https://${BE_LOCATOR}/push/`+index;
   const response = await fetch(url);
   if (response.ok) {
-      console.log("SENT");
       return {}
   } else {
       alert(response.status);
