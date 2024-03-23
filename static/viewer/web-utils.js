@@ -1,5 +1,6 @@
 // @ts-nocheck
 // Be interactions
+// const BE_LOCATOR = 'messintegrator.onrender.com';
 const BE_LOCATOR = 'messintegrator.onrender.com';
 
 const url = `wss:${BE_LOCATOR}/ws`

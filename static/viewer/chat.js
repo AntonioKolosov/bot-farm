@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Constants
   const chatHeader = document.querySelector('.chat-header')
   const chatMessages = document.querySelector('.chat-messages')
+  const messCounter = document.querySelector('.counter')
+  const settingSpan = document.querySelector('.settings-span')
 
   // Initialization
   chatHeader.innerHTML = '';
@@ -25,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playTitle = data.content[0].chank
     chatHeader.innerHTML = playTitle;
     subTitles = content.slice(1);
+    messCounter.innerHTML = subTitles.length-1 + '/' + messageIndex
   });
 
   ws.onmessage = function(event) {
@@ -43,10 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const createNewMessage = () => {
     
     const message = subTitles[messageIndex];
+    messageText = message.chank;
 
     /* Add message to DOM */
-    const newMessageElement = createChatMessageElement(message, 'message' + messageIndex)
+    const newMessageElement = createChatMessageElement(messageText, 'message' + messageIndex)
     chatMessages.innerHTML += newMessageElement;
+    messCounter.innerHTML = subTitles.length + '/' + messageIndex 
 
     if (messageIndex === 0) {
       doMessageFirst(messageIndex)  
@@ -67,5 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
     chatMessages.innerHTML = ''
     messageIndex = 0;
   }
-  
+
+  settingSpan.addEventListener('click', () => {
+    console.log('Settings')
+  })
+
 });

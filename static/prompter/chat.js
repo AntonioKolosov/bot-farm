@@ -19,10 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const chatHeader = document.querySelector('.chat-header')
   const chatMessages = document.querySelector('.chat-messages')
   const nextBtn = document.querySelector('.next-button')
+  const messCounter = document.querySelector('.counter')
   const resetChatBtn = document.querySelector('.reset-chat-button')
+  const settingSpan = document.querySelector('.settings-span')
 
   // Define number of messages from bottom
-  const currentMessageIndexShift = 2;
+  const currentMessageIndexShift = 4;
 
   // Initialization
   chatHeader.innerHTML = '';
@@ -35,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playTitle = data.content[0].chank
     chatHeader.innerHTML = playTitle;
     subTitles = content.slice(1);
+    messCounter.innerHTML = subTitles.length-1 + '/' + messageIndex 
     // Show the first subset
     createInitialMessagesSubset()
   });
@@ -51,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     sendMessageIndex(index).then( data => {
-      console.log("sent", index);
     }) 
   }
 
@@ -65,10 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const createNewMessage = () => {
     
     const message = subTitles[messageIndex];
+    messageText = message.chank;
 
     /* Add message to DOM */
-    const newMessageElement = createChatMessageElement(message, 'message' + messageIndex)
+    const newMessageElement = createChatMessageElement(messageText, 'message' + messageIndex)
     chatMessages.innerHTML += newMessageElement;
+    messCounter.innerHTML = subTitles.length + '/' +  (messageIndex - currentMessageIndexShift) 
 
     if (messageIndex === 0) {
       doMessageFirst(messageIndex)  
@@ -90,10 +94,14 @@ document.addEventListener('DOMContentLoaded', () => {
   resetChatBtn.addEventListener('click', () => {
     chatMessages.innerHTML = ''
     messageIndex = 0;
+    messCounter.innerHTML = subTitles.length + '/' + messageIndex 
     createInitialMessagesSubset()
     sendMessageIndex(-10000).then( data => {
       console.log("sent", -10000);
     }) 
   })
   
+  settingSpan.addEventListener('click', () => {
+    console.log('Settings')
+  })
 });
