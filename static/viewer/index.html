@@ -16,16 +16,22 @@
   <body>
     <div class="selectors-container">
     <span class="font-size-selector">
-      <!-- <button class="button selector-button" id="small-font-size-selector">S</button>
-      <button class="button selector-button current-font-size" id="medium-font-size-selector">M</button>
-      <button class="button selector-button" id="large-font-size-selector">L</button> -->
     </span>
     <span class="role">VIEWER</span>
     <span class="language-selector">
-      <span class="settings-span">&#9881;</span>    
-      <!-- <button class="button selector-button current-language" id="en-language-selector">En</button>
-      <button class="button selector-button" id="he-language-selector">He</button>
-      <button class="button selector-button" id="ru-language-selector">Ru</button> -->
+      <span class="settings-span">&#9881;</span>
+      <input type="checkbox" id="popup-checkbox" hidden>
+      <div class="popup" id="popup">
+        <div class="popup-content">
+            <button class="button selector-button" id="small-font-size-selector">S</button>
+            <button class="button selector-button current-font-size" id="medium-font-size-selector">M</button>
+            <button class="button selector-button" id="large-font-size-selector">L</button>
+            <button class="button selector-button current-language" id="en-language-selector">En</button>
+            <button class="button selector-button" id="he-language-selector">He</button>
+            <button class="button selector-button" id="ru-language-selector">Ru</button>            
+            <button class="popup-btn" id="close">Close</button>
+        </div>
+    </div>
     </span>
     </div>
 

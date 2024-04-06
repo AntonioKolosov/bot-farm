@@ -20,3 +20,5 @@ const markMessageAsRegular = (index) => {
 	const mess = document.querySelector(`#message${index}`)
 	mess.classList.remove('current-message')  
 }
+
+
