@@ -30,6 +30,12 @@ const changeFontSize = (size) => {
     mediumSelectorBtn.classList.remove('current-font-size')
   }
 
+
+  if (currentFontSize != size) {
+    currentFontSize = size
+    console.log(currentFontSize)
+  }
+
   // /* auto-focus the input field */
   // chatInput.focus()
 }
@@ -59,6 +65,11 @@ const changeLanguage = (lang) => {
     ruSelectorBtn.classList.add('current-language')
     enSelectorBtn.classList.remove('current-language')
     heSelectorBtn.classList.remove('current-language')
+  }
+
+  if (currentLanguage != lang) {
+    currentLanguage = lang
+    console.log(currentLanguage)
   }
 }
 

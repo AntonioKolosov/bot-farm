@@ -22,9 +22,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const messCounter = document.querySelector('.counter')
   const resetChatBtn = document.querySelector('.reset-chat-button')
   const settingSpan = document.querySelector('.settings-span')
+  const closeButton = document.getElementById('close')
+  const smallSize = document.getElementById('small-font-size-selector')
+  const mediumSize = document.getElementById('medium-font-size-selector')
+  const largeSize = document.getElementById('large-font-size-selector')
+  const engLang = document.getElementById('en-language-selector')
+
+
+
 
   // Define number of messages from bottom
-  const currentMessageIndexShift = 4;
+  const currentMessageIndexShift = 3;
 
   // Initialization
   chatHeader.innerHTML = '';
@@ -102,6 +110,45 @@ document.addEventListener('DOMContentLoaded', () => {
   })
   
   settingSpan.addEventListener('click', () => {
-    console.log('Settings')
-  })
+    const popup = document.getElementById('popup');
+    popup.style.display = 'block';
+  });
+
+  closeButton.addEventListener('click', () => {
+    const popup = document.getElementById('popup');
+    popup.style.display = 'none';
+  });
+
+  smallSize.addEventListener('click', () => {
+    const messages = document.querySelectorAll('.message-text');
+    for (let i = 0; i < messages.length; i++ ) {
+      messages[i].style.fontSize = "0.95em";
+  }
+  });
+
+  mediumSize.addEventListener('click', () => {
+    const messages = document.querySelectorAll('.message-text');
+    for (let i = 0; i < messages.length; i++ ) {
+      messages[i].style.fontSize = "1.25em";
+    }
+  });
+
+  largeSize.addEventListener('click', () => {
+    const messages = document.querySelectorAll('.message-text');
+    console.log(messages)
+    for (let i = 0; i < messages.length; i++ ) {
+      messages[i].style.fontSize = "1.45em";
+    }
+  });
+
+  engLang.addEventListener('click', () => {
+    fetchData().then( data => {
+      const content = data.content;
+      // The first line is the play Title
+      const playTitle = data.content[0].chank
+      chatHeader.innerHTML = playTitle;
+      subTitles = content.slice(1);
+      messCounter.innerHTML = subTitles.length-1 + '/' + messageIndex 
+    });
+  });
 });

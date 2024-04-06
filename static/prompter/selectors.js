@@ -12,7 +12,7 @@ let currentFontSize = 'M'
 
 const changeFontSize = (size) => {
   currentFontSize = size
-
+  // Change the buttons color
   if (size === 'S') {
     smallSelectorBtn.classList.add('current-font-size')
     mediumSelectorBtn.classList.remove('current-font-size')
@@ -30,6 +30,13 @@ const changeFontSize = (size) => {
     mediumSelectorBtn.classList.remove('current-font-size')
   }
 
+  console.log(currentFontSize)
+
+  if (currentFontSize != size) {
+    currentFontSize = size
+    console.log(currentFontSize)
+  }
+
   // /* auto-focus the input field */
   // chatInput.focus()
 }
@@ -42,7 +49,6 @@ largeSelectorBtn.onclick = () => changeFontSize('L')
 let currentLanguage = 'En'
 
 const changeLanguage = (lang) => {
-  currentLanguage = lang
 
   if (lang === 'En') {
     enSelectorBtn.classList.add('current-language')
@@ -60,6 +66,14 @@ const changeLanguage = (lang) => {
     enSelectorBtn.classList.remove('current-language')
     heSelectorBtn.classList.remove('current-language')
   }
+
+  console.log(currentLanguage)
+
+  if (currentLanguage != lang) {
+    currentLanguage = lang
+    console.log(currentLanguage)
+  }
+
 }
 
 enSelectorBtn.onclick = () => changeLanguage('En')
