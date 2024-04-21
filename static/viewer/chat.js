@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playTitle = data.content[0].chank
     chatHeader.innerHTML = playTitle;
     subTitles = content.slice(1);
-    messCounter.innerHTML = subTitles.length-1 + '/' + messageIndex
+    updateCounter();
   });
 
   ws.onmessage = function(event) {
@@ -51,7 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
       messageIndex = index;
       createNewMessage()
     }
-};
+  };
+
+  const updateCounter = () => {
+    messCounter.innerHTML = messageIndex + ' / ' + (subTitles.length-1);
+  };
 
   const createNewMessage = () => {
     
@@ -61,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /* Add message to DOM */
     const newMessageElement = createChatMessageElement(messageText, 'message' + messageIndex)
     chatMessages.innerHTML += newMessageElement;
-    messCounter.innerHTML = subTitles.length + '/' + messageIndex 
+    updateCounter();
 
     if (messageIndex === 0) {
       doMessageFirst(messageIndex)  
@@ -81,7 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const resetMessanger =  () => {
     chatMessages.innerHTML = ''
     messageIndex = 0;
-  }
+    updateCounter();
+  };
 
   settingSpan.addEventListener('click', () => {
     const popup = document.getElementById('popup');
@@ -127,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const playTitle = data.content[0].chank
       chatHeader.innerHTML = playTitle;
       subTitles = content.slice(1);
-      messCounter.innerHTML = subTitles.length-1 + '/' + messageIndex 
+      updateCounter();
     });
   });
 
@@ -138,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const playTitle = data.content[0].chank
       chatHeader.innerHTML = playTitle;
       subTitles = content.slice(1);
-      messCounter.innerHTML = subTitles.length-1 + '/' + messageIndex 
+      updateCounter();
     });
   });
 
@@ -149,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const playTitle = data.content[0].chank
       chatHeader.innerHTML = playTitle;
       subTitles = content.slice(1);
-      messCounter.innerHTML = subTitles.length-1 + '/' + messageIndex 
+      updateCounter();
     });
   });
 });

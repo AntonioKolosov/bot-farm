@@ -26,13 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const smallSize = document.getElementById('small-font-size-selector')
   const mediumSize = document.getElementById('medium-font-size-selector')
   const largeSize = document.getElementById('large-font-size-selector')
-  const engLang = document.getElementById('en-language-selector')
 
 
 
 
   // Define number of messages from bottom
-  const currentMessageIndexShift = 3;
+  const currentMessageIndexShift = 2;
 
   // Initialization
   chatHeader.innerHTML = '';
@@ -80,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /* Add message to DOM */
     const newMessageElement = createChatMessageElement(messageText, 'message' + messageIndex)
     chatMessages.innerHTML += newMessageElement;
-    messCounter.innerHTML = subTitles.length + '/' +  (messageIndex - currentMessageIndexShift) 
+    messCounter.innerHTML = (messageIndex - currentMessageIndexShift) + ' / ' + subTitles.length 
 
     if (messageIndex === 0) {
       doMessageFirst(messageIndex)  
@@ -120,35 +119,31 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   smallSize.addEventListener('click', () => {
-    const messages = document.querySelectorAll('.message-text');
-    for (let i = 0; i < messages.length; i++ ) {
-      messages[i].style.fontSize = "0.95em";
-  }
+    // const messages = document.querySelectorAll('.message-text');
+    // for (let i = 0; i < messages.length; i++ ) {
+    //   messages[i].style.fontSize = "0.95em";)
+    // }
+
+    const chatMessages = document.getElementById('chat-messages')
+    chatMessages.style.fontSize = "0.95em";
   });
 
   mediumSize.addEventListener('click', () => {
-    const messages = document.querySelectorAll('.message-text');
-    for (let i = 0; i < messages.length; i++ ) {
-      messages[i].style.fontSize = "1.25em";
-    }
+    // const messages = document.querySelectorAll('.message-text');
+    // for (let i = 0; i < messages.length; i++ ) {
+    //   messages[i].style.fontSize = "1.25em";
+    // }
+    const chatMessages = document.getElementById('chat-messages')
+    chatMessages.style.fontSize = "1.25em";
   });
 
   largeSize.addEventListener('click', () => {
-    const messages = document.querySelectorAll('.message-text');
-    console.log(messages)
-    for (let i = 0; i < messages.length; i++ ) {
-      messages[i].style.fontSize = "1.45em";
-    }
-  });
-
-  engLang.addEventListener('click', () => {
-    fetchData().then( data => {
-      const content = data.content;
-      // The first line is the play Title
-      const playTitle = data.content[0].chank
-      chatHeader.innerHTML = playTitle;
-      subTitles = content.slice(1);
-      messCounter.innerHTML = subTitles.length-1 + '/' + messageIndex 
-    });
+    // const messages = document.querySelectorAll('.message-text');
+    // console.log(messages)
+    // for (let i = 0; i < messages.length; i++ ) {
+    //   messages[i].style.fontSize = "1.45em";
+    // }
+    const chatMessages = document.getElementById('chat-messages')
+    chatMessages.style.fontSize = "1.45em";
   });
 });
