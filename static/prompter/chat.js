@@ -28,8 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const largeSize = document.getElementById('large-font-size-selector')
 
 
-
-
   // Define number of messages from bottom
   const currentMessageIndexShift = 2;
 
@@ -119,30 +117,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   smallSize.addEventListener('click', () => {
-    // const messages = document.querySelectorAll('.message-text');
-    // for (let i = 0; i < messages.length; i++ ) {
-    //   messages[i].style.fontSize = "0.95em";)
-    // }
-
     const chatMessages = document.getElementById('chat-messages')
     chatMessages.style.fontSize = "0.95em";
   });
 
   mediumSize.addEventListener('click', () => {
-    // const messages = document.querySelectorAll('.message-text');
-    // for (let i = 0; i < messages.length; i++ ) {
-    //   messages[i].style.fontSize = "1.25em";
-    // }
     const chatMessages = document.getElementById('chat-messages')
     chatMessages.style.fontSize = "1.25em";
   });
 
   largeSize.addEventListener('click', () => {
-    // const messages = document.querySelectorAll('.message-text');
-    // console.log(messages)
-    // for (let i = 0; i < messages.length; i++ ) {
-    //   messages[i].style.fontSize = "1.45em";
-    // }
     const chatMessages = document.getElementById('chat-messages')
     chatMessages.style.fontSize = "1.45em";
   });
