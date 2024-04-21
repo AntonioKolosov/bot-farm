@@ -30,6 +30,7 @@ const changeFontSize = (size) => {
     mediumSelectorBtn.classList.remove('current-font-size')
   }
 
+  console.log(currentFontSize)
 
   if (currentFontSize != size) {
     currentFontSize = size

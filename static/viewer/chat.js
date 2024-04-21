@@ -23,9 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const hebLang = document.getElementById('he-language-selector')
   const rusLang = document.getElementById('ru-language-selector')
 
-
-
-
   // Initialization
   chatHeader.innerHTML = '';
   let subTitles = [];
@@ -81,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
     chatMessages.scrollTop = chatMessages.scrollHeight
   }
 
-
   const resetMessanger =  () => {
     chatMessages.innerHTML = ''
     messageIndex = 0;
@@ -98,31 +94,19 @@ document.addEventListener('DOMContentLoaded', () => {
     popup.style.display = 'none';
   });
 
-  closeButton.addEventListener('click', () => {
-    const popup = document.getElementById('popup');
-    popup.style.display = 'none';
-  });
-
   smallSize.addEventListener('click', () => {
-    const messages = document.querySelectorAll('.message-text');
-    for (let i = 0; i < messages.length; i++ ) {
-      messages[i].style.fontSize = "0.95em";
-  }
+    const chatMessages = document.getElementById('chat-messages')
+    chatMessages.style.fontSize = "0.95em";
   });
 
   mediumSize.addEventListener('click', () => {
-    const messages = document.querySelectorAll('.message-text');
-    for (let i = 0; i < messages.length; i++ ) {
-      messages[i].style.fontSize = "1.25em";
-    }
+    const chatMessages = document.getElementById('chat-messages')
+    chatMessages.style.fontSize = "1.25em";
   });
 
   largeSize.addEventListener('click', () => {
-    const messages = document.querySelectorAll('.message-text');
-    console.log(messages)
-    for (let i = 0; i < messages.length; i++ ) {
-      messages[i].style.fontSize = "1.45em";
-    }
+    const chatMessages = document.getElementById('chat-messages')
+    chatMessages.style.fontSize = "1.45em";
   });
 
   engLang.addEventListener('click', () => {
