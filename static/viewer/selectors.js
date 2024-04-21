@@ -45,7 +45,7 @@ mediumSelectorBtn.onclick = () => changeFontSize('M')
 largeSelectorBtn.onclick = () => changeFontSize('L')
 
 
-let currentLanguage = 'En'
+let currentLanguage = 'Ru'
 
 const changeLanguage = (lang) => {
   currentLanguage = lang
