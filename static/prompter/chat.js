@@ -42,10 +42,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const playTitle = data.content[0].chank
     chatHeader.innerHTML = playTitle;
     subTitles = content.slice(1);
-    messCounter.innerHTML = subTitles.length-1 + '/' + messageIndex 
     // Show the first subset
     createInitialMessagesSubset()
   });
+
+  const updateCounter = (index) => {
+    messCounter.innerHTML = (index)  + ' / ' + subTitles.length
+  };  
+
+  const markMessage = () => {
+    if (messageIndex === 0) {
+      doMessageFirst(messageIndex)  
+    }
+    if ((messageIndex >= currentMessageIndexShift)) {   
+      markMessageAsCurrernt(messageIndex - currentMessageIndexShift) 
+      if (messageIndex > currentMessageIndexShift) {
+        markMessageAsRegular(messageIndex - currentMessageIndexShift - 1)
+      }
+    }
+  };
 
   const nextMessage = (e) => {
     e.preventDefault();
@@ -54,12 +69,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (messageIndex < subTitles.length) {
       createNewMessage();
       messageIndex++;
-    } else {
+      updateCounter(index + currentMessageIndexShift - 1);
+    } 
+    else if (messageIndex < subTitles.length + currentMessageIndexShift + 1) {
+      messageIndex++;
+      updateCounter(index + currentMessageIndexShift - 1);
+    }
+    else {
       index = -9999
     }
     
     sendMessageIndex(index).then( data => {
-    }) 
+      console.log(index);
+    })
   }
 
   const createInitialMessagesSubset = () => {
@@ -67,27 +89,18 @@ document.addEventListener('DOMContentLoaded', () => {
       createNewMessage();
       messageIndex++;
     }
+    updateCounter(0);
   }
 
   const createNewMessage = () => {
     
     const message = subTitles[messageIndex];
-    messageText = message.chank;
+    const messageText = message.chank;
 
     /* Add message to DOM */
     const newMessageElement = createChatMessageElement(messageText, 'message' + messageIndex)
     chatMessages.innerHTML += newMessageElement;
-    messCounter.innerHTML = (messageIndex - currentMessageIndexShift) + ' / ' + subTitles.length 
-
-    if (messageIndex === 0) {
-      doMessageFirst(messageIndex)  
-    }
-     if ((messageIndex >= currentMessageIndexShift)) {   
-      markMessageAsCurrernt(messageIndex - currentMessageIndexShift) 
-      if (messageIndex > currentMessageIndexShift) {
-        markMessageAsRegular(messageIndex - currentMessageIndexShift - 1)
-      }
-    }
+    markMessage();
 
     /*  Scroll to bottom of chat messages */
     chatMessages.scrollTop = chatMessages.scrollHeight
@@ -99,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
   resetChatBtn.addEventListener('click', () => {
     chatMessages.innerHTML = ''
     messageIndex = 0;
-    messCounter.innerHTML = subTitles.length + '/' + messageIndex 
     createInitialMessagesSubset()
     sendMessageIndex(-10000).then( data => {
       console.log("sent", -10000);
