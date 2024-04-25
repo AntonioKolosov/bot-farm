@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialization
   chatHeader.innerHTML = '';
   let subTitles = [];
-  let messageIndex = 0;
+  let messageIndex = 0;  
 
   fetchData().then( data => {
     const content = data.content;
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playTitle = data.content[0].chank
     chatHeader.innerHTML = playTitle;
     subTitles = content.slice(1);
-    updateCounter();
+    updateCounter(-1);
   });
 
   ws.onmessage = function(event) {
@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  const updateCounter = () => {
-    messCounter.innerHTML = messageIndex + ' / ' + (subTitles.length-1);
+  const updateCounter = (index) => {
+    messCounter.innerHTML = (index + 1)  + ' / ' + subTitles.length 
   };
 
   const createNewMessage = () => {
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /* Add message to DOM */
     const newMessageElement = createChatMessageElement(messageText, 'message' + messageIndex)
     chatMessages.innerHTML += newMessageElement;
-    updateCounter();
+    updateCounter(messageIndex);
 
     if (messageIndex === 0) {
       doMessageFirst(messageIndex)  
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const resetMessanger =  () => {
     chatMessages.innerHTML = ''
     messageIndex = 0;
-    updateCounter();
+    updateCounter(-1);
   };
 
   settingSpan.addEventListener('click', () => {
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const playTitle = data.content[0].chank
       chatHeader.innerHTML = playTitle;
       subTitles = content.slice(1);
-      updateCounter();
+      updateCounter(-1);
     });
   });
 
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const playTitle = data.content[0].chank
       chatHeader.innerHTML = playTitle;
       subTitles = content.slice(1);
-      updateCounter();
+      updateCounter(-1);
     });
   });
 
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const playTitle = data.content[0].chank
       chatHeader.innerHTML = playTitle;
       subTitles = content.slice(1);
-      updateCounter();
+      updateCounter(-1);
     });
   });
 });
