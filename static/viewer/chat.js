@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   engLang.addEventListener('click', () => {
-    fetchData().then( data => {
+    fetchData('en').then( data => {
       const content = data.content;
       // The first line is the play Title
       const playTitle = data.content[0].chank
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   hebLang.addEventListener('click', () => {
-    fetchData().then( data => {
+    fetchData('he').then( data => {
       const content = data.content;
       // The first line is the play Title
       const playTitle = data.content[0].chank

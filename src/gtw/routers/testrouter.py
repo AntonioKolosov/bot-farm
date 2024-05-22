@@ -26,9 +26,9 @@ async def set_description_req():
     return {"Descr": f"Set {res}"}
 
 
-@router.get("/webdata")
-async def getweb_data():
-    filename = 'data.json'
+@router.get("/webdata/{lang}")
+async def getweb_data(lang):
+    filename = f'{lang}_data.json'
     filepath = f"./static/webdata/{filename}"
     return FileResponse(filepath)
 
