@@ -1,7 +1,7 @@
 // @ts-nocheck
 // Be interactions
 const BE_LOCATOR = 'messintegrator.onrender.com';
-// const BE_LOCATOR = '7a2f-129-159-137-238.ngrok-free.app';
+// const BE_LOCATOR = '9bc5-129-159-137-238.ngrok-free.app';
 
 // Get data from backend
 async function fetchData(lang = 'ru') {

@@ -8,6 +8,7 @@ const enSelectorBtn = document.querySelector('#en-language-selector')
 const heSelectorBtn = document.querySelector('#he-language-selector')
 const ruSelectorBtn = document.querySelector('#ru-language-selector')
 
+
 let currentFontSize = 'M'
 
 const changeFontSize = (size) => {
@@ -49,6 +50,7 @@ largeSelectorBtn.onclick = () => changeFontSize('L')
 let currentLanguage = 'Ru'
 
 const changeLanguage = (lang) => {
+  document.documentElement.dir = (lang === 'He') ? 'rtl' : 'ltr';
   currentLanguage = lang
 
   if (lang === 'En') {
