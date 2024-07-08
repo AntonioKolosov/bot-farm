@@ -6,7 +6,6 @@ import os
 import sys
 
 import uvicorn
-from pyngrok import ngrok
 
 
 if __name__ == "__main__":
@@ -16,8 +15,9 @@ if __name__ == "__main__":
     # Open a HTTP tunnel on the default port 80
     # <NgrokTunnel: "http://<public_sub>.ngrok.io" ->
     # "http://localhost:PORT">
-    http_tunnel = ngrok.connect(PORT, bind_tls=True)
-    public_url = http_tunnel.public_url
+    # http_tunnel = ngrok.connect(PORT, bind_tls=True)
+    # public_url = http_tunnel.public_url
+    public_url = "https://neat-krill-honest.ngrok-free.app"
     os.environ['GTW_URL'] = public_url
     print("public URL", public_url)
 
@@ -26,6 +26,6 @@ if __name__ == "__main__":
                 log_level="info", reload=True)
 
     # Close the HTTP tunnel
-    print("disconnect and kill the tunnel")
-    ngrok.disconnect(http_tunnel.public_url)
-    ngrok.kill()
+    # print("disconnect and kill the tunnel")
+    # ngrok.disconnect(http_tunnel.public_url)
+    # ngrok.kill()

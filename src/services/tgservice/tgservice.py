@@ -50,42 +50,35 @@ class TgService(Service):
 
         # Array of Arrays of KeyBoardButton
         keyboard = []
-
+        buttons = {}
         for cmd in service_metadata.commands:
             if cmd.button:
                 # KeyboardButton
-                # if cmd.content.startswith('@webapp---'):
-                #     path = cmd.content[len('@webapp---'):]
-                #     button = [{"text": cmd.name,
-                #         "web_app": {"url": f'{cfg.gtw_url}/{path}'}}]
-                # else:
-                button = [{"text": cmd.name}]
+                if cmd.content.startswith('@webapp---'):
+                    # the button will start a web app
+                    path = cmd.content[len('@webapp---'):]
+                    button = [{"text": cmd.name[1:].upper(),
+                               "web_app": {"url": f'{cfg.gtw_url}/{path}'}}]
+                else:
+                    # the button will perform a regular task
+                    button = [{"text": cmd.name}]
                 keyboard.append(button)
 
-        # Temporary - will be in meta data. Test button for mini-app
-        if service_metadata.service_alias == "POSTMAN":
-            button = [{"text": "Begin",
-                       "web_app": {"url": f'{cfg.gtw_url}/prompter'}}]
-            keyboard.append(button)
-        if service_metadata.service_alias == "FRIENDLY":
-            button = [{"text": "Begin",
-                       "web_app": {"url": f'{cfg.gtw_url}/viewer'}}]
-            keyboard.append(button)
-
         # ReplayKeyboardMarkup
-        keyboard_buttons = {
-            "keyboard": keyboard,
-            "resize_keyboard": True,
-            "one_time_keyboard": False
-        }
+        if len(keyboard) > 0:
+            keyboard_buttons = {
+                "keyboard": keyboard,
+                "resize_keyboard": True,
+                "one_time_keyboard": False
+            }
 
-        keyboard_buttons = json.dumps(keyboard_buttons)
+            keyboard_buttons = json.dumps(keyboard_buttons)
 
-        buttons = {
-            "chat_id": int(answer.content),
-            "text": "Look at this beautiful button",
-            "reply_markup": keyboard_buttons
-        }
+            buttons = {
+                "chat_id": int(answer.content),
+                "text": "Press a button to continue",
+                "reply_markup": keyboard_buttons
+            }
 
         return buttons
 

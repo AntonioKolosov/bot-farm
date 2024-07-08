@@ -24,11 +24,24 @@ class Loader:
 
     @abstractmethod
     def load_content(self, type: str, ref: str) -> dict | str:
-        """Load content from path and correct file"""
+        """Load content"""
 
     @abstractmethod
     def load_state(self, type: str, ref: str) -> str:
         """Load state"""
 
+    @abstractmethod
     def save_state(self, type: str, ref: str, state: str) -> None:
         """Save state"""
+
+    @abstractmethod
+    def load_webview(self, type: str, ref: str) -> dict | str:
+        """Load webview"""
+
+    @abstractmethod
+    def load_style(self, type: str, ref: str) -> dict | str:
+        """Load webstyle"""
+
+    @abstractmethod
+    def load_script(self, type: str, ref: str) -> dict | str:
+        """Load webscript"""
