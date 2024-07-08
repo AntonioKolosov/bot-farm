@@ -101,3 +101,30 @@ class MongoLoader(Loader):
             "state_value": state
         }
         collection.insert_one(state_obj)  # type: ignore
+
+    def load_webview(self, type: str, ref: str) -> dict | str:
+        """Load webview from right database"""
+        collection = self.__get_db_collection(type)
+        cursor: Cursor = collection.find({"name": ref})  # type: ignore
+        webview = ''
+        for document in cursor:
+            webview = document
+        return webview
+
+    def load_style(self, type: str, ref: str) -> dict | str:
+        """Load webstyle from right database"""
+        collection = self.__get_db_collection(type)
+        cursor: Cursor = collection.find({"name": ref})  # type: ignore
+        webstyle = ''
+        for document in cursor:
+            webstyle = document
+        return webstyle
+
+    def load_script(self, type: str, ref: str) -> dict | str:
+        """Load webscript from right database"""
+        collection = self.__get_db_collection(type)
+        cursor: Cursor = collection.find({"name": ref})  # type: ignore
+        webscript = ''
+        for document in cursor:
+            webscript = document
+        return webscript
