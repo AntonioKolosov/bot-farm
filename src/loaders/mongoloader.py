@@ -102,12 +102,13 @@ class MongoLoader(Loader):
         }
         collection.insert_one(state_obj)  # type: ignore
 
-    def load_webview(self, type: str, ref: str) -> dict | str:
+    def load_webview(self, app: str, ref: str, page: str) -> dict | str:
         """Load webview from right database"""
-        collection = self.__get_db_collection(type)
-        cursor: Cursor = collection.find({"name": ref})  # type: ignore
+        collection = self.__get_db_collection(app)
+        cursor: Cursor = collection.find()  # type: ignore
         webview = ''
         for document in cursor:
+            print(document)
             webview = document
         return webview
 

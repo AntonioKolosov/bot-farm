@@ -27,10 +27,9 @@ async def set_description_req():
     return {"Descr": f"Set {res}"}
 
 
-@router.get("/{view}")
-async def getweb_view(view):
-    f'{view}'
-    webview = loader.load_webview('WebViews', view)
+@router.get("/{app}/{page}")
+async def getweb_view(app, page):
+    webview = loader.load_webview(app, 'views', "index")
     if type(webview) == dict:
         webview_value = webview['webview']
     elif type(webview) == str:
@@ -54,8 +53,8 @@ async def getweb_style(style):
                         status_code=200)
 
 
-@router.get("/webscript/{script}")
-async def getweb_script(script):
+@router.get("/webscript/{view}/{script}")
+async def getweb_script(view, script):
     script_name = f'{script}'
     webscript = loader.load_script('WebScripts', script_name)
     if type(webscript) == dict:
