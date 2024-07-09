@@ -35,13 +35,13 @@ class Loader:
         """Save state"""
 
     @abstractmethod
-    def load_webview(self, app: str, ref: str, page: str) -> dict | str:
+    def load_webview(self, app: str, ref: str, page: str) -> str:
         """Load webview"""
 
     @abstractmethod
-    def load_style(self, type: str, ref: str) -> dict | str:
+    def load_style(self, type: str, ref: str, style: str) -> str:
         """Load webstyle"""
 
     @abstractmethod
-    def load_script(self, type: str, ref: str) -> dict | str:
+    def load_script(self, type: str, ref: str, script: str) -> str:
         """Load webscript"""

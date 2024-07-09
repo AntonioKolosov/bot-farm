@@ -72,14 +72,14 @@ class FsLoader(Loader):
         with open(ffn, 'r') as text_file:
             return text_file.read()
 
-    def load_webview(self, app: str, ref: str, page: str) -> dict | str:
+    def load_webview(self, app: str, ref: str, page: str) -> str:
         """Load webview"""
         return ""
 
-    def load_style(self, type: str, ref: str) -> dict | str:
+    def load_style(self, type: str, ref: str) -> str:
         """Load webstyle"""
         return ''
 
-    def load_script(self, type: str, ref: str) -> dict | str:
+    def load_script(self, type: str, ref: str) -> str:
         """Load webscript"""
         return ''
