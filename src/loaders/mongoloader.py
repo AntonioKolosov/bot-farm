@@ -102,30 +102,38 @@ class MongoLoader(Loader):
         }
         collection.insert_one(state_obj)  # type: ignore
 
-    def load_webview(self, app: str, ref: str, page: str) -> dict | str:
+    def load_webview(self, app: str, ref: str, page: str) -> str:
         """Load webview from right database"""
-        collection = self.__get_db_collection(app)
-        cursor: Cursor = collection.find()  # type: ignore
+        collection = self.__get_db_collection(app.lower().capitalize())
+        cursor: Cursor = collection.find({})  # type: ignore
+        views = ''
         webview = ''
         for document in cursor:
-            print(document)
-            webview = document
+            views = document[ref]
+            webview = \
+                next(x for x in views if x['name'] == page)['webview']
         return webview
 
-    def load_style(self, type: str, ref: str) -> dict | str:
+    def load_style(self, app: str, ref: str, style: str) -> str:
         """Load webstyle from right database"""
-        collection = self.__get_db_collection(type)
-        cursor: Cursor = collection.find({"name": ref})  # type: ignore
+        collection = self.__get_db_collection(app.lower().capitalize())
+        cursor: Cursor = collection.find({})  # type: ignore
+        styles = ''
         webstyle = ''
         for document in cursor:
-            webstyle = document
+            styles = document[ref]
+            webstyle = \
+                next(x for x in styles if x['name'] == style)['webstyle']
         return webstyle
 
-    def load_script(self, type: str, ref: str) -> dict | str:
+    def load_script(self, app: str, ref: str, script: str) -> str:
         """Load webscript from right database"""
-        collection = self.__get_db_collection(type)
-        cursor: Cursor = collection.find({"name": ref})  # type: ignore
+        collection = self.__get_db_collection(app.lower().capitalize())
+        cursor: Cursor = collection.find({})  # type: ignore
+        scripts = ''
         webscript = ''
         for document in cursor:
-            webscript = document
+            scripts = document[ref]
+            webscript = \
+                next(x for x in scripts if x['name'] == script)['script']
         return webscript
