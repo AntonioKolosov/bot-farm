@@ -2,13 +2,12 @@
 Test router. You may use it for tests with API
 """
 
-import base64
+
 from typing import List
 from fastapi import APIRouter
 
 # Websocket
 from fastapi import WebSocket, WebSocketDisconnect
-from fastapi.responses import HTMLResponse
 
 from src.loaders import loader
 from src.services import services
@@ -27,33 +26,33 @@ async def set_description_req():
     return {"Descr": f"Set {res}"}
 
 
-# https://url/prompter?page=index or https://url/prompter
-@router.get("/{app}")
-async def getweb_view(app, page: str = 'index'):
-    webview = loader.load_webview(app, 'views', page)
-    webview_orig = base64.b64decode(webview)
-    return HTMLResponse(content=webview_orig,
-                        media_type='text/html',
-                        status_code=200)
+# # https://url/prompter?page=index or https://url/prompter
+# @router.get("/{app}")
+# async def getweb_view(app, page: str = 'index'):
+#     webview = loader.load_webview(app, 'views', page)
+#     webview_orig = base64.b64decode(webview)
+#     return HTMLResponse(content=webview_orig,
+#                         media_type='text/html',
+#                         status_code=200)
 
 
-# https://url/prompter?style=main or https://url/prompter
-@router.get("/webstyle/{app}")
-async def getweb_style(app, style: str = 'main'):
-    webstyle = loader.load_style(app, 'styles', style)
-    webstyle_orig = base64.b64decode(webstyle)
-    return HTMLResponse(content=webstyle_orig,
-                        media_type='text/css',
-                        status_code=200)
+# # https://url/prompter?style=main or https://url/prompter
+# @router.get("/webstyle/{app}")
+# async def getweb_style(app, style: str = 'main'):
+#     webstyle = loader.load_style(app, 'styles', style)
+#     webstyle_orig = base64.b64decode(webstyle)
+#     return HTMLResponse(content=webstyle_orig,
+#                         media_type='text/css',
+#                         status_code=200)
 
 
-@router.get("/webscript/{app}/{script}")
-async def getweb_script(app, script):
-    webscript = loader.load_script(app, 'scripts', script)
-    webscript_orig = base64.b64decode(webscript)
-    return HTMLResponse(content=webscript_orig,
-                        media_type='text/javascript',
-                        status_code=200)
+# @router.get("/webscript/{app}/{script}")
+# async def getweb_script(app, script):
+#     webscript = loader.load_script(app, 'scripts', script)
+#     webscript_orig = base64.b64decode(webscript)
+#     return HTMLResponse(content=webscript_orig,
+#                         media_type='text/javascript',
+#                         status_code=200)
 
 
 @router.get("/webdata/{lang}")
