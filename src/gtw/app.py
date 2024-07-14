@@ -6,7 +6,6 @@ from typing import Dict
 
 from fastapi import FastAPI
 from dotenv import load_dotenv
-from fastapi.staticfiles import StaticFiles
 
 from .description import description, title, version, license, contact
 from src.gtw.routers import inc_data_router, testrouter
@@ -30,7 +29,9 @@ app.include_router(testrouter.router)
 # app.mount("/prompter",
 # StaticFiles(directory="static/prompter",
 # html=True))
-app.mount("/viewer", StaticFiles(directory="static/viewer", html=True))
+# app.mount("/viewer",
+# StaticFiles(directory="static/viewer",
+# html=True))
 
 
 @app.get("/", tags=["ROOT"])
