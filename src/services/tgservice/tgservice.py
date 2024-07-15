@@ -57,8 +57,9 @@ class TgService(Service):
                 if cmd.content.startswith('@webapp---'):
                     # the button will start a web app
                     path = cmd.content[len('@webapp---'):]
+                    url = 'data-feed-service.onrender.com'
                     button = [{"text": cmd.name[1:].upper(),
-                               "web_app": {"url": f'{cfg.gtw_url}/{path}'}}]
+                               "web_app": {"url": f'{url}.com/{path}'}}]
                 else:
                     # the button will perform a regular task
                     button = [{"text": cmd.name}]
