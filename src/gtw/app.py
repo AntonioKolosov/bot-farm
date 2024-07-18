@@ -25,14 +25,6 @@ load_dotenv()
 app.include_router(inc_data_router.router)
 app.include_router(testrouter.router)
 
-# Temporary - will be moved to DB and loaded via a loader
-# app.mount("/prompter",
-# StaticFiles(directory="static/prompter",
-# html=True))
-# app.mount("/viewer",
-# StaticFiles(directory="static/viewer",
-# html=True))
-
 
 @app.get("/", tags=["ROOT"])
 def read_root() -> Dict:
