@@ -12,7 +12,6 @@ from src.data_def.schemas.service_md import ServiceMetadata, CommandMetadata
 from src.loaders import loader
 from src.handlers.handler import Handler
 from src.handlers.simple_handler import SimpleHandler
-from src.handlers.subtitles_handler import SubtitlesHandler
 
 
 class ActiveHandlers:
@@ -23,7 +22,6 @@ class ActiveHandlers:
         # self.__get_breaf_topics
         self.register(SimpleHandler())
         self.register(StartHandler())
-        self.register(SubtitlesHandler())
 
     def register(self, handler: Handler) -> None:
         """Registered Handlers -> mess_broker"""

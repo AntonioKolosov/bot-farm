@@ -55,7 +55,7 @@ class MongoLoader(Loader):
         return collection
 
     def load_names(self):
-        """Load all avaible files"""
+        """Load all avaible bot's names"""
         collection = self.__get_db_collection("MetaData")
         cursor = collection.find({})  # type: ignore
         names = []
@@ -75,7 +75,7 @@ class MongoLoader(Loader):
         doc = list(cursor)
         return doc[0]  # type: ignore
 
-    def load_content(self, type: str, ref: str) -> dict | str:
+    def load_content(self, ref: str) -> dict | str:
         """Load content from right database"""
         collection = self.__get_db_collection("Content")
         cursor: Cursor = collection.find({"name": ref})  # type: ignore
@@ -83,57 +83,3 @@ class MongoLoader(Loader):
         for document in cursor:
             content = document
         return content
-
-    def load_state(self, type: str, ref: str) -> str:
-        """Load state"""
-        collection = self.__get_db_collection("States")
-        cursor: Cursor = collection.find({"state_id": ref})  # type: ignore
-        state = ''
-        for document in cursor:
-            state = str(document["state_value"]).lower()
-        return state
-
-    def save_state(self, type: str, ref: str, state: str):
-        """Save state"""
-        collection = self.__get_db_collection("States")
-        state_obj = {
-            "state_id": ref,
-            "state_value": state
-        }
-        collection.insert_one(state_obj)  # type: ignore
-
-    def load_webview(self, app: str, ref: str, page: str) -> str:
-        """Load webview from right database"""
-        collection = self.__get_db_collection(app.lower().capitalize())
-        cursor: Cursor = collection.find({})  # type: ignore
-        views = ''
-        webview = ''
-        for document in cursor:
-            views = document[ref]
-            webview = \
-                next(x for x in views if x['name'] == page)['webview']
-        return webview
-
-    def load_style(self, app: str, ref: str, style: str) -> str:
-        """Load webstyle from right database"""
-        collection = self.__get_db_collection(app.lower().capitalize())
-        cursor: Cursor = collection.find({})  # type: ignore
-        styles = ''
-        webstyle = ''
-        for document in cursor:
-            styles = document[ref]
-            webstyle = \
-                next(x for x in styles if x['name'] == style)['webstyle']
-        return webstyle
-
-    def load_script(self, app: str, ref: str, script: str) -> str:
-        """Load webscript from right database"""
-        collection = self.__get_db_collection(app.lower().capitalize())
-        cursor: Cursor = collection.find({})  # type: ignore
-        scripts = ''
-        webscript = ''
-        for document in cursor:
-            scripts = document[ref]
-            webscript = \
-                next(x for x in scripts if x['name'] == script)['script']
-        return webscript

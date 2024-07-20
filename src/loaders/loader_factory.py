@@ -5,10 +5,9 @@ Loader Factory choose right loader
 
 from ..config import cfg
 from .loader import Loader
-from .fsloader import FsLoader
 from .mongoloader import MongoLoader
 
-from .constants import LOADER_BASE, LOADER_FS, LOADER_MONGO
+from .constants import LOADER_BASE, LOADER_MONGO
 
 
 class LoaderFactory:
@@ -24,8 +23,6 @@ class LoaderFactory:
         return self.__loader_type
 
     def loader(self) -> Loader:
-        if self.loader_type == LOADER_FS:
-            return FsLoader(LOADER_FS)
-        elif self.loader_type == LOADER_MONGO:
+        if self.loader_type == LOADER_MONGO:
             return MongoLoader(LOADER_MONGO)
         return Loader(LOADER_BASE)

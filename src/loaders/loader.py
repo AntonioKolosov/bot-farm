@@ -23,25 +23,5 @@ class Loader:
         """Load metadata"""
 
     @abstractmethod
-    def load_content(self, type: str, ref: str) -> dict | str:
+    def load_content(self, ref: str) -> dict | str:
         """Load content"""
-
-    @abstractmethod
-    def load_state(self, type: str, ref: str) -> str:
-        """Load state"""
-
-    @abstractmethod
-    def save_state(self, type: str, ref: str, state: str) -> None:
-        """Save state"""
-
-    @abstractmethod
-    def load_webview(self, app: str, ref: str, page: str) -> str:
-        """Load webview"""
-
-    @abstractmethod
-    def load_style(self, type: str, ref: str, style: str) -> str:
-        """Load webstyle"""
-
-    @abstractmethod
-    def load_script(self, type: str, ref: str, script: str) -> str:
-        """Load webscript"""

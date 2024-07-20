@@ -68,7 +68,7 @@ class Handler:
         content = cmd_data.content
         if (cmd_data.content.startswith(CONTENT_REF)):
             ref = cmd_data.content[len(CONTENT_REF):]
-            content_value = loader.load_content(cmd_data.type, ref)
+            content_value = loader.load_content(ref)
             if type(content_value) == dict:
                 content = content_value['content']
             elif type(content_value) == str:

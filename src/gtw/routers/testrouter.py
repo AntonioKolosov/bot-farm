@@ -63,7 +63,7 @@ async def getweb_data(lang):
     # return FileResponse(filepath)
     # from DB
     doc_name = f'{lang}_data'
-    content = loader.load_content('', doc_name)
+    content = loader.load_content(doc_name)
     if type(content) == dict:
         content_value = content['content']
     elif type(content) == str:
